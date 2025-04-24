@@ -1,120 +1,26 @@
 {
   "project_info": {
-    "project_number": "423371897105",
-    "firebase_url": "https://loyalstrings-3c53b-default-rtdb.firebaseio.com",
-    "project_id": "loyalstrings-3c53b",
-    "storage_bucket": "loyalstrings-3c53b.appspot.com"
+    "project_number": "779422113678",
+    "project_id": "loyalstring-rfid",
+    "storage_bucket": "loyalstring-rfid.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:423371897105:android:7815d9b7f20b0adb6034b0",
+        "mobilesdk_app_id": "1:779422113678:android:3dc7664bc404431190cedf",
         "android_client_info": {
           "package_name": "com.loyalstring"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "423371897105-4eoj0q77k6hkceosq8177fh0iklpdjj5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.loyalstring",
-            "certificate_hash": "afe28720a44431bcff546fae62d26af70d8097fd"
-          }
-        },
-        {
-          "client_id": "423371897105-q5lchvt9bfqink6hteqpt20o0vb1b8sq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.loyalstring",
-            "certificate_hash": "d6a775f21eaeb2426c1caf41ccad979b38271247"
-          }
-        },
-        {
-          "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDerNHPJwykR6GA6H_tMb7p-eMdQ8uR13k"
-        },
-        {
-          "current_key": "AIzaSyAES1_g_x5vnkr5gMSMVnNvgA0TWx7xJKw"
+          "current_key": "AIzaSyCYORhKcTkJQBLKIdPOTalhYAb8Hgz_I28"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:423371897105:android:2754b222b0eab3616034b0",
-        "android_client_info": {
-          "package_name": "com.loyalstring1"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDerNHPJwykR6GA6H_tMb7p-eMdQ8uR13k"
-        },
-        {
-          "current_key": "AIzaSyAES1_g_x5vnkr5gMSMVnNvgA0TWx7xJKw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:423371897105:android:c9dc1a15d0c391076034b0",
-        "android_client_info": {
-          "package_name": "com.loyalstringgarment"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDerNHPJwykR6GA6H_tMb7p-eMdQ8uR13k"
-        },
-        {
-          "current_key": "AIzaSyAES1_g_x5vnkr5gMSMVnNvgA0TWx7xJKw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -4,15 +4,18 @@ import static com.loyalstring.Activities.BillViewactivity.decimalFormat;
 import static com.loyalstring.Adapters.BillListAdaptor.convertTimestampToDate;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,14 +45,13 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
-import com.loyalstring.MainActivity;
-import com.loyalstring.R;
 import com.loyalstring.modelclasses.Itemmodel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -60,12 +62,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class PdfGenerator {
 
     private Context context;
+    File downloadsDir;
 
     public PdfGenerator(Context context) {
         this.context = context;
@@ -115,7 +117,7 @@ public class PdfGenerator {
             }
             else if(i == 20){
                 List<Itemmodel> itemList = getDummyItems();
-                    pushpa11(billmap);
+                pushpa11(billmap);
 //                if(f == 1){
 //                    //default
 //                    List<Itemmodel> itemList = getDummyItems();
@@ -132,6 +134,10 @@ public class PdfGenerator {
 //
 //                }
             }
+           /* else if(i == 21) {
+                List<Itemmodel> itemList = getDummyItems();
+                pushpa11(billmap);
+            }*/
         }
     }
 
@@ -579,7 +585,7 @@ public class PdfGenerator {
             tn = tn+it.getNetWt();
             String melt = "";
             if(it.getDescription() != null){
-melt = String.valueOf(it.getDescription());
+                melt = String.valueOf(it.getDescription());
             }
             table.addCell(new Cell().add(new Paragraph(String.valueOf(i+1))));
             table.addCell(new Cell().add(new Paragraph(it.getProduct())));
@@ -959,7 +965,7 @@ melt = String.valueOf(it.getDescription());
 
         // Add remaining cells if any
 //        if (itemTable.getNumberOfCells() > 0) {
-            document.add(itemTable);
+        document.add(itemTable);
 //        }
 
 
@@ -1109,7 +1115,7 @@ melt = String.valueOf(it.getDescription());
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
-           context.startActivity(intent);
+            context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             // If no app is available to view PDF files
             Toast.makeText(context, "No application available to view PDF", Toast.LENGTH_SHORT).show();
@@ -1308,7 +1314,7 @@ melt = String.valueOf(it.getDescription());
 
     }
 
-    private void pushpa11(HashMap<String, List<Itemmodel>> billmap) throws IOException {
+    /*private void pushpa11(HashMap<String, List<Itemmodel>> billmap) throws IOException {
 
         String invoiceNumber = "";
         long tdate = 0;
@@ -1338,6 +1344,10 @@ melt = String.valueOf(it.getDescription());
         if (invoiceNumber.isEmpty()) {
             invoiceNumber = "unknown_invoice"; // Default if no invoice number found
         }
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        }
+
         String dest = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +"/" + invoiceNumber+".pdf";
         PdfWriter writer = new PdfWriter(dest);
         PdfDocument pdfDoc = new PdfDocument(writer);
@@ -1522,7 +1532,211 @@ melt = String.valueOf(it.getDescription());
         // Open the PDF after saving
         openPdf1(dest);
 
+    }*/
+
+    @SuppressLint("Range")
+    private void pushpa11(HashMap<String, List<Itemmodel>> billmap) {
+        String invoiceNumber = "";
+        long tdate = 0;
+        String cname = "", branch = "", via = "", kt = "", screw = "", tags = "", wast = "";
+
+        for (Map.Entry<String, List<Itemmodel>> entry : billmap.entrySet()) {
+            if (!entry.getValue().isEmpty()) {
+                Itemmodel model = entry.getValue().get(0);
+                invoiceNumber = model.getInvoiceNumber();
+                tdate = model.getOperationTime();
+                cname = model.getCustomerName();
+                branch = model.getBranch();
+                via = model.getDiamondCertificate();
+                kt = model.getStockKeepingUnit();
+                screw = model.getDiamondColor();
+                tags = model.getDiamondMetal();
+                wast = String.valueOf(model.getFixedWastage());
+                break;
+            }
+        }
+
+        if (invoiceNumber.isEmpty()) invoiceNumber = "unknown_invoice";
+
+        try {
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Downloads.DISPLAY_NAME, invoiceNumber + ".pdf");
+            contentValues.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
+            contentValues.put(MediaStore.Downloads.IS_PENDING, 1);
+
+            Uri collection = MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+            Uri fileUri = resolver.insert(collection, contentValues);
+
+            if (fileUri == null) {
+                Toast.makeText(context, "Failed to create file", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            OutputStream outputStream = resolver.openOutputStream(fileUri);
+
+            if (outputStream == null) {
+                Toast.makeText(context, "Failed to open output stream", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Generate PDF
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc, PageSize.A4.rotate());
+
+            String formattedDate = convertTimestampToDate(tdate);
+            Paragraph title = new Paragraph("Proforma Invoice")
+                    .setBold().setFontSize(16).setTextAlignment(TextAlignment.CENTER);
+            document.add(title);
+            document.add(new Paragraph("\n"));
+
+            Table headerTable = new Table(UnitValue.createPercentArray(new float[]{1, 1}));
+            headerTable.setWidth(UnitValue.createPercentValue(100));
+
+            Cell leftHeader = new Cell().setBorder(Border.NO_BORDER);
+            leftHeader.add(new Paragraph("DATE: " + formattedDate).setBold());
+            leftHeader.add(new Paragraph("CLIENT NAME: " + cname).setBold());
+            headerTable.addCell(leftHeader);
+
+            Cell rightHeader = new Cell().setBorder(Border.NO_BORDER);
+            rightHeader.add(new Paragraph("KT: " + kt).setBold());
+            rightHeader.add(new Paragraph("SCREW: " + screw).setBold());
+            rightHeader.add(new Paragraph("SEPARATE TAGS: " + tags).setBold());
+            rightHeader.add(new Paragraph("WASTAGE " + wast).setBold());
+            rightHeader.add(new Paragraph("DELIVERY DATE").setBold());
+            rightHeader.setTextAlignment(TextAlignment.RIGHT);
+            headerTable.addCell(rightHeader);
+
+            document.add(headerTable);
+
+            float[] columnWidths = {0.5f, 1.0f, 1.5f, 1f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+            Table dataTable = new Table(UnitValue.createPercentArray(columnWidths));
+            dataTable.setWidth(UnitValue.createPercentValue(100));
+
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("SNO").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("TAG NO").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("ITEM NAME").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("DESIGN").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("STAMP").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("G WT").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("S WT").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("N WT").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("FINE").setBold()));
+            dataTable.addHeaderCell(new Cell().add(new Paragraph("STN VALUE").setBold()));
+
+            int i = 0;
+            double totalGrWt = 0.0, totalStWt = 0.0, totalNetWt = 0.0, totalFine = 0.0, totalStnValue = 0.0;
+
+            for (String it : billmap.keySet()) {
+                List<Itemmodel> items = billmap.get(it);
+                for (Itemmodel item : items) {
+                    i++;
+                    double grwt = item.getGrossWt();
+                    double netwt = item.getNetWt();
+                    double stwt = grwt - netwt;
+                    double fine1 = (item.getMakingPer() + item.getFixedWastage()) * (netwt / 100);
+                    double stnValue = item.getStoneAmount();
+
+                    dataTable.addCell(new Cell().add(new Paragraph(String.valueOf(i))));
+                    dataTable.addCell(new Cell().add(new Paragraph(item.getItemCode())));
+                    dataTable.addCell(new Cell().add(new Paragraph(item.getProduct())));
+                    dataTable.addCell(new Cell().add(new Paragraph(item.getDiamondClarity())));
+                    dataTable.addCell(new Cell().add(new Paragraph(item.getStockKeepingUnit() != null ? item.getStockKeepingUnit() : "")));
+                    dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", grwt))));
+                    dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", stwt))));
+                    dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", netwt))));
+                    dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", fine1))));
+                    dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", stnValue))));
+
+                    totalGrWt += grwt;
+                    totalStWt += stwt;
+                    totalNetWt += netwt;
+                    totalFine += fine1;
+                    totalStnValue += stnValue;
+                }
+            }
+
+            Cell totalLabelCell = new Cell(1, 5).add(new Paragraph("TOTAL").setBold());
+            totalLabelCell.setTextAlignment(TextAlignment.RIGHT);
+            dataTable.addCell(totalLabelCell);
+            dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", totalGrWt)).setBold()));
+            dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", totalStWt)).setBold()));
+            dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", totalNetWt)).setBold()));
+            dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", totalFine)).setBold()));
+            dataTable.addCell(new Cell().add(new Paragraph(String.format("%.3f", totalStnValue)).setBold()));
+
+            document.add(dataTable);
+
+            Paragraph footer = new Paragraph("PUSHPA JEWELLERS LIMITED\n" +
+                    "ADDRESS - 4TH floor, Flat 4A, 22 East Topsia Road, Tirumala - 22, Kolkata - 700046\n" +
+                    "Contact - 9831545491\n" +
+                    "Email - info@pushpajewellers.in\n" +
+                    "GST - 19AAFCP0896D1Z9\n\n" +
+                    "BANK NAME - ICICI BANK LTD.\n" +
+                    "BANK A/C - 030505005192\n" +
+                    "BANK IFSC CODE - ICIC0006950")
+                    .setTextAlignment(TextAlignment.LEFT).setFontSize(10).setBold();
+
+            Paragraph note = new Paragraph("Note - This is not a Tax Invoice")
+                    .setBold().setFontSize(10)
+                    .setTextAlignment(TextAlignment.LEFT).setFontColor(ColorConstants.RED);
+
+            document.add(new Paragraph("\n\n\n"));
+            document.add(footer);
+            document.add(new Paragraph("\n"));
+            document.add(note);
+            document.close();
+
+            contentValues.clear();
+            contentValues.put(MediaStore.Downloads.IS_PENDING, 0);
+            resolver.update(fileUri, contentValues, null, null);
+
+            openPdfFromUri(fileUri);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error creating PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
+
+    private void openPdfFromUri(Uri uri) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            context.startActivity(intent);  // Auto-open directly
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No app found to open PDF", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+    private void openPdf11(File file) {
+        try {
+            Uri uri = FileProvider.getUriForFile(
+                    context,
+                    context.getPackageName() + ".provider",
+                    file
+            );
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "application/pdf");
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            context.startActivity(Intent.createChooser(intent, "Open PDF"));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No PDF viewer installed", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "Failed to open PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     private void pushpa2(HashMap<String, List<Itemmodel>> billmap) throws IOException {
 
