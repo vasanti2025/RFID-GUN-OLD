@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">43.241.147.162</domain>
+        <domain includeSubdomains="true">goldstringwebapp.loyalstring.co.in</domain>
+    </domain-config>
+</network-security-config>

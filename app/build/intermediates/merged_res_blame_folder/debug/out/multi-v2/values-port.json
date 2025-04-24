@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.loyalstring.app-mergeDebugResources-45:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\8.9\\transforms\\e64734b6481caea1d3ede2e6fba432f1\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

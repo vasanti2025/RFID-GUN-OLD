@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- API URL Input -->
+    <EditText
+        android:id="@+id/et_api_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter API URL"
+        android:inputType="textUri" />
+
+    <!-- HTTP Method Spinner -->
+    <Spinner
+        android:id="@+id/spinner_http_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Authentication Method Spinner -->
+    <Spinner
+        android:id="@+id/spinner_auth_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Authentication Inputs (Visible based on selected Auth Method) -->
+
+    <!-- API Key -->
+    <LinearLayout
+        android:id="@+id/layout_api_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/et_api_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter API Key" />
+    </LinearLayout>
+
+    <!-- Basic Auth -->
+    <LinearLayout
+        android:id="@+id/layout_basic_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Username" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Password"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+    <!-- OAuth 2.0 -->
+    <LinearLayout
+        android:id="@+id/layout_oauth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/et_oauth_client_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter OAuth Client ID" />
+        <EditText
+            android:id="@+id/et_oauth_client_secret"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter OAuth Client Secret"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save" />
+</LinearLayout>

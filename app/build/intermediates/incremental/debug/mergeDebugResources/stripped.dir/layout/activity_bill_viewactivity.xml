@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.BillViewactivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:text="S.No"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Product"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Barcode"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="G Wt"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="Item Code"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="N Wt"
+            android:textColor="@color/black" />
+
+
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vname1"
+        android:layout_width="match_parent"
+        android:layout_height="2.5dp"
+        android:background="#EC1202" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/dupilcates"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:id="@+id/print"
+            android:text="print"/>
+
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/twobtns" />
+
+
+        <LinearLayout
+            android:id="@+id/twobtns"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_above="@id/payline"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="3">
+
+
+            <Button
+                android:id="@+id/paymentbtn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.2"
+                android:background="@drawable/bs"
+                android:text="Payment details"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <LinearLayout
+                android:id="@+id/gstholder"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.7"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/tgstapply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/tgstrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:enabled="false"
+                    android:hint="GST"
+                    android:textColor="@color/black" />
+
+
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/ttotalamount"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.1"
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:hint="Total amount"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/payline"
+            android:layout_width="match_parent"
+            android:layout_height="2.5dp"
+            android:layout_above="@id/paylay"
+            android:background="#EC1202" />
+
+        <LinearLayout
+            android:id="@+id/paylay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:weightSum="4">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Total Details"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tdtotalitems"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tdtotalgwt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tdtotalamount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ttotalamont"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Pay Amount"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tpayamount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:visibility="gone" />
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

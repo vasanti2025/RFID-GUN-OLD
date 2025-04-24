@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainscreens.Activationpage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_centerInParent="true"
+        android:paddingVertical="20dp">
+
+        <!-- Email EditText -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edittextsquare"
+            android:hint="Enter Username"
+            android:paddingStart="10dp"
+            android:inputType="textEmailAddress"
+            android:id="@+id/emailBox"/>
+
+        <!-- Password EditText with Toggle Icon -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edittextsquare"
+                android:hint="Enter password"
+                android:paddingStart="10dp"
+                android:inputType="textPassword"
+                android:id="@+id/passwordBox"/>
+
+            <ImageView
+                android:id="@+id/togglePasswordVisibility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/g_invisible"
+            android:contentDescription="Toggle password visibility"
+            android:padding="10dp"/>
+
+        </RelativeLayout>
+
+        <!-- Login Button -->
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Login"
+            android:id="@+id/loginBtn"/>
+
+        <!-- Resend OTP TextView (Optional, can be removed) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otp not received? Click here to Resend Otp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:id="@+id/resendOtp"
+            android:visibility="gone"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

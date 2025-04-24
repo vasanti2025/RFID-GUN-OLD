@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="http_methods">
+        <item>GET</item>
+        <item>POST</item>
+        <item>PUT</item>
+        <item>DELETE</item>
+    </string-array>
+
+    <string-array name="auth_methods">
+        <item>No Auth</item>
+        <item>API Key</item>
+        <item>Basic Auth</item>
+        <item>OAuth 2.0</item>
+    </string-array>
+</resources>

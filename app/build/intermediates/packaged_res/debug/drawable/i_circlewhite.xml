@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- rounded_button.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background shape with curved edges (white) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/darker_gray" />
+            <corners android:radius="8dp" /> <!-- Adjust the radius as needed for the curvature -->
+        </shape>
+    </item>
+
+    <!-- Border shape (gray) -->
+    <item android:right="1dp" android:left="1dp" android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <corners android:radius="8dp" /> <!-- Should be the same as the radius in the background shape -->
+        </shape>
+    </item>
+
+</layer-list>

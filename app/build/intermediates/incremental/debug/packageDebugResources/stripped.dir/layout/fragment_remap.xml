@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.remap">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:orientation="horizontal"
+          android:weightSum="3">
+
+        <LinearLayout
+            android:id="@+id/bcatgorylayout"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:background="@drawable/edittextsquare"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/bcategorytext"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:text="Category"
+              android:textColor="@color/black"
+              android:textSize="12dp" />
+
+          <ImageView
+              android:layout_width="25dp"
+              android:layout_height="20dp"
+              android:layout_gravity="center_vertical"
+              android:background="@drawable/ic_right_arrow" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bproductlayout"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:background="@drawable/edittextsquare"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/bproducttext"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:text="Product"
+              android:textColor="@color/black"
+              android:textSize="13dp" />
+
+          <ImageView
+              android:layout_width="25dp"
+              android:layout_height="20dp"
+              android:layout_gravity="center_vertical"
+              android:background="@drawable/ic_right_arrow" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bbox"
+            android:layout_width="0dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:background="@drawable/edittextsquare"
+            android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/bboxtext"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:text="Box"
+              android:textColor="@color/black"
+              android:textSize="13dp" />
+
+          <ImageView
+              android:layout_width="25dp"
+              android:layout_height="20dp"
+              android:layout_gravity="center_vertical"
+              android:background="@drawable/ic_right_arrow" />
+
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/bulkheading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="3">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.6"
+              android:text="S.No"
+              android:textColor="@color/black"
+              android:textSize="15dp" />
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.2"
+              android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BarCode No"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <CheckBox
+                android:id="@+id/bbcheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.2"
+              android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ItemCode No"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+            <CheckBox
+                android:id="@+id/bicheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp" />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bulkrecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tlay"
+            android:layout_below="@id/bulkheading" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_above="@id/fbtns"
+            android:id="@+id/tlay">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text="Exist items"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:textColor="@color/black"/>
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text=""
+              android:layout_weight="1"
+              android:gravity="center"
+              android:id="@+id/totalexistitemstxt"
+              android:textColor="@color/black"/>
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text="Total items"
+              android:layout_weight="1"
+              android:gravity="center"
+              android:textColor="@color/black"/>
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:text=""
+              android:layout_weight="1"
+              android:gravity="center"
+              android:id="@+id/totalitemstxt"
+              android:textColor="@color/black"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="5"
+            android:id="@+id/fbtns"
+            android:background="@drawable/edittextsquare"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:id="@+id/bsavelay"
+              android:layout_weight="1">
+
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_saveblack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Save"/>
+
+
+          </LinearLayout>
+
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:id="@+id/bsscanlay"
+              android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/bsimage"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/bstext"
+                android:text="Scan"/>
+
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:id="@+id/bgscanlay"
+              android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/bgimage"/>
+            <!--                        android:background="@drawable/ic_scanblack"/>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/bgtext"
+                android:text="GScan"/>
+
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:id="@+id/pexportbtn"
+              android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_listblack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="List"/>
+
+
+
+          </LinearLayout>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:id="@+id/bresetbtn"
+              android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ic_cancelblack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Reset"/>
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+      </RelativeLayout>
+    </LinearLayout>
+
+
+
+  </RelativeLayout>
+</FrameLayout>

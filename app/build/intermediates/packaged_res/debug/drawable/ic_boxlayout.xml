@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="-2dp" android:left="-2dp" android:right="-2dp"> <!-- Adjust the top, left, and right padding as needed -->
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Set the background color for the EditText -->
+        </shape>
+    </item>
+    <item android:bottom="-2dp"> <!-- Adjust the bottom padding as needed -->
+        <shape android:shape="rectangle">
+            <solid android:color="#fff" /> <!-- Set the color of the underline -->
+        </shape>
+    </item>
+</layer-list>

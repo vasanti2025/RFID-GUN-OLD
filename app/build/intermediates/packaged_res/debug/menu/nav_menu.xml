@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/itemhome"
+            android:icon="@drawable/h_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/itemproduct"
+            android:icon="@drawable/h_product"
+            android:title="Product" />
+        <item
+            android:id="@+id/iteminventory"
+            android:icon="@drawable/h_inventory"
+            android:title="Inventory" />
+        <item
+            android:id="@+id/itemsearch"
+            android:icon="@drawable/h_search"
+            android:title="Search" />
+        <item
+            android:id="@+id/itembill"
+            android:icon="@drawable/h_transactions"
+            android:title="Transaction" />
+        <item
+            android:id="@+id/itemsvr"
+            android:icon="@drawable/h_reporticon"
+            android:title="Report" />
+<!--        <item-->
+<!--            android:id="@+id/itemstocktransfer"-->
+<!--            android:icon="@drawable/ic_launcher_background"-->
+<!--            android:title="Stock transfer" />-->
+<!--        <item-->
+<!--            android:id="@+id/itemstockhistory"-->
+<!--            android:icon="@drawable/h_history"-->
+<!--            android:title="Stock history" />-->
+        <item
+            android:id="@+id/itemsettings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+
+    </group>
+
+    <item android:title="App function">
+        <menu>
+            <item
+                android:id="@+id/nav_Logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Logout" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_launcher_background"
+                android:title="Send"
+                android:visible="false" />
+        </menu>
+    </item>
+
+</menu>

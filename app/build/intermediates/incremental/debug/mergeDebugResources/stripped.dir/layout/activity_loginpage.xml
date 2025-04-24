@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mainscreens.Loginpage">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login to use app"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textStyle="bold"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/username"
+                    android:background="@drawable/edittext_background"
+                    android:layout_marginTop="10dp"
+                    android:hint="Please enter username"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18dp"/>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="10dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/password"
+                        android:background="@drawable/edittext_background"
+                        android:hint="Please enter username"
+                        android:paddingStart="10dp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"/>
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/passtoggle"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"/>
+
+
+                </RelativeLayout>
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Branch"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18dp"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/edittext_background">
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/branchspinner"/>
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="3">
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.25"
+                        android:text="Login"
+                        android:id="@+id/loginbtn"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:background="@drawable/button_selector"
+                        android:layout_marginHorizontal="10dp"/>
+
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5">
+
+<!--                        <ImageButton-->
+<!--                            android:layout_width="45dp"-->
+<!--                            android:layout_height="45dp"-->
+<!--                            android:id="@+id/refreshbtn"-->
+<!--                            android:layout_weight="0.5"-->
+<!--                            android:layout_centerInParent="true"-->
+<!--                            android:background="@drawable/u_refresh"/>-->
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.25"
+                        android:text="Cancel"
+                        android:id="@+id/cancelbtn"
+                        android:textColor="@color/white"
+                        android:textSize="18dp"
+                        android:background="@drawable/button_selector"
+                        android:layout_marginHorizontal="10dp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To reset password click here"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="18dp"/>
+
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:text="Reset password"
+                        android:id="@+id/resetpassword"
+                        android:textColor="@color/white"
+                        android:textSize="13dp"
+                        android:background="@drawable/button_selector"
+                        android:layout_marginHorizontal="10dp"/>
+
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="Facing any issues contact us using below button"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_selector"
+                    android:text="Contact us" />
+
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>
