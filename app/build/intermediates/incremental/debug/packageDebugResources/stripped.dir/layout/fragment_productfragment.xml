@@ -1038,8 +1038,8 @@
                             android:layout_height="wrap_content"
                             android:text="No File imported"
                             android:textColor="@color/white"
-                            android:textSize="16dp" />
-
+                            android:textSize="16dp"
+/>
 
                     </LinearLayout>
 

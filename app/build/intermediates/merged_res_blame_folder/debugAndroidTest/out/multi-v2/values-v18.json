@@ -4,7 +4,7 @@
             "outputFile": "com.loyalstring.test.app-mergeDebugAndroidTestResources-3:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "/Users/Ganeshkunchala/.gradle/caches/8.9/transforms/1738a45554b9bc2d6daeb00588fe05f7/transformed/core-1.5.0/res/values-v18/values.xml",
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\8.9\\transforms\\1738a45554b9bc2d6daeb00588fe05f7\\transformed\\core-1.5.0\\res\\values-v18\\values.xml",
                     "from": {
                         "startLines": "4,12",
                         "startColumns": "0,0",

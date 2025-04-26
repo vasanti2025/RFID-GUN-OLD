@@ -279,8 +279,12 @@ public class ReportExcelsgenerator {
 ////                    Map<String, String> fileMap = new HashMap<>();
 //                    fileMap.put("allitems.xlsx", topfilepath);
 //                }
-                    Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
+                    /*Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
                             "reports@loyalstring.com", "Loyal@321", ems, "loyal sting", "", fileMap, "inventory", context
+                    );*/
+                    /*added original email*/
+                    Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
+                            "android@loyalstring.com", "Android@456#" ,ems, "loyal sting", "", fileMap, "inventory", context
                     );
                     sendEmailTask.execute();
 
@@ -302,10 +306,10 @@ public class ReportExcelsgenerator {
         }
 
     }
-        public static boolean isValidGmailAddress(String email) {
-            String regex = "\\b[A-Za-z0-9._%+-]+@gmail\\.com\\b";
-            return true;//Pattern.matches(regex, email);
-        }
+    public static boolean isValidGmailAddress(String email) {
+        String regex = "\\b[A-Za-z0-9._%+-]+@gmail\\.com\\b";
+        return true;//Pattern.matches(regex, email);
+    }
 
 
 

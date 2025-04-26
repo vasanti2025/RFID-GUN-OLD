@@ -1,5 +1,6 @@
 package com.loyalstring.Excels;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,6 +27,7 @@ import com.loyalstring.Excels.reader.CellType;
 import com.loyalstring.Excels.reader.ReadableWorkbook;
 import com.loyalstring.Excels.reader.Row;
 import com.loyalstring.Excels.reader.Sheet;
+import com.loyalstring.MainActivity;
 import com.loyalstring.R;
 import com.loyalstring.apiresponse.Rfidresponse;
 import com.loyalstring.database.product.EntryDatabase;
@@ -352,10 +354,15 @@ public class Excelopener {
 
         Button confirmButton = dialogView.findViewById(R.id.confirmButton);
         confirmButton.setOnClickListener(view -> {
-            selectedMappings = adapter.getSelectedMappings();
+            try {
+                selectedMappings = adapter.getSelectedMappings();
 
 
-            processexcel(selectedMappings, myFields, sheet1, excelHeadings, alertDialog, activity, progressDialog);
+                processexcel(selectedMappings, myFields, sheet1, excelHeadings, alertDialog, activity, progressDialog);
+
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -370,9 +377,21 @@ public class Excelopener {
                 return;
             }
 
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setMessage("Processing");
-            progressDialog.show();
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setTitle("Processing Excel");
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+
+        if (activity instanceof MainActivity) {
+            Activity activity1 = (MainActivity) activity;
+            if (!activity1.isFinishing() && !activity1.isDestroyed()) {
+                progressDialog.show(); // SAFE TO SHOW
+            } else {
+                Log.w("ExcelOpener", "Activity is finishing or destroyed, not showing dialog.");
+            }
+        } else {
+            Log.w("ExcelOpener", "Context is not an Activity, cannot show dialog.");
+        }
             ProgressDialog finalProgressDialog = progressDialog;
             ProgressDialog finalProgressDialog1 = progressDialog;
 
@@ -512,16 +531,24 @@ public class Excelopener {
             String selectedHeading = entry.getValue();
 //            Log.e("checking heading", "  "+myField+"  "+selectedHeading);
             int columnIndex = findColumnIndex(dataMap.get(0), selectedHeading);
+            try {
 
-            if (columnIndex != -1) {
-                // Iterate over each row in dataMap
-                for (int i = 1; i < dataMap.size(); i++) {
-                    Itemmodel item = itemMap.computeIfAbsent(String.valueOf(i), k -> new Itemmodel());
-                    setItemModelField(item, myField, dataMap.get(i).get(columnIndex), itemMap, i);
+                if (columnIndex != -1) {
+                    // Iterate over each row in dataMap
+                    for (int i = 1; i < dataMap.size(); i++) {
+                        Itemmodel item = itemMap.computeIfAbsent(String.valueOf(i), k -> new Itemmodel());
+                        try {
+                            setItemModelField(item, myField, dataMap.get(i).get(columnIndex), itemMap, i);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
 
+                    }
+                    Log.d("check import for", "  " + itemMap.size());
                 }
-                Log.d("check import for","  "+itemMap.size());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

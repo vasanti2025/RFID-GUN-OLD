@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_web_client_id" translatable="false">423371897105-r9abumv82ikmifkb4tpt8ggqvig28a63.apps.googleusercontent.com</string>
-    <string name="firebase_database_url" translatable="false">https://loyalstrings-3c53b-default-rtdb.firebaseio.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">423371897105</string>
-    <string name="google_api_key" translatable="false">AIzaSyDerNHPJwykR6GA6H_tMb7p-eMdQ8uR13k</string>
-    <string name="google_app_id" translatable="false">1:423371897105:android:7815d9b7f20b0adb6034b0</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDerNHPJwykR6GA6H_tMb7p-eMdQ8uR13k</string>
-    <string name="google_storage_bucket" translatable="false">loyalstrings-3c53b.appspot.com</string>
-    <string name="project_id" translatable="false">loyalstrings-3c53b</string>
+    <string name="gcm_defaultSenderId" translatable="false">779422113678</string>
+    <string name="google_api_key" translatable="false">AIzaSyCYORhKcTkJQBLKIdPOTalhYAb8Hgz_I28</string>
+    <string name="google_app_id" translatable="false">1:779422113678:android:3dc7664bc404431190cedf</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCYORhKcTkJQBLKIdPOTalhYAb8Hgz_I28</string>
+    <string name="google_storage_bucket" translatable="false">loyalstring-rfid.firebasestorage.app</string>
+    <string name="project_id" translatable="false">loyalstring-rfid</string>
 </resources>

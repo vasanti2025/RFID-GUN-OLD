@@ -709,18 +709,34 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     startActivityForResult(Intent.createChooser(intent, "Select Excel File"), PICK_EXCEL_REQUEST);
                 }else{
+
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("*/*");
+
                     String[] mimetypes = {
                             "application/vnd.ms-excel", // .xls
                             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
-                            "text/csv", // .csv
-                            "application/csv" // .csv
+                            "text/csv" // .csv
                     };
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");//("application/vnd.ms-excel"); // Set the MIME type to filter only Excel files
                     intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                    startActivityForResult(Intent.createChooser(intent, "Select Excel File"), PICK_EXCEL_REQUEST);
-                }
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+
+                    startActivityForResult(intent, PICK_EXCEL_REQUEST); // NO Chooser here!
+                                  }
+//                    String[] mimetypes = {
+//                            "application/vnd.ms-excel", // .xls
+//                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+//                            "text/csv", // .csv
+//                            "application/csv" // .csv
+//                    };
+//                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                    intent.setType("*/*");//("application/vnd.ms-excel"); // Set the MIME type to filter only Excel files
+//                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+//                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+//                    startActivityForResult(Intent.createChooser(intent, "Select Excel File"), PICK_EXCEL_REQUEST);
+//                }
 
 
 //                String[] mimetypes = {

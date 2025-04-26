@@ -98,30 +98,30 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
 
             for (Map.Entry<String, ArrayList<Itemmodel>> entry : excelmap.entrySet()) {
                 try {
-                outfile = entry.getKey();
+                    outfile = entry.getKey();
 
-                ArrayList<Itemmodel> processlist = new ArrayList<>();
-                processlist = entry.getValue();
-                String process = "";
-                if (outfile.contains("matcheditems")) {
-                    process = "matcheditems";
-                }
-                if (outfile.contains("unmatcheditems")) {
-                    process = "unmatcheditems";
-                }
-                if (outfile.contains("matcheditemdetails")) {
-                    process = "matcheditemdetails";
-                }
-                if (outfile.contains("unmatcheditemdetails")) {
-                    process = "unmatcheditemdetails";
-                }
-                if (outfile.contains("allitems")) {
-                    process = "allitems";
-                }
-                if (outfile.contains("allitemdetails")) {
-                    process = "allitemdetails";
-                }
-                Log.d("excelcreate", "inventory excel " + process);
+                    ArrayList<Itemmodel> processlist = new ArrayList<>();
+                    processlist = entry.getValue();
+                    String process = "";
+                    if (outfile.contains("matcheditems")) {
+                        process = "matcheditems";
+                    }
+                    if (outfile.contains("unmatcheditems")) {
+                        process = "unmatcheditems";
+                    }
+                    if (outfile.contains("matcheditemdetails")) {
+                        process = "matcheditemdetails";
+                    }
+                    if (outfile.contains("unmatcheditemdetails")) {
+                        process = "unmatcheditemdetails";
+                    }
+                    if (outfile.contains("allitems")) {
+                        process = "allitems";
+                    }
+                    if (outfile.contains("allitemdetails")) {
+                        process = "allitemdetails";
+                    }
+                    Log.d("excelcreate", "inventory excel " + process);
 
                     OutputStream bottomOutputStream = new FileOutputStream(outfile);
                     // Create a new FastExcel Workbook instance for top sheet
@@ -288,66 +288,66 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         }else{*/
 
 
-                            headers = new String[]{"Category", "Product", "Box", "Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
-                                    "Total Stonewt", "Match Stonewt", "Total Netwt", "Match Netwt"};
-                            for (int i = 0; i < headers.length; i++) {
-                                bottomsheet.value(0, i, headers[i]);
-                            }
+                        headers = new String[]{"Category", "Product", "Box", "Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
+                                "Total Stonewt", "Match Stonewt", "Total Netwt", "Match Netwt"};
+                        for (int i = 0; i < headers.length; i++) {
+                            bottomsheet.value(0, i, headers[i]);
+                        }
 
-                            int matchRowIndex = 1;
+                        int matchRowIndex = 1;
 
-                            int rowsProcessed = 0;
-                            int progressUpdateInterval = 100;
-                            for (Itemmodel item : processlist) {
+                        int rowsProcessed = 0;
+                        int progressUpdateInterval = 100;
+                        for (Itemmodel item : processlist) {
 //                                if(item.getAvlQty() != item.getMatchQty()){
-                                    String[] values = {item.getCategory(), item.getProduct(), item.getBox(), String.valueOf(item.getAvlQty()),
-                                            String.valueOf(item.getMatchQty()), String.valueOf(item.getTotalGwt()), String.valueOf(item.getMatchGwt()), String.valueOf(item.getTotalStonewt()),
-                                            String.valueOf(item.getMatchStonewt()), String.valueOf(item.getTotalNwt()), String.valueOf(item.getMatchNwt())};
+                            String[] values = {item.getCategory(), item.getProduct(), item.getBox(), String.valueOf(item.getAvlQty()),
+                                    String.valueOf(item.getMatchQty()), String.valueOf(item.getTotalGwt()), String.valueOf(item.getMatchGwt()), String.valueOf(item.getTotalStonewt()),
+                                    String.valueOf(item.getMatchStonewt()), String.valueOf(item.getTotalNwt()), String.valueOf(item.getMatchNwt())};
 
 
-                                    for (int i = 0; i < values.length; i++) {
-                                        createCell(bottomsheet, matchRowIndex, i, values[i]);
-                                    }
-                                    matchRowIndex++;
-                                    rowsProcessed++;
+                            for (int i = 0; i < values.length; i++) {
+                                createCell(bottomsheet, matchRowIndex, i, values[i]);
+                            }
+                            matchRowIndex++;
+                            rowsProcessed++;
 
-                                    // Update progress every 100 rows
-                                    if (rowsProcessed % progressUpdateInterval == 0) {
-                                        publishProgress(matchRowIndex);
-                                    }
+                            // Update progress every 100 rows
+                            if (rowsProcessed % progressUpdateInterval == 0) {
+                                publishProgress(matchRowIndex);
+                            }
 //                                }
-                            }
+                        }
 
-                            int totalRowIndex = matchRowIndex;
-                            int totalQuantity = 0;
-                            int matchQuantity = 0;
-                            double totalGrosswt = 0.0;
-                            double matchGrosswt = 0.0;
-                            double totalStonewt = 0.0;
-                            double matchStonewt = 0.0;
-                            double totalNetwt = 0.0;
-                            double matchNetwt = 0.0;
+                        int totalRowIndex = matchRowIndex;
+                        int totalQuantity = 0;
+                        int matchQuantity = 0;
+                        double totalGrosswt = 0.0;
+                        double matchGrosswt = 0.0;
+                        double totalStonewt = 0.0;
+                        double matchStonewt = 0.0;
+                        double totalNetwt = 0.0;
+                        double matchNetwt = 0.0;
 
-                            for (Itemmodel item : processlist) {
-                                totalQuantity += item.getAvlQty();
-                                matchQuantity += item.getMatchQty();
-                                totalGrosswt += item.getTotalGwt();
-                                matchGrosswt += item.getMatchQty();
-                                totalStonewt += item.getTotalStonewt();
-                                matchStonewt += item.getMatchStonewt();
-                                totalNetwt += item.getTotalNwt();
-                                matchNetwt += item.getMatchNwt();
-                            }
+                        for (Itemmodel item : processlist) {
+                            totalQuantity += item.getAvlQty();
+                            matchQuantity += item.getMatchQty();
+                            totalGrosswt += item.getTotalGwt();
+                            matchGrosswt += item.getMatchQty();
+                            totalStonewt += item.getTotalStonewt();
+                            matchStonewt += item.getMatchStonewt();
+                            totalNetwt += item.getTotalNwt();
+                            matchNetwt += item.getMatchNwt();
+                        }
 
 
-                            String[] totalValues = {"Total", "", "", String.valueOf(totalQuantity), String.valueOf(matchQuantity),
-                                    String.valueOf(totalGrosswt), String.valueOf(matchGrosswt),
-                                    String.valueOf(totalStonewt), String.valueOf(matchStonewt),
-                                    String.valueOf(totalNetwt), String.valueOf(matchNetwt)};
+                        String[] totalValues = {"Total", "", "", String.valueOf(totalQuantity), String.valueOf(matchQuantity),
+                                String.valueOf(totalGrosswt), String.valueOf(matchGrosswt),
+                                String.valueOf(totalStonewt), String.valueOf(matchStonewt),
+                                String.valueOf(totalNetwt), String.valueOf(matchNetwt)};
 
-                            for (int i = 0; i < totalValues.length; i++) {
-                                bottomsheet.value(totalRowIndex, i, totalValues[i]);
-                            }
+                        for (int i = 0; i < totalValues.length; i++) {
+                            bottomsheet.value(totalRowIndex, i, totalValues[i]);
+                        }
 //                        }
 
                     }
@@ -689,7 +689,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     // Add a blank row for separation
                     rowIndex++;
                     String[] bottomHeaders = {"Sno", "Item name", "Design number", "Gross Wt",
-                            "Stone Wt", "Net Wt"};
+                            "Stone Wt", "Net Wt","Stone Amt"};
 
                     for (int i = 0; i < bottomHeaders.length; i++) {
                         bottomsheet.value(rowIndex, i, bottomHeaders[i]);
@@ -704,7 +704,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
 //                                String.valueOf(item.getStoneWt()), String.valueOf(item.getNetWt()), item.getBarCode(), item.getItemCode(),"1", item.getInvoiceNumber() };
 
                         String[] values = {String.valueOf(rowsProcessed+1), item.getProduct(), item.getItemCode(), decimalFormat.format(item.getGrossWt()),
-                                decimalFormat.format(item.getStoneWt()), decimalFormat.format(item.getNetWt())};
+                                decimalFormat.format(item.getStoneWt()), decimalFormat.format(item.getNetWt()),decimalFormat.format(item.getStoneAmount())};
 
                         createRow(bottomsheet, rowIndex, values);
 //                publishProgress(bottomMatchRowIndex);
@@ -727,6 +727,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     double totalStonewt = 0.0;
 
                     double totalNetwt = 0.0;
+                    double totalStoneAMt=0.0;
 
                     String customername = processlist.get(0).getCustomerName();
                     bottomsheet.value(rowIndex, 0, "TOTAL");
@@ -736,11 +737,13 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         totalGrosswt = totalGrosswt+ item.getGrossWt();
                         totalStonewt += item.getStoneWt();
                         totalNetwt += item.getNetWt();
+                        totalStoneAMt +=item.getStoneAmount();
+
 
                     }
 
                     String[] totalValues = { String.valueOf(totalQuantity),"", "", decimalFormat.format(totalGrosswt), decimalFormat.format(totalStonewt),
-                            decimalFormat.format(totalNetwt), ""};
+                            decimalFormat.format(totalNetwt),decimalFormat.format(totalStoneAMt), ""};
 
                     for (int i = 0; i < totalValues.length; i++) {
                         bottomsheet.value(rowIndex, i, totalValues[i]);
@@ -901,8 +904,12 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
 ////                    Map<String, String> fileMap = new HashMap<>();
 //                    fileMap.put("allitems.xlsx", topfilepath);
 //                }
-                Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
+              /*  Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
                         "reports@loyalstring.com", "Loyal@321", ems, "loyal sting", "", fileMap, "inventory", context
+                );*/
+                /*added original email*/
+                Globalcomponents.sendglobalemil sendEmailTask = new Globalcomponents.sendglobalemil(
+                        "android@loyalstring.com", "Android@456#" , ems, "loyal sting", "", fileMap, "inventory", context
                 );
                 sendEmailTask.execute();
 
