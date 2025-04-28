@@ -1597,6 +1597,7 @@ public class PdfGenerator {
             Cell leftHeader = new Cell().setBorder(Border.NO_BORDER);
             leftHeader.add(new Paragraph("DATE: " + formattedDate).setBold());
             leftHeader.add(new Paragraph("CLIENT NAME: " + cname).setBold());
+            leftHeader.add(new Paragraph("NAME & PHONE NO: ").setBold());
             headerTable.addCell(leftHeader);
 
             Cell rightHeader = new Cell().setBorder(Border.NO_BORDER);
