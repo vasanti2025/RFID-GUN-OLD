@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.loyalstring.apiresponse.Rfidresponse;
 import com.loyalstring.apiresponse.SkuResponse;
 import com.loyalstring.modelclasses.Itemmodel;
+import com.loyalstring.modelclasses.ScannedDataToService;
 
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,12 @@ public class interfaces {
 
     public interface OnRFIDFetched {
         void onSuccess(List<Rfidresponse.ItemModel> result);
+        void onError(Exception e);
+    }
+
+
+    public interface FetchAllRFIDData{
+        void onSuccess(List<ScannedDataToService> result);
         void onError(Exception e);
     }
 

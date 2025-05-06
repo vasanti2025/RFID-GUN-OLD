@@ -18,6 +18,7 @@ import com.loyalstring.apiresponse.Rfidresponse;
 import com.loyalstring.apiresponse.SkuResponse;
 import com.loyalstring.modelclasses.Productmodel;
 import com.loyalstring.modelclasses.RequestBodyBill;
+import com.loyalstring.modelclasses.ScannedDataToService;
 import com.loyalstring.modelclasses.jjjresponse;
 
 
@@ -85,5 +86,8 @@ public interface ApiService {
 
     @POST("Invoice/UpdateBarcodeItemStatus")
     Call<List<AlllabelResponse.LabelItem>> updateBarcodeItemStatus(@Body List<BillRequest> requestItems);
+
+    @POST("api/RFIDDevice/AddRFID")
+    Call<List<ScannedDataToService>> AddAllScannedData(@Body ScannedDataToService scannedDataToService);
 
 }

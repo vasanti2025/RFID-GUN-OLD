@@ -139,7 +139,8 @@ public class ApiProcess {
 
 //        } else {
             Retrofit retrofit1 = new Retrofit.Builder()
-                    .baseUrl("https://testing.loyalstring.co.in/")
+                   // .baseUrl("https://testing.loyalstring.co.in/")
+                    .baseUrl("https://rrgold.loyalstring.co.in/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -1722,11 +1723,16 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
     }
 
     private double getdvalue(String s, String from) {
-        if (s == null || s.isEmpty()) {
+        try {
+            if (s == null || s.trim().isEmpty()) {
+                return 0;
+            }
+            Log.e("check dvalue", "Parsing value: " + s + " from: " + from);
+            return Double.parseDouble(s.trim());
+        } catch (NumberFormatException e) {
+            Log.e("getdvalue error", "Invalid number: '" + s + "' from: " + from);
             return 0;
         }
-        Log.e("check error ", "process data " + s + "    " + from);
-        return Double.parseDouble(s);
     }
 
 

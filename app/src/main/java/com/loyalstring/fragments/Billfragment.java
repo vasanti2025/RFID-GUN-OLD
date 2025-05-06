@@ -10,13 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -36,6 +29,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -48,6 +47,7 @@ import com.loyalstring.Adapters.BillAdapterbottom;
 import com.loyalstring.Adapters.UserDatumAdapter;
 import com.loyalstring.MainActivity;
 import com.loyalstring.R;
+import com.loyalstring.apiresponse.AlllabelResponse;
 import com.loyalstring.database.StorageClass;
 import com.loyalstring.database.product.EntryDatabase;
 import com.loyalstring.databinding.FragmentBillfragmentBinding;
@@ -85,6 +85,7 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
 
     String transactionno = "";
     MyApplication myApplication;
+    Map<String, Itemmodel> alllsit = new HashMap<>();
     MainActivity mainActivity;
     List<String> tempDatas = new ArrayList<String>();
     Globalcomponents globalcomponents;
@@ -878,25 +879,49 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
     }
 
     private void manualadd(String s) {
+        boolean found = false;
         for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
             String key = entry.getKey();
             Itemmodel value = entry.getValue();
+            Log.d("@@","Bar code"+value.getBarCode());
 //            if (!value.getBarCode().equalsIgnoreCase(s)) {
 //                Toast.makeText(myApplication, "item not exist", Toast.LENGTH_SHORT).show();
 //            return;
 //            }
-            if (value.getBarCode().equalsIgnoreCase(s)) {
-                if(tempDatas.contains(value.getTidValue())){
-                    Toast.makeText(myApplication, "item already added", Toast.LENGTH_SHORT).show();
 
-                    return;
+
+            //  for (Itemmodel value : list) {
+            if (value.getBarCode().equalsIgnoreCase(s)) {
+                Log.d("@@111","Bar code"+value.getBarCode());
+                found = true;
+
+                if (tempDatas.contains(value.getTidValue())) {
+                    Toast.makeText(myApplication, "Item already added", Toast.LENGTH_SHORT).show();
+                    break;
                 }
 
+                alllsit = entryDatabase.getBilledItems(getActivity());
+                if (alllsit != null && !alllsit.isEmpty()) {
+                    for (Itemmodel m1 : alllsit.values()) {
+                        if (m1.getItemCode() != null &&
+                                m1.getItemCode().equalsIgnoreCase(value.getItemCode())) {
+                            value.setItemAddmode(m1.getItemAddmode());
+                            break;
+                        }
+                    }
+
+                    if ("yes".equalsIgnoreCase(value.getItemAddmode())) {
+                        Toast.makeText(myApplication, "Item Already Sold", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+
+                // Add item
                 Itemmodel item = new Itemmodel(totalitems.get(value.getTidValue()));
                 item.setItemAddmode("yes");
                 searchitems.put(String.valueOf(count), item);
-                totalgwt = totalgwt + item.getGrossWt();
-                totalnwt = totalnwt + item.getNetWt();
+                totalgwt += item.getGrossWt();
+                totalnwt += item.getNetWt();
 
                 tempDatas.add(value.getTidValue());
                 b.tbarcode.setText("");
@@ -906,10 +931,98 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
                 b.tdtotalgwt.setText(decimalFormat.format(totalgwt));
                 b.tdtotalamount.setText(decimalFormat.format(totalnwt));
 
+                break; // Done processing
             }
         }
 
+        if (!found) {
+            Toast.makeText(myApplication, "Please Check Item Is Available or Not In Stock", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
+          /*  if (value.getBarCode().equalsIgnoreCase(s)) {
+                if (tempDatas.contains(value.getTidValue())) {
+                    Toast.makeText(myApplication, "item already added", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+               alllsit = entryDatabase.getBilledItems(getActivity());
+                if (alllsit != null && alllsit.size()  != 0) {
+                    // Create a map for faster lookup based on item code
+                    Map<String, AlllabelResponse.LabelItem> labelItemMap = new HashMap<>();
+                    if (alllsit != null && alllsit.size() != 0) {
+                        for (Itemmodel m1 : alllsit.values()) {
+                            // AlllabelResponse.LabelItem labelItem = labelItemMap.get(m1.getItemCode());
+                            if (m1.getItemCode() != null) {
+                                if (m1.getItemCode().equalsIgnoreCase(value.getItemCode())) {
+                                    value.setItemAddmode(m1.getItemAddmode());
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+
+
+                    if (value.getItemAddmode() != null) {
+                        if (!value.getItemAddmode().equalsIgnoreCase("yes")) {
+
+                            Itemmodel item = new Itemmodel(totalitems.get(value.getTidValue()));
+                            item.setItemAddmode("yes");
+                            searchitems.put(String.valueOf(count), item);
+                            totalgwt = totalgwt + item.getGrossWt();
+                            totalnwt = totalnwt + item.getNetWt();
+
+                            tempDatas.add(value.getTidValue());
+                            b.tbarcode.setText("");
+                            count++;
+                            billAdapter.notifyDataSetChanged();
+                            b.tdtotalitems.setText(String.valueOf(searchitems.size()));
+                            b.tdtotalgwt.setText(decimalFormat.format(totalgwt));
+                            b.tdtotalamount.setText(decimalFormat.format(totalnwt));
+                        } else {
+                            Toast.makeText(myApplication, "Item Already Sold", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Itemmodel item = new Itemmodel(totalitems.get(value.getTidValue()));
+                        item.setItemAddmode("yes");
+                        searchitems.put(String.valueOf(count), item);
+                        totalgwt = totalgwt + item.getGrossWt();
+                        totalnwt = totalnwt + item.getNetWt();
+
+                        tempDatas.add(value.getTidValue());
+                        b.tbarcode.setText("");
+                        count++;
+                        billAdapter.notifyDataSetChanged();
+                        b.tdtotalitems.setText(String.valueOf(searchitems.size()));
+                        b.tdtotalgwt.setText(decimalFormat.format(totalgwt));
+                        b.tdtotalamount.setText(decimalFormat.format(totalnwt));
+                    }
+                } else {
+                    Itemmodel item = new Itemmodel(totalitems.get(value.getTidValue()));
+                    item.setItemAddmode("yes");
+                    searchitems.put(String.valueOf(count), item);
+                    totalgwt = totalgwt + item.getGrossWt();
+                    totalnwt = totalnwt + item.getNetWt();
+
+                    tempDatas.add(value.getTidValue());
+                    b.tbarcode.setText("");
+                    count++;
+                    billAdapter.notifyDataSetChanged();
+                    b.tdtotalitems.setText(String.valueOf(searchitems.size()));
+                    b.tdtotalgwt.setText(decimalFormat.format(totalgwt));
+                    b.tdtotalamount.setText(decimalFormat.format(totalnwt));
+                }
+
+
+            } else {
+               Toast.makeText(myApplication, "Please Check Item Is Available or Not In Stock", Toast.LENGTH_SHORT).show();
+               break;
+            }*/
+
+
+
 
     private void resetstate() {
         searchitems.clear();
@@ -1195,13 +1308,13 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
 
         if (s.matches("tt")) {
             bottomlist.clear();
-            bottomlist.add("Order");
+            //    bottomlist.add("Order");
             bottomlist.add("Order Estimation");
             bottomlist.add("Estimation");
-            bottomlist.add("Reserved");
+  /*          bottomlist.add("Reserved");
             bottomlist.add("Bill");
             bottomlist.add("Sample in");
-            bottomlist.add("Sample out");
+            bottomlist.add("Sample out");*/
             title.setText("Transaction Type");
         }
 //        else if (s.matches("si")) {

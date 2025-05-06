@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -45,11 +46,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.loyalstring.Activities.ListActivity;
 import com.loyalstring.Adapters.ProductAdapter;
 import com.loyalstring.Apis.ApiManager;
@@ -78,18 +83,22 @@ import com.loyalstring.interfaces.SaveCallback;
 import com.loyalstring.interfaces.interfaces;
 import com.loyalstring.modelclasses.Issuemode;
 import com.loyalstring.modelclasses.Itemmodel;
+import com.loyalstring.modelclasses.ScannedDataToService;
 import com.loyalstring.network.NetworkUtils;
 import com.loyalstring.readersupport.KeyDwonFragment;
 import com.loyalstring.tools.StringUtils;
 import com.loyalstring.transactionhelper.TransactionIDGenerator;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 
+import org.apache.commons.collections.functors.ExceptionClosure;
 import org.apache.poi.ss.formula.SheetRangeIdentifier;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -569,6 +578,66 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                     }
                     entry.setBox(bs);
                     entry.setImageUrl(u);
+
+
+                }
+
+                Log.d("@@","@@"+itemlist.size());
+
+                for(Itemmodel itemmodel:itemlist)
+                {
+                    /*api call new add all data vasanti*/
+                    if (networkUtils.isNetworkAvailable()) {
+                        Clients clients = sharedPreferencesManager.readLoginData().getEmployee().getClients();
+                        String clientCode = clients.getClientCode();
+                        String androidId="";
+                        Log.e("check body client code", "  " + clientCode);
+                        if (clientCode != null || !clientCode.isEmpty()) {
+                            androidId = Settings.Secure.getString(
+                                    getActivity().getContentResolver(),
+                                    Settings.Secure.ANDROID_ID
+                            );
+                            ScannedDataToService scannedDataToService = new ScannedDataToService();
+                            try {
+                                LocalDateTime currentDateTime = LocalDateTime.now();
+                                String formatted = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+
+                                Log.d("deviceId", "deviceId" +    androidId );
+                               scannedDataToService.setClientCode(clientCode);
+                                scannedDataToService.setCreatedOn(formatted);
+                                scannedDataToService.setLastUpdated(formatted);
+                                scannedDataToService.setRFIDCode(itemmodel.getBarCode());
+                                scannedDataToService.setTIDValue(itemmodel.getTidValue());
+                                scannedDataToService.setStatusType(true);
+                                scannedDataToService.setId(0);
+                                scannedDataToService.setDeviceId(androidId );
+                            }catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            Gson gson = new Gson();
+                            String json = gson.toJson(scannedDataToService);
+                            Log.d("JSON  output scanned data", json);
+
+                            apiManager.addAllScannedData(scannedDataToService, new interfaces.FetchAllRFIDData() {
+                                @Override
+                                public void onSuccess(List<ScannedDataToService> result) {
+                                    if (!result.isEmpty()) {
+                                        //  entryDatabase.makerfidentry(getActivity(), app, result);
+                                        // rfidList.addAll(result);
+                                        Log.e("RfidListCheck", "Rfid Scanned data: " + result.size());
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+
+                                }
+                            });
+                        }
+                    } else {
+                       // rfidList.addAll(entryDatabase.getrfid(getActivity(), app));
+                    }
                 }
 
                 entryDatabase.checkdatabase(getActivity());
@@ -991,7 +1060,8 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                 String urll = "";
                 urll = storageClass.getBaseUrl();
                 if(urll == null || urll.isEmpty()){
-                    urll = "https://testing.loyalstring.co.in/";
+                    //urll = "https://testing.loyalstring.co.in/";
+                    urll="https://rrgold.loyalstring.co.in/";
                 }
 
 
@@ -1771,12 +1841,20 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
         itemlist.clear();
         itemlist.add(i);
 
+
+
+        Log.e("checking ", "check1 "+clients.getRfidType()+"   "+rfidList);
+
         entryDatabase.checkdatabase(getActivity());
         entryDatabase.makeentry(getActivity(), itemlist, "adding", "product", app, issueitem, new SaveCallback() {
 
             @Override
             public void onSaveSuccess() {
+
                 Toast.makeText(mainActivity, "Item saved succesfully", Toast.LENGTH_SHORT).show();
+
+
+
                 resetsstate();
 
 

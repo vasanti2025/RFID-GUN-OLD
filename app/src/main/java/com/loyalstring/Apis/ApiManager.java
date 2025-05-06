@@ -1,13 +1,12 @@
 package com.loyalstring.Apis;
 
-import android.util.Log;
-
 import com.loyalstring.apiresponse.AlllabelResponse;
 import com.loyalstring.apiresponse.ClientCodeRequest;
 import com.loyalstring.apiresponse.Rfidresponse;
 import com.loyalstring.apiresponse.SkuResponse;
 import com.loyalstring.interfaces.ApiService;
 import com.loyalstring.interfaces.interfaces;
+import com.loyalstring.modelclasses.ScannedDataToService;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +71,25 @@ public class ApiManager {
                 }
             } catch (IOException e) {
                 onRFIDFetched.onError(e);
+            }
+        }).start();
+    }
+
+    public void addAllScannedData(ScannedDataToService scannedDataToService, interfaces.FetchAllRFIDData fetchAllRFIDData) {
+        new Thread(() -> {
+            try {
+                //ClientCodeRequest clientCodeRequest = new ClientCodeRequest(clientcode);
+                Call<List<ScannedDataToService>> call = apiService.AddAllScannedData(scannedDataToService);
+                Response<List<ScannedDataToService>> response = call.execute();
+
+                if (response.isSuccessful() && response.body() != null) {
+                    // Convert the list to JSON or any other format if required for onSuccess
+                    fetchAllRFIDData.onSuccess(response.body());
+                } else {
+                    fetchAllRFIDData.onError(new Exception("Error fetching Labeled Stock: " + response.errorBody().string()));
+                }
+            } catch (IOException e) {
+                fetchAllRFIDData.onError(e);
             }
         }).start();
     }

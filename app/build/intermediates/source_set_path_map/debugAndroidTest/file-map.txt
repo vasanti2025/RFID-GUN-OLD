@@ -1,6 +1,0 @@
-com.loyalstring.test.app-core-1.5.0-0 C:\Users\Admin\.gradle\caches\8.9\transforms\1738a45554b9bc2d6daeb00588fe05f7\transformed\core-1.5.0\res
-com.loyalstring.test.app-annotation-experimental-1.3.0-1 C:\Users\Admin\.gradle\caches\8.9\transforms\ee0f549b1d47ac7fc196caf463c2a8c3\transformed\annotation-experimental-1.3.0\res
-com.loyalstring.test.app-androidTest-2 E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\build\generated\res\resValues\androidTest\debug
-com.loyalstring.test.app-mergeDebugAndroidTestResources-3 E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-com.loyalstring.test.app-mergeDebugAndroidTestResources-4 E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-com.loyalstring.test.app-merged_res-5 E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\build\intermediates\merged_res\debugAndroidTest

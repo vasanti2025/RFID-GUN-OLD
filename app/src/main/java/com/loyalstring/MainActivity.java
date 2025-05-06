@@ -1,5 +1,16 @@
 package com.loyalstring;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -8,32 +19,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.loyalstring.Apis.ApiManager;
 import com.loyalstring.LatestApis.LoginApiSupport.Clients;
-import com.loyalstring.LatestBackground.SyncWorker;
 import com.loyalstring.LatestStorage.SharedPreferencesManager;
-import com.loyalstring.LatestTesting.DummyDataGenerator;
-import com.loyalstring.apiresponse.AlllabelResponse;
 import com.loyalstring.apiresponse.SkuResponse;
 import com.loyalstring.database.StorageClass;
 import com.loyalstring.database.product.EntryDatabase;
@@ -42,22 +34,15 @@ import com.loyalstring.fragments.Homefragment;
 import com.loyalstring.fragments.Inventoryfragment;
 import com.loyalstring.fragments.Searchfragment;
 import com.loyalstring.fragments.Settingsfragment;
-import com.loyalstring.fragments.Stockhistoryfragment;
 import com.loyalstring.fragments.Stockreportfragment;
-import com.loyalstring.fragments.Stocktransferfragment;
 import com.loyalstring.fragments.productfragment;
 import com.loyalstring.fsupporters.MyApplication;
 import com.loyalstring.fsupporters.Pemissionscheck;
 import com.loyalstring.interfaces.ApiService;
-import com.loyalstring.interfaces.SaveCallback;
 import com.loyalstring.interfaces.interfaces;
-import com.loyalstring.mainscreens.Activationpage;
 import com.loyalstring.mainscreens.Loginpage;
 import com.loyalstring.modelclasses.Itemmodel;
 import com.loyalstring.readersupport.BaseTabFragmentActivity;
-import com.rscja.barcode.BarcodeDecoder;
-import com.rscja.barcode.BarcodeFactory;
-import com.rscja.deviceapi.entity.BarcodeEntity;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -423,7 +408,7 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
         }
     }
 
-    @Override
+  /*  @Override
     public void onBackPressed() {
         if (mReader.isInventorying()) {
             mReader.stopInventory();
@@ -432,21 +417,66 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment currentFragment1 = fragmentManager.findFragmentById(R.id.mainfragment);
 
-            if (currentFragment1 instanceof Searchfragment) {
+            if (currentFragment1 != null && currentFragment1 instanceof Searchfragment) {
                 // Show the InventoryFragment
                 getSupportFragmentManager().beginTransaction().show(invf).commit();
                 Isearching = false;
             }
+
         } else {
             if (currentFragment != null) {
                 currentFragment = null;
             }
         }
-        /*if(currentFragment != null){
+        *//*if(currentFragment != null){
             currentFragment = null;
-        }*/
+        }*//*
         super.onBackPressed();
+    }*/
+
+
+    @Override
+    public void onBackPressed() {
+        if (mReader.isInventorying()) {
+            mReader.stopInventory();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.mainfragment);
+
+        if (Isearching) {
+            Fragment invf = fragmentManager.findFragmentByTag("INVENTORY_FRAGMENT_TAG");
+
+            if (currentFragment instanceof Searchfragment) {
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                if (invf != null && invf.isAdded()) {
+                    transaction.hide(currentFragment);
+                    transaction.show(invf);
+                    transaction.commit();
+                    Isearching = false;
+                    return; // Handled, do not call super
+                } else {
+                    // Create and add InventoryFragment if missing
+                    invf = new Homefragment();
+                    transaction.replace(R.id.mainfragment, invf, "INVENTORY_FRAGMENT_TAG");
+                    transaction.commit();
+                    Isearching = false;
+                    return; // Handled
+                }
+            }
+        }
+
+        // If current fragment is HomeFragment or InventoryFragment, finish the activity
+        if (currentFragment instanceof Homefragment) {
+            finish(); // Exit the activity
+        } else {
+            super.onBackPressed(); // Default back behavior
+        }
     }
+
+
+
 
     @Override
     public void onPermissionGranted(String excelopen, Intent data) {
