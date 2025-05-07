@@ -88,6 +88,6 @@ public interface ApiService {
     Call<List<AlllabelResponse.LabelItem>> updateBarcodeItemStatus(@Body List<BillRequest> requestItems);
 
     @POST("api/RFIDDevice/AddRFID")
-    Call<List<ScannedDataToService>> AddAllScannedData(@Body ScannedDataToService scannedDataToService);
+    Call<List<ScannedDataToService>> AddAllScannedData(@Body List<ScannedDataToService> scannedDataToService);
 
 }

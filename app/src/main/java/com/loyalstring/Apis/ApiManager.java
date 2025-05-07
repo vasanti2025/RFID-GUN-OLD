@@ -9,6 +9,7 @@ import com.loyalstring.interfaces.interfaces;
 import com.loyalstring.modelclasses.ScannedDataToService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -75,24 +76,27 @@ public class ApiManager {
         }).start();
     }
 
-    public void addAllScannedData(ScannedDataToService scannedDataToService, interfaces.FetchAllRFIDData fetchAllRFIDData) {
+    public void addAllScannedData(List<ScannedDataToService> scannedDataToService, interfaces.FetchAllRFIDData fetchAllRFIDData) {
+        // Create a defensive copy of the list to prevent concurrent modifications
+        List<ScannedDataToService> safeCopy = new ArrayList<>(scannedDataToService);
+
         new Thread(() -> {
             try {
-                //ClientCodeRequest clientCodeRequest = new ClientCodeRequest(clientcode);
-                Call<List<ScannedDataToService>> call = apiService.AddAllScannedData(scannedDataToService);
+                Call<List<ScannedDataToService>> call = apiService.AddAllScannedData(safeCopy);
                 Response<List<ScannedDataToService>> response = call.execute();
 
                 if (response.isSuccessful() && response.body() != null) {
-                    // Convert the list to JSON or any other format if required for onSuccess
                     fetchAllRFIDData.onSuccess(response.body());
                 } else {
-                    fetchAllRFIDData.onError(new Exception("Error fetching Labeled Stock: " + response.errorBody().string()));
+                    String errorMsg = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                    fetchAllRFIDData.onError(new Exception("Error fetching Labeled Stock: " + errorMsg));
                 }
             } catch (IOException e) {
                 fetchAllRFIDData.onError(e);
             }
         }).start();
     }
+
 
 
 

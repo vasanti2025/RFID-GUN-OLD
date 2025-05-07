@@ -1346,7 +1346,7 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 String selecteditem = (String) adapterView.getItemAtPosition(position);
-                Toast.makeText(requireContext(), "Selected " + s + " : " + selecteditem, Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(requireContext(), "Selected " + s + " : " + selecteditem, Toast.LENGTH_SHORT).show();
 //                transactionno.setText("");
 
                 if (s.matches("tt")) {
@@ -1582,13 +1582,13 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
                         dialog.dismiss();
                     } catch (JSONException e) {
                         dialog.dismiss();
-                        Toast.makeText(activity, "failed to read data", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(activity, "failed to read data", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 },
                 error -> {
                     dialog.dismiss();
-                    Toast.makeText(activity, "failed to read data", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(activity, "failed to read data", Toast.LENGTH_SHORT).show();
                     if (error.networkResponse != null && error.networkResponse.data != null) {
                         String errorMessage = new String(error.networkResponse.data);
                         Log.e("check error", errorMessage);

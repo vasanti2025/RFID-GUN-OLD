@@ -9,7 +9,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,15 +17,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -46,9 +36,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -90,26 +85,15 @@ import com.loyalstring.tools.StringUtils;
 import com.loyalstring.transactionhelper.TransactionIDGenerator;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 
-import org.apache.commons.collections.functors.ExceptionClosure;
-import org.apache.poi.ss.formula.SheetRangeIdentifier;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 public class productfragment extends KeyDwonFragment implements interfaces.PermissionCallback {
     FragmentProductfragmentBinding b;
@@ -121,6 +105,8 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
     EntryDatabase entryDatabase;
 
     List<Itemmodel> itemlist = new ArrayList<>();
+
+    List<ScannedDataToService> scannedDataToServiceList = new ArrayList<>();
     StorageClass storageClass;
     Globalcomponents globalcomponents;
     boolean ssingle = true;
@@ -587,8 +573,8 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                 for(Itemmodel itemmodel:itemlist)
                 {
                     /*api call new add all data vasanti*/
-                    if (networkUtils.isNetworkAvailable()) {
-                        Clients clients = sharedPreferencesManager.readLoginData().getEmployee().getClients();
+
+                    Clients clients = sharedPreferencesManager.readLoginData().getEmployee().getClients();
                         String clientCode = clients.getClientCode();
                         String androidId="";
                         Log.e("check body client code", "  " + clientCode);
@@ -611,6 +597,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                                 scannedDataToService.setStatusType(true);
                                 scannedDataToService.setId(0);
                                 scannedDataToService.setDeviceId(androidId );
+                                scannedDataToServiceList.add(scannedDataToService);
                             }catch (Exception e)
                             {
                                 e.printStackTrace();
@@ -619,25 +606,26 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                             String json = gson.toJson(scannedDataToService);
                             Log.d("JSON  output scanned data", json);
 
-                            apiManager.addAllScannedData(scannedDataToService, new interfaces.FetchAllRFIDData() {
-                                @Override
-                                public void onSuccess(List<ScannedDataToService> result) {
-                                    if (!result.isEmpty()) {
-                                        //  entryDatabase.makerfidentry(getActivity(), app, result);
-                                        // rfidList.addAll(result);
-                                        Log.e("RfidListCheck", "Rfid Scanned data: " + result.size());
-                                    }
-                                }
 
-                                @Override
-                                public void onError(Exception e) {
-
-                                }
-                            });
                         }
-                    } else {
-                       // rfidList.addAll(entryDatabase.getrfid(getActivity(), app));
-                    }
+
+                }
+                if (networkUtils.isNetworkAvailable()) {
+                    apiManager.addAllScannedData(scannedDataToServiceList, new interfaces.FetchAllRFIDData() {
+                        @Override
+                        public void onSuccess(List<ScannedDataToService> result) {
+                            if (!result.isEmpty()) {
+                                //  entryDatabase.makerfidentry(getActivity(), app, result);
+                                // rfidList.addAll(result);
+                                Log.e("RfidListCheck", "Rfid Scanned data: " + result.size());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
                 }
 
                 entryDatabase.checkdatabase(getActivity());
