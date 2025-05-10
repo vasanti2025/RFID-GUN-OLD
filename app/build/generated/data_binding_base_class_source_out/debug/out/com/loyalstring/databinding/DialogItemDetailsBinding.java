@@ -39,9 +39,19 @@ public final class DialogItemDetailsBinding implements ViewBinding {
   @NonNull
   public final ImageView itemImage;
 
+  @NonNull
+  public final TextView tvGrWt;
+
+  @NonNull
+  public final TextView tvNetWt;
+
+  @NonNull
+  public final TextView tvStoneWt;
+
   private DialogItemDetailsBinding(@NonNull LinearLayout rootView, @NonNull EditText editGrosswt,
       @NonNull EditText editNetwt, @NonNull EditText editNotes, @NonNull EditText editStonewt,
-      @NonNull TextView itemDetails, @NonNull ImageView itemImage) {
+      @NonNull TextView itemDetails, @NonNull ImageView itemImage, @NonNull TextView tvGrWt,
+      @NonNull TextView tvNetWt, @NonNull TextView tvStoneWt) {
     this.rootView = rootView;
     this.editGrosswt = editGrosswt;
     this.editNetwt = editNetwt;
@@ -49,6 +59,9 @@ public final class DialogItemDetailsBinding implements ViewBinding {
     this.editStonewt = editStonewt;
     this.itemDetails = itemDetails;
     this.itemImage = itemImage;
+    this.tvGrWt = tvGrWt;
+    this.tvNetWt = tvNetWt;
+    this.tvStoneWt = tvStoneWt;
   }
 
   @Override
@@ -114,8 +127,26 @@ public final class DialogItemDetailsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tv_gr_wt;
+      TextView tvGrWt = ViewBindings.findChildViewById(rootView, id);
+      if (tvGrWt == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_net_wt;
+      TextView tvNetWt = ViewBindings.findChildViewById(rootView, id);
+      if (tvNetWt == null) {
+        break missingId;
+      }
+
+      id = R.id.tv_stone_wt;
+      TextView tvStoneWt = ViewBindings.findChildViewById(rootView, id);
+      if (tvStoneWt == null) {
+        break missingId;
+      }
+
       return new DialogItemDetailsBinding((LinearLayout) rootView, editGrosswt, editNetwt,
-          editNotes, editStonewt, itemDetails, itemImage);
+          editNotes, editStonewt, itemDetails, itemImage, tvGrWt, tvNetWt, tvStoneWt);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

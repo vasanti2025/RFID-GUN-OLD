@@ -461,6 +461,9 @@ id ttotalamont
 id ttotalamount
 id ttqty
 id ttswt
+id tv_gr_wt
+id tv_net_wt
+id tv_stone_wt
 id twobtns
 id unlabelled
 id unmatchedbtn

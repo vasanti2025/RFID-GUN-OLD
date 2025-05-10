@@ -2,7 +2,7 @@
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.loyalstring"
 4    android:versionCode="11"
-5    android:versionName="1.13" >
+5    android:versionName="1.15" >
 6
 7    <uses-sdk
 8        android:minSdkVersion="26"
@@ -29,27 +29,27 @@
 20    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 20-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:14:5-80
 20-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:14:22-77
-21    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-21-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:15:5-82
-21-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:15:22-79
-22    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-22-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:16:5-75
-22-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:16:22-72
+21    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+21-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:16:5-75
+21-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:16:22-72
+22    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+22-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:17:5-110
+22-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:17:22-79
 23    <uses-permission android:name="android.permission.CAMERA" />
-23-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:17:5-65
-23-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:17:22-62
+23-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:18:5-65
+23-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:18:22-62
 24
 25    <queries>
-25-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:19:5-25:15
+25-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:20:5-26:15
 26        <intent>
-26-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:20:9-24:18
+26-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:21:9-25:18
 27            <action android:name="android.intent.action.VIEW" />
-27-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:21:13-65
-27-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:21:21-62
+27-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:22:13-65
+27-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:22:21-62
 28
 29            <data android:mimeType="*/*" />
-29-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:23:13-44
-29-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:23:19-41
+29-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:24:13-44
+29-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:24:19-41
 30        </intent>
 31    </queries>
 32
@@ -96,161 +96,161 @@
 48-->[androidx.core:core:1.9.0] C:\Users\Admin\.gradle\caches\8.9\transforms\eb820989ad8549f17f2e764ea4ee4d5a\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
 49
 50    <application
-50-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:27:5-106:19
+50-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:28:5-107:19
 51        android:name="com.loyalstring.fsupporters.MyApplication"
-51-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:28:9-50
+51-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:29:9-50
 52        android:allowBackup="false"
-52-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:29:9-36
+52-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:30:9-36
 53        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 53-->[androidx.core:core:1.9.0] C:\Users\Admin\.gradle\caches\8.9\transforms\eb820989ad8549f17f2e764ea4ee4d5a\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
 54        android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-54-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:30:9-83
+54-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:31:9-83
 55        android:dataExtractionRules="@xml/data_extraction_rules"
-55-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:31:9-65
+55-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:32:9-65
 56        android:debuggable="true"
 57        android:extractNativeLibs="false"
 58        android:fullBackupContent="@xml/backup_rules"
-58-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:32:9-54
+58-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:33:9-54
 59        android:icon="@drawable/logo"
-59-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:33:9-38
+59-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:34:9-38
 60        android:label="@string/app_name"
-60-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:34:9-41
+60-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:35:9-41
 61        android:largeHeap="true"
-61-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:35:9-33
+61-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:36:9-33
 62        android:networkSecurityConfig="@xml/network_security_config"
-62-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:36:9-69
+62-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:37:9-69
 63        android:requestLegacyExternalStorage="true"
-63-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:37:9-52
+63-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:38:9-52
 64        android:roundIcon="@drawable/logo"
-64-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:38:9-43
+64-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:39:9-43
 65        android:supportsRtl="true"
-65-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:39:9-35
+65-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:40:9-35
 66        android:theme="@style/Theme.LoyalString"
-66-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:40:9-49
+66-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:41:9-49
 67        android:usesCleartextTraffic="true" >
-67-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:41:9-44
+67-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:42:9-44
 68        <activity
-68-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:43:9-45:40
+68-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:44:9-46:40
 69            android:name="com.loyalstring.Activities.SyncSettingsActivity"
-69-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:44:13-60
+69-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:45:13-60
 70            android:exported="false" />
-70-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:45:13-37
+70-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:46:13-37
 71        <activity
-71-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:46:9-48:40
+71-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:47:9-49:40
 72            android:name="com.loyalstring.Activities.ApiConfigActivity"
-72-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:47:13-57
+72-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:48:13-57
 73            android:exported="false" />
-73-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:48:13-37
+73-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:49:13-37
 74        <activity
-74-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:49:9-51:40
+74-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:50:9-52:40
 75            android:name="com.loyalstring.Activities.Skureport"
-75-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:50:13-49
+75-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:51:13-49
 76            android:exported="false" />
-76-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:51:13-37
+76-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:52:13-37
 77        <activity
-77-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:52:9-54:40
+77-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:53:9-55:40
 78            android:name="com.loyalstring.Activities.Uploadimages"
-78-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:53:13-52
+78-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:54:13-52
 79            android:exported="false" />
-79-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:54:13-37
+79-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:55:13-37
 80        <activity
-80-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:55:9-57:40
+80-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:56:9-58:40
 81            android:name="com.loyalstring.Activities.BillViewactivity"
-81-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:56:13-56
+81-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:57:13-56
 82            android:exported="false" />
-82-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:57:13-37
+82-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:58:13-37
 83        <activity
-83-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:58:9-60:40
+83-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:59:9-61:40
 84            android:name="com.loyalstring.Activities.googlesheet"
-84-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:59:13-51
+84-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:60:13-51
 85            android:exported="false" />
-85-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:60:13-37
+85-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:61:13-37
 86        <activity
-86-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:61:9-63:40
+86-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:62:9-64:40
 87            android:name="com.loyalstring.Activities.Billlistactivity"
-87-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:62:13-56
+87-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:63:13-56
 88            android:exported="false" />
-88-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:63:13-37
+88-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:64:13-37
 89        <activity
-89-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:64:9-66:40
+89-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:65:9-67:40
 90            android:name="com.loyalstring.Activities.Customapis"
-90-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:65:13-50
+90-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:66:13-50
 91            android:exported="false" />
-91-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:66:13-37
+91-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:67:13-37
 92        <activity
-92-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:67:9-69:40
+92-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:68:9-70:40
 93            android:name="com.loyalstring.Activities.ListActivity"
-93-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:68:13-52
+93-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:69:13-52
 94            android:exported="false" />
-94-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:69:13-37
+94-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:70:13-37
 95        <activity
-95-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:70:9-72:40
+95-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:71:9-73:40
 96            android:name="com.loyalstring.fragments.Homefragment"
-96-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:71:13-51
+96-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:72:13-51
 97            android:exported="false" />
-97-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:72:13-37
+97-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:73:13-37
 98        <activity
-98-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:73:9-76:59
+98-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:74:9-77:59
 99            android:name="com.loyalstring.fragments.Inventoryfragment"
-99-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:74:13-56
+99-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:75:13-56
 100            android:exported="false"
-100-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:75:13-37
+100-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:76:13-37
 101            android:windowSoftInputMode="adjustNothing" />
-101-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:76:13-56
+101-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:77:13-56
 102        <activity
-102-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:77:9-79:40
+102-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:78:9-80:40
 103            android:name="com.loyalstring.mainscreens.Loginpage"
-103-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:78:13-50
+103-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:79:13-50
 104            android:exported="false" />
-104-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:79:13-37
+104-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:80:13-37
 105        <activity
-105-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:80:9-82:40
+105-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:81:9-83:40
 106            android:name="com.loyalstring.mainscreens.Activationpage"
-106-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:81:13-55
+106-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:82:13-55
 107            android:exported="false" />
-107-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:82:13-37
+107-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:83:13-37
 108        <activity
-108-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:83:9-86:59
+108-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:84:9-87:59
 109            android:name="com.loyalstring.MainActivity"
-109-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:84:13-41
+109-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:85:13-41
 110            android:exported="false"
-110-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:85:13-37
+110-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:86:13-37
 111            android:windowSoftInputMode="adjustNothing" />
-111-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:86:13-56
+111-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:87:13-56
 112        <activity
-112-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:87:9-95:20
+112-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:88:9-96:20
 113            android:name="com.loyalstring.mainscreens.splashscreen"
-113-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:88:13-53
+113-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:89:13-53
 114            android:exported="true" >
-114-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:89:13-36
+114-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:90:13-36
 115            <intent-filter>
-115-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:90:13-94:29
+115-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:91:13-95:29
 116                <action android:name="android.intent.action.MAIN" />
-116-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:91:17-69
-116-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:91:25-66
+116-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:92:17-69
+116-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:92:25-66
 117
 118                <category android:name="android.intent.category.LAUNCHER" />
-118-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:93:17-77
-118-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:93:27-74
+118-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:94:17-77
+118-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:94:27-74
 119            </intent-filter>
 120        </activity>
 121
 122        <provider
-122-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:97:9-105:20
+122-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:98:9-106:20
 123            android:name="androidx.core.content.FileProvider"
-123-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:98:13-62
+123-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:99:13-62
 124            android:authorities="com.loyalstring.provider"
-124-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:99:13-59
+124-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:100:13-59
 125            android:exported="false"
-125-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:100:13-37
+125-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:101:13-37
 126            android:grantUriPermissions="true" >
-126-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:101:13-47
+126-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:102:13-47
 127            <meta-data
-127-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:102:13-104:54
+127-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:103:13-105:54
 128                android:name="android.support.FILE_PROVIDER_PATHS"
-128-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:103:17-67
+128-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:104:17-67
 129                android:resource="@xml/file_paths" />
-129-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:104:17-51
+129-->E:\LoyalStringProjects\vasanti\pushpa\pushpa\app\src\main\AndroidManifest.xml:105:17-51
 130        </provider>
 131
 132        <service

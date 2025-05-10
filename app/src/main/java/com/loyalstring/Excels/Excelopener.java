@@ -582,7 +582,7 @@ public class Excelopener {
                                 0, 0, it.getGoldRate(), it.getTotalMaking(), it.getItemPrice(), it.getAppliedDiscount(),
                                 it.getItempriceAfterdiscount(), it.getGstRate(), it.getPayableAmount(), it.getPayableAmountincgst(), it.getItemGst(), it.getTotalBilleditems(),
                                 it.getTotalBilledgwt(), it.getTotalBilledamount(), it.getTotalBillAmountExcGst(), it.getTotalBillAmountincgst(), it.getTotalGst(),
-                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), it.getGunUpdate(), it.getWebUpdate());
+                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), it.getGunUpdate(), it.getWebUpdate(),it.getProductCode());
 
                         item.setImageUrl(it.getHuidCode());
                         itemlist.add(item);
@@ -600,7 +600,7 @@ public class Excelopener {
                                 it.getTotalNwt(), 0, it.getGoldRate(), it.getTotalMaking(), it.getItemPrice(), it.getAppliedDiscount(),
                                 it.getItempriceAfterdiscount(), it.getGstRate(), it.getPayableAmount(), it.getPayableAmountincgst(), it.getItemGst(), it.getTotalBilleditems(),
                                 it.getTotalBilledgwt(), it.getTotalBilledamount(), it.getTotalBillAmountExcGst(), it.getTotalBillAmountincgst(), it.getTotalGst(),
-                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), "updateitem", "");
+                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), "updateitem", "",it.getProductCode());
                         item.setImageUrl(it.getHuidCode());
                         itemlist.add(item);
                     }

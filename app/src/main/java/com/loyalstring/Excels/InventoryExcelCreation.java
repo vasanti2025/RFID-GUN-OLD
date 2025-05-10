@@ -131,8 +131,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     String[] headers;
                     if (process.contains("details")) {
                         if(process.equals("matcheditemdetails")){
-                            headers = new String[]{"TID Value", "EPC Value", "Category", "Product",
-                                    "Purity", "Barcode Number", "Item Code", "Box", "Designcode", "Image", "Gross Weight", "Stone Weight", "Net Weight",
+                            headers = new String[]{"TID Value", "EPC Value", "Category", "Product","Product Code",
+                                    "Purity", "Barcode Number", "Item Code", "Box","Pieces", "Designcode", "Image", "Gross Weight", "Stone Weight", "Net Weight",
                                     "Making gm", "Making %", "Fixed amount", "Fixed Wastage", "Stone amount", "Mrp", "Huid code",
                                     "Party code", "Updated Date", "Updated By", "Status"};
 
@@ -152,8 +152,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                                     if(op){
                                         op1 = "found";
                                         String[] values = {item.getTidValue(), item.getEpcValue(),
-                                                item.getCategory(), item.getProduct(), item.getPurity(), item.getBarCode(),
-                                                item.getItemCode(), item.getBox(), item.getDiamondClarity(), item.getImageUrl(), String.valueOf(item.getGrossWt()),
+                                                item.getCategory(), item.getProduct(),item.getProductCode() ,item.getPurity(), item.getBarCode(),
+                                                item.getItemCode(), item.getBox(),item.getPcs(), item.getDiamondClarity(), item.getImageUrl(), String.valueOf(item.getGrossWt()),
                                                 String.valueOf(item.getStoneWt()), String.valueOf(item.getNetWt()),
                                                 String.valueOf(item.getMakingGm()), String.valueOf(item.getMakingPer()), String.valueOf(item.getFixedAmount()), String.valueOf(item.getFixedWastage()),
                                                 String.valueOf(item.getStoneAmount()), String.valueOf(item.getMrp()), item.getHuidCode(), item.getPartyCode(),
@@ -174,8 +174,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
 
                             }
                         }else{
-                            headers = new String[]{"TID Value", "EPC Value", "Category", "Product",
-                                    "Purity", "Barcode Number", "Item Code", "Box", "Designcode", "Image", "Gross Weight", "Stone Weight", "Net Weight",
+                            headers = new String[]{"TID Value", "EPC Value", "Category", "Product","Product Code",
+                                    "Purity", "Barcode Number", "Item Code", "Box","Pieces","Designcode", "Image", "Gross Weight", "Stone Weight", "Net Weight",
                                     "Making gm", "Making %", "Fixed amount", "Fixed Wastage", "Stone amount", "Mrp", "Huid code",
                                     "Party code", "Updated Date", "Updated By", "Status"};
 
@@ -198,8 +198,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                                     }else{
                                         op1 = "not found";
                                         String[] values = {item.getTidValue(), item.getEpcValue(),
-                                                item.getCategory(), item.getProduct(), item.getPurity(), item.getBarCode(),
-                                                item.getItemCode(), item.getBox(), item.getDiamondClarity(), item.getImageUrl(), String.valueOf(item.getGrossWt()),
+                                                item.getCategory(), item.getProduct(),item.getProductCode() ,item.getPurity(), item.getBarCode(),
+                                                item.getItemCode(), item.getBox(), item.getPcs(),item.getDiamondClarity(), item.getImageUrl(), String.valueOf(item.getGrossWt()),
                                                 String.valueOf(item.getStoneWt()), String.valueOf(item.getNetWt()),
                                                 String.valueOf(item.getMakingGm()), String.valueOf(item.getMakingPer()), String.valueOf(item.getFixedAmount()), String.valueOf(item.getFixedWastage()),
                                                 String.valueOf(item.getStoneAmount()), String.valueOf(item.getMrp()), item.getHuidCode(), item.getPartyCode(),
@@ -288,7 +288,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         }else{*/
 
 
-                        headers = new String[]{"Category", "Product", "Box", "Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
+                        headers = new String[]{"Category", "Product","Product Code", "Box", "Pieces","Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
                                 "Total Stonewt", "Match Stonewt", "Total Netwt", "Match Netwt"};
                         for (int i = 0; i < headers.length; i++) {
                             bottomsheet.value(0, i, headers[i]);
@@ -300,7 +300,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         int progressUpdateInterval = 100;
                         for (Itemmodel item : processlist) {
 //                                if(item.getAvlQty() != item.getMatchQty()){
-                            String[] values = {item.getCategory(), item.getProduct(), item.getBox(), String.valueOf(item.getAvlQty()),
+                            String[] values = {item.getCategory(), item.getProduct(), item.getProductCode(), item.getBox(),item.getPcs(), String.valueOf(item.getAvlQty()),
                                     String.valueOf(item.getMatchQty()), String.valueOf(item.getTotalGwt()), String.valueOf(item.getMatchGwt()), String.valueOf(item.getTotalStonewt()),
                                     String.valueOf(item.getMatchStonewt()), String.valueOf(item.getTotalNwt()), String.valueOf(item.getMatchNwt())};
 
@@ -327,20 +327,22 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         double matchStonewt = 0.0;
                         double totalNetwt = 0.0;
                         double matchNetwt = 0.0;
+                       // String totalPieces=0;
 
                         for (Itemmodel item : processlist) {
                             totalQuantity += item.getAvlQty();
                             matchQuantity += item.getMatchQty();
                             totalGrosswt += item.getTotalGwt();
-                            matchGrosswt += item.getMatchQty();
+                            matchGrosswt += item.getMatchGwt();
                             totalStonewt += item.getTotalStonewt();
                             matchStonewt += item.getMatchStonewt();
                             totalNetwt += item.getTotalNwt();
                             matchNetwt += item.getMatchNwt();
+                          //  totalPieces += item.getPcs();
                         }
 
 
-                        String[] totalValues = {"Total", "", "", String.valueOf(totalQuantity), String.valueOf(matchQuantity),
+                        String[] totalValues = {"Total", "", "","","", String.valueOf(totalQuantity), String.valueOf(matchQuantity),
                                 String.valueOf(totalGrosswt), String.valueOf(matchGrosswt),
                                 String.valueOf(totalStonewt), String.valueOf(matchStonewt),
                                 String.valueOf(totalNetwt), String.valueOf(matchNetwt)};
@@ -402,8 +404,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     // Create a worksheet named "Sheet 1" for bottom sheet
                     Worksheet bottomsheet = bottomWorkbook.newWorksheet("Sheet 1");
 
-                    String[] bottomHeaders = {"TID Value", "EPC Value", "Category", "Product",
-                            "Purity", "Barcode Number", "Item Code", "Box", "Gross Weight", "Stone Weight", "Net Weight",
+                    String[] bottomHeaders = {"TID Value", "EPC Value", "Category", "Product","Product Code",
+                            "Purity", "Barcode Number", "Item Code", "Box","Pieces", "Gross Weight", "Stone Weight", "Net Weight",
                             "Making gm", "Making %", "Fixed amount", "Fixed Wastage", "Stone amount", "Mrp", "Huid code",
                             "Party code", "Updated Date", "Updated By"};
 
@@ -416,8 +418,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     int progressUpdateInterval = 100;
                     for (Itemmodel item : processlist) {
                         String[] values = {item.getTidValue(), item.getEpcValue(),
-                                item.getCategory(), item.getProduct(), item.getPurity(), item.getBarCode(),
-                                item.getItemCode(), item.getBox(), String.valueOf(item.getGrossWt()),
+                                item.getCategory(), item.getProduct(),item.getProductCode() ,item.getPurity(), item.getBarCode(),
+                                item.getItemCode(), item.getBox(),item.getPcs(), String.valueOf(item.getGrossWt()),
                                 String.valueOf(item.getStoneWt()), String.valueOf(item.getNetWt()),
                                 String.valueOf(item.getMakingGm()), String.valueOf(item.getMakingPer()), String.valueOf(item.getFixedAmount()), String.valueOf(item.getFixedWastage()),
                                 String.valueOf(item.getStoneAmount()), String.valueOf(item.getMrp()), item.getHuidCode(), item.getPartyCode(),
@@ -484,8 +486,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     // Create a worksheet named "Sheet 1" for bottom sheet
                     Worksheet bottomsheet = bottomWorkbook.newWorksheet("Sheet 1");
 
-                    String[] bottomHeaders = {"TID Value", "EPC Value", "Category", "Product",
-                            "Purity", "Barcode Number", "Item Code", "Box", "Gross Weight", "Stone Weight", "Net Weight",
+                    String[] bottomHeaders = {"TID Value", "EPC Value", "Category", "Product","Product Code",
+                            "Purity", "Barcode Number", "Item Code", "Box","Pieces" ,"Gross Weight", "Stone Weight", "Net Weight",
                             "Making gm", "Making %", "Fixed amount", "Fixed Wastage", "Stone amount", "Mrp", "Huid code",
                             "Party code", "Updated Date", "Updated By", "Status"};
 
@@ -498,8 +500,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                     int progressUpdateInterval = 100;
                     for (Itemmodel item : processlist) {
                         String[] values = {item.getTidValue(), item.getEpcValue(),
-                                item.getCategory(), item.getProduct(), item.getPurity(), item.getBarCode(),
-                                item.getItemCode(), item.getBox(), String.valueOf(item.getGrossWt()),
+                                item.getCategory(), item.getProduct(),item.getProductCode(), item.getPurity(), item.getBarCode(),
+                                item.getItemCode(), item.getBox(),item.getPcs() ,String.valueOf(item.getGrossWt()),
                                 String.valueOf(item.getStoneWt()), String.valueOf(item.getNetWt()),
                                 String.valueOf(item.getMakingGm()), String.valueOf(item.getMakingPer()), String.valueOf(item.getFixedAmount()), String.valueOf(item.getFixedWastage()),
                                 String.valueOf(item.getStoneAmount()), String.valueOf(item.getMrp()), item.getHuidCode(), item.getPartyCode(),

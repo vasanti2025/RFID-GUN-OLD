@@ -1,28 +1,23 @@
 package com.loyalstring.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.loyalstring.R;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.loyalstring.apiresponse.AlllabelResponse;
 import com.loyalstring.apiresponse.ClientCodeRequest;
 import com.loyalstring.apiresponse.ProductResponse;
-import com.loyalstring.apiresponse.Rfidresponse;
 import com.loyalstring.database.StorageClass;
 import com.loyalstring.databinding.ActivityCustomapisBinding;
 import com.loyalstring.interfaces.ApiService;
-import com.loyalstring.modelclasses.Productmodel;
 
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,8 +45,9 @@ public class Customapis extends AppCompatActivity {
         progressBar = new ProgressDialog(this);
         progressBar.setMessage("Verifying please wait...");
         progressBar.setCanceledOnTouchOutside(false);
-        String baseUrl = "https://goldstringwebapp.loyalstring.co.in/";
-//                "http://43.241.147.162:9991/WS/";
+        String baseUrl =
+                "https://goldstringwebapp.loyalstring.co.in/";
+        // "http://43.241.147.162:9991/WS/";
 //                "https://satyanarayanajewellers.loyalstring.co.in/" ;//"https://heerajewellers.loyalstring.co.in/";
         //storageClass.getBaseUrl();
         // "https://madanjewellers.loyalstring.co.in/";
@@ -61,8 +57,9 @@ public class Customapis extends AppCompatActivity {
         // "https://thashnajewellery.loyalstring.co.in/";//
         b.apiurl.setText(baseUrl);
 
-        b.rfidurl.setText("https://goldstringwebapp.loyalstring.co.in/");
-//                ("https://navrangjewellers.loyalstring.co.in/");
+        b.rfidurl.setText
+                ("https://goldstringwebapp.loyalstring.co.in/");
+        //("https://navrangjewellers.loyalstring.co.in/");
 
 
         b.verifybtn.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +72,21 @@ public class Customapis extends AppCompatActivity {
                     return;
                 }
                 progressBar.show();
-                verifyurl(url);
+                //
+                // only for navarang
+                if (url.equalsIgnoreCase("https://goldstringwebapp.loyalstring.co.in/")) {
+                    verifyurl(url);
+                } else  {
+                    try {
+                        verifyurlold(url);
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(Customapis.this, "Please Enter Proper URL", Toast.LENGTH_SHORT).show();
+                        progressBar.dismiss();
+                    }
+                }
+
 
             }
         });
@@ -106,7 +117,12 @@ public class Customapis extends AppCompatActivity {
                     return;
                 }
                 progressBar.show();
+
                 verifyurl1(rfidurl);
+
+
+
+
 
             }
         });
@@ -186,7 +202,7 @@ public class Customapis extends AppCompatActivity {
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);
 
-        ClientCodeRequest clientCodeRequest = new ClientCodeRequest("LS000026");
+        ClientCodeRequest clientCodeRequest = new ClientCodeRequest("LS000095");
 
         Call<List<AlllabelResponse.LabelItem>> call = apiService.getAlllableproducts(clientCodeRequest);
         call.enqueue(new Callback<List<AlllabelResponse.LabelItem>>() {

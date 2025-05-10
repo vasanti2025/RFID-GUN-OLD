@@ -38,6 +38,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_gr_wt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Gross wt"
@@ -63,6 +64,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/tv_stone_wt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="stone wt"
@@ -86,6 +88,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/tv_net_wt"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="net wt"

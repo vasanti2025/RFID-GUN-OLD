@@ -210,7 +210,8 @@ public class ApiProcess {
                 @Override
                 public void onResponse(Call<List<AlllabelResponse.LabelItem>> call, Response<List<AlllabelResponse.LabelItem>> response) {
                     dialog.dismiss();
-                    Log.e("checking response ", "product response " + response.body().size());
+
+                   // Log.e("checking response ", "product response " + response.body().size());
                     if (response.isSuccessful() && response.body() != null) {
                         List<AlllabelResponse.LabelItem> i = response.body();
 
@@ -282,6 +283,7 @@ public class ApiProcess {
                                 AlllabelResponse.LabelItem i = new AlllabelResponse.LabelItem();
                                 i.setCategoryName(item.getCategory_Name());
                                 i.setProductName(item.getProductName());
+                                i.setPieces(item.getPieces());
                                 i.setPurityName(item.getPurity());
                                 i.setrFIDCode(item.getBarcodeNumber());
                                 i.setItemCode(item.getItemCode());
@@ -339,6 +341,7 @@ public class ApiProcess {
                                 AlllabelResponse.LabelItem i = new AlllabelResponse.LabelItem();
                                 i.setCategoryName(item.getCategory_Name());
                                 i.setProductName(item.getItemType());
+                                i.setPieces(item.getPieces());
                                 i.setPurityName(item.getPurity());
                                 i.setrFIDCode(item.getBarcodeNumber());
                                 i.setItemCode(item.getItemCode());
@@ -534,7 +537,7 @@ public class ApiProcess {
                 // Process data here
                 HashMap<String, Itemmodel> nmap = new HashMap<>();
 
-                Log.e("check1allitemsat", "item check " + productList.get(0).toString());
+                //Log.e("check1allitemsat", "item check " + productList.get(0).toString());
                 for (AlllabelResponse.LabelItem p : productList) {
                     if (p.gettIDNumber() == null || p.gettIDNumber().isEmpty()) {
 
@@ -564,7 +567,7 @@ public class ApiProcess {
                                                 0, 0, 0, 0, 0,
                                                 0, 0, 0, 0, 0,
                                                 0, 0, 0, 0, 0,
-                                                0, "done", "done");
+                                                0, "done", "done",o.getProductCode());
 
                                         item.setPcs(p.getPieces());
                                         item.setImageUrl(p.getImages());
@@ -592,7 +595,7 @@ public class ApiProcess {
                                                 0, 0, 0, 0, 0,
                                                 0, 0, 0, 0, 0,
                                                 0, 0, 0, 0, 0,
-                                                0, "done", "done");
+                                                0, "done", "done",p.getProductCode());
                                         item.setPcs(p.getPieces());
                                         item.setImageUrl(p.getImages());
 //                                        if(!o.getBranch().equalsIgnoreCase("home")){
@@ -646,7 +649,7 @@ public class ApiProcess {
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
-                                        0, "done", "done");
+                                        0, "done", "done",o.getProductCode());
                                 item.setPcs(p.getPieces());
                                 item.setPartyCode(p.getImages());
                                 item.setPcs(p.getPieces());
@@ -676,7 +679,7 @@ public class ApiProcess {
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
-                                        0, "done", "done");
+                                        0, "done", "done",p.getProductCode());
 //                                if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
 //                                    nmap.put(item.getTidValue(), item);
 //                                }
@@ -1799,6 +1802,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                         for (int i1 = 0; i1 < rows.length(); i1++) {
                             JSONObject entryObj = rows.getJSONObject(i1);
                             JSONArray rowData = entryObj.getJSONArray("c");
+                            Log.d("@@","rowData @@"+rowData);
                             String stonewt = "0";
                             // Extract relevant data
                             String branch = rowData.optJSONObject(9) != null ? rowData.getJSONObject(9).optString("v", "") : "";
@@ -1813,6 +1817,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                             String sstoneamt = rowData.optJSONObject(8) != null ? rowData.getJSONObject(8).optString("v", "") : "";
                             String simageurl = rowData.optJSONObject(11) != null ? rowData.getJSONObject(11).optString("v", "") : "";
                             String ssku = rowData.optJSONObject(6) != null ? rowData.getJSONObject(6).optString("v", "") : "";
+                           // String productCode = rowData.optJSONObject(6) != null ? rowData.getJSONObject(6).optString("v", "") : "";
 
 
                             if (simageurl.contains("drive.google.com")) {
@@ -1820,6 +1825,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                 String fileId = extractFileId(simageurl);
                                 simageurl = "https://drive.google.com/uc?export=download&id=" + fileId;
                             }
+
 
                             if (!simageurl.isEmpty() && !itemcode.isEmpty()) {
                                 String fileName = itemcode + ".jpg";
@@ -1956,8 +1962,9 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
-                                                    0, "done", "done");
+                                                    0, "done", "done",o.getProductCode());
                                             item.setImageUrl(simageurl);
+                                            item.setPcs(o.getPcs());
                                             item.setDiamondClarity(ssku);
                                             if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
                                                 nmap.put(item.getTidValue(), item);
@@ -1979,8 +1986,9 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
-                                                    0, "done", "done");
+                                                    0, "done", "done","");
                                             item.setImageUrl(simageurl);
+                                            item.setPcs("");
                                             item.setDiamondClarity(ssku);
                                             if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
                                                 nmap.put(item.getTidValue(), item);
@@ -2101,6 +2109,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                         for (int i1 = 0; i1 < rows.length(); i1++) {
                             JSONObject entryObj = rows.getJSONObject(i1);
                             JSONArray rowData = entryObj.getJSONArray("c");
+                            Log.d("",""+rowData);
                             String stonewt = "0";
                             // Extract relevant data
                             String branch = rowData.optJSONObject(9) != null ? rowData.getJSONObject(9).optString("v", "") : "";
@@ -2164,8 +2173,9 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
-                                                    0, "done", "done");
+                                                    0, "done", "done",o.getProductCode());
                                             item.setImageUrl(simageurl);
+                                            item.setPcs(o.getPcs());
                                             item.setDiamondClarity(ssku);
                                             if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
                                                 nmap.put(item.getTidValue(), item);
@@ -2187,7 +2197,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
                                                     0, 0, 0, 0, 0,
-                                                    0, "done", "done");
+                                                    0, "done", "done","");
                                             item.setImageUrl(simageurl);
                                             item.setDiamondClarity(ssku);
                                             if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
@@ -2541,7 +2551,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                         0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0,
-                                                        0, "done", "done");
+                                                        0, "done", "done",o.getProductCode());
                                                 item.setImageUrl(simageurl);
                                                 item.setDiamondClarity(ssku);
                                                 if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
@@ -2564,7 +2574,7 @@ public void getproductscustom(HashMap<String, Itemmodel> ml, Context activity, S
                                                         0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0,
-                                                        0, "done", "done");
+                                                        0, "done", "done","");
                                                 item.setImageUrl(simageurl);
                                                 item.setDiamondClarity(ssku);
                                                 if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {

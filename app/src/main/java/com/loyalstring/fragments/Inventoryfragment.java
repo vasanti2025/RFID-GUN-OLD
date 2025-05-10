@@ -887,6 +887,9 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             if (topmap.containsKey(key)) {
                 topmap.get(key).setMatchQty(topmap.get(key).getMatchQty() + 1);
                 topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
+                topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
+                topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
+
                 changedItemKeys.add(tidValue);
                 changedItemKeys1.add(key);
                 tmqty = tmqty + 1;
@@ -956,6 +959,8 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                         if (topmap.containsKey(key)) {
                             topmap.get(key).setMatchQty(topmap.get(key).getMatchQty() + 1);
                             topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
+                            topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
+                            topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
 
                         }
 

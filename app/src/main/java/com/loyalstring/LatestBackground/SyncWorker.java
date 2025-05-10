@@ -246,7 +246,7 @@ public class SyncWorker extends Worker {
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
-                                        0, "done", "done");
+                                        0, "done", "done",o.getProductCode());
                                 if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
                                     nmap.put(item.getTidValue(), item);
                                 }
@@ -266,7 +266,7 @@ public class SyncWorker extends Worker {
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
                                         0, 0, 0, 0, 0,
-                                        0, "done", "done");
+                                        0, "done", "done",p.productCode);
                                 if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
                                     nmap.put(item.getTidValue(), item);
                                 }
@@ -307,7 +307,7 @@ public class SyncWorker extends Worker {
                                 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0,
-                                0, "done", "done");
+                                0, "done", "done",o.getProductCode());
                         item.setPcs(p.getPieces());
                         item.setPartyCode(p.getImages());
                         if (item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
@@ -331,7 +331,7 @@ public class SyncWorker extends Worker {
                                 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0,
                                 0, 0, 0, 0, 0,
-                                0, "done", "done");
+                                0, "done", "done",p.getProductCode());
                         item.setPcs(p.getPieces());
                         item.setPartyCode(p.getImages());
                         if (item.getTidValue() != null && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {

@@ -3,6 +3,8 @@ package com.loyalstring.modelclasses;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class Itemmodel implements Parcelable {
 
     long OperationTime, EntryDate, TransactionDate, RepaymentDate;
@@ -19,7 +21,7 @@ public class Itemmodel implements Parcelable {
             TotalBilleditems, TotalBilledgwt, TotalBilledamount, TotalBillAmountExcGst, TotalBillAmountincgst,
             TotalGst, TotalDiscount, PaidAmount, Balance;
 
-    String GunUpdate, WebUpdate, ImageUrl, VideoUrl, Pcs;
+    String GunUpdate, WebUpdate, ImageUrl, VideoUrl, Pcs,ProductCode;
     private long id1;
     private  String BilladdCount, StockKeepingUnit;
 
@@ -30,7 +32,7 @@ public class Itemmodel implements Parcelable {
     public Itemmodel() {
     }
 
-    public Itemmodel(long operationTime, long entryDate, long transactionDate, long repaymentDate, String tidValue, String epcValue, String branch, String category, String product, String purity, String diamondMetal, String diamondColor, String diamondClarity, String diamondSetting, String diamondShape, String diamondSize, String diamondCertificate, String barCode, String itemCode, String box, String huidCode, String partyCode, String description, String status, String tagTransaction, String operation, String transactionType, String invoiceNumber, String customerName, String itemAddmode, String paymentMode, String paymentDescription, String gstApplied, double diamondWt, double diamondPcs, double diamondRate, double diamondAmount, double grossWt, double stoneWt, double netWt, double makingGm, double makingPer, double fixedAmount, double fixedWastage, double stoneAmount, double mrp, double hallmarkCharges, double avlQty, double matchQty, double totalGwt, double matchGwt, double totalStonewt, double matchStonewt, double totalNwt, double matchNwt, double goldRate, double totalMaking, double itemPrice, double appliedDiscount, double itempriceAfterdiscount, double gstRate, double payableAmount, double payableAmountincgst, double itemGst, double totalBilleditems, double totalBilledgwt, double totalBilledamount, double totalBillAmountExcGst, double totalBillAmountincgst, double totalGst, double totalDiscount, double paidAmount, double balance, String gunUpdate, String webUpdate) {
+    public Itemmodel(long operationTime, long entryDate, long transactionDate, long repaymentDate, String tidValue, String epcValue, String branch, String category, String product, String purity, String diamondMetal, String diamondColor, String diamondClarity, String diamondSetting, String diamondShape, String diamondSize, String diamondCertificate, String barCode, String itemCode, String box, String huidCode, String partyCode, String description, String status, String tagTransaction, String operation, String transactionType, String invoiceNumber, String customerName, String itemAddmode, String paymentMode, String paymentDescription, String gstApplied, double diamondWt, double diamondPcs, double diamondRate, double diamondAmount, double grossWt, double stoneWt, double netWt, double makingGm, double makingPer, double fixedAmount, double fixedWastage, double stoneAmount, double mrp, double hallmarkCharges, double avlQty, double matchQty, double totalGwt, double matchGwt, double totalStonewt, double matchStonewt, double totalNwt, double matchNwt, double goldRate, double totalMaking, double itemPrice, double appliedDiscount, double itempriceAfterdiscount, double gstRate, double payableAmount, double payableAmountincgst, double itemGst, double totalBilleditems, double totalBilledgwt, double totalBilledamount, double totalBillAmountExcGst, double totalBillAmountincgst, double totalGst, double totalDiscount, double paidAmount, double balance, String gunUpdate, String webUpdate,String productCode) {
         OperationTime = operationTime;
         EntryDate = entryDate;
         TransactionDate = transactionDate;
@@ -106,6 +108,7 @@ public class Itemmodel implements Parcelable {
         Balance = balance;
         GunUpdate = gunUpdate;
         WebUpdate = webUpdate;
+        ProductCode=productCode;
     }
 
     public Itemmodel(String imageUrl, String videoUrl, String pcs) {
@@ -210,10 +213,22 @@ public class Itemmodel implements Parcelable {
         this.BilladdCount = oitem.getBilladdCount();
         this.SKUId = oitem.getSKUId();
         this.StockKeepingUnit = oitem.getStockKeepingUnit();
+        this.ProductCode=oitem.getProductCode();
 
 
     }
 
+    public String getProductCode() {
+        return ProductCode;
+    }
+
+    public void setProductCode(String productCode) {
+        ProductCode = productCode;
+    }
+
+    public void setId1(long id1) {
+        this.id1 = id1;
+    }
 
     protected Itemmodel(Parcel in) {
         OperationTime = in.readLong();
@@ -294,101 +309,11 @@ public class Itemmodel implements Parcelable {
         ImageUrl = in.readString();
         VideoUrl = in.readString();
         Pcs = in.readString();
+        ProductCode = in.readString();
         id1 = in.readLong();
         BilladdCount = in.readString();
-        SKUId = in.readInt();
         StockKeepingUnit = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(OperationTime);
-        dest.writeLong(EntryDate);
-        dest.writeLong(TransactionDate);
-        dest.writeLong(RepaymentDate);
-        dest.writeString(TidValue);
-        dest.writeString(EpcValue);
-        dest.writeString(Branch);
-        dest.writeString(Category);
-        dest.writeString(Product);
-        dest.writeString(Purity);
-        dest.writeString(DiamondMetal);
-        dest.writeString(DiamondColor);
-        dest.writeString(DiamondClarity);
-        dest.writeString(DiamondSetting);
-        dest.writeString(DiamondShape);
-        dest.writeString(DiamondSize);
-        dest.writeString(DiamondCertificate);
-        dest.writeString(BarCode);
-        dest.writeString(ItemCode);
-        dest.writeString(Box);
-        dest.writeString(HuidCode);
-        dest.writeString(PartyCode);
-        dest.writeString(Description);
-        dest.writeString(Status);
-        dest.writeString(TagTransaction);
-        dest.writeString(Operation);
-        dest.writeString(TransactionType);
-        dest.writeString(InvoiceNumber);
-        dest.writeString(CustomerName);
-        dest.writeString(ItemAddmode);
-        dest.writeString(PaymentMode);
-        dest.writeString(PaymentDescription);
-        dest.writeString(GstApplied);
-        dest.writeDouble(DiamondWt);
-        dest.writeDouble(DiamondPcs);
-        dest.writeDouble(DiamondRate);
-        dest.writeDouble(DiamondAmount);
-        dest.writeDouble(GrossWt);
-        dest.writeDouble(StoneWt);
-        dest.writeDouble(NetWt);
-        dest.writeDouble(MakingGm);
-        dest.writeDouble(MakingPer);
-        dest.writeDouble(FixedAmount);
-        dest.writeDouble(FixedWastage);
-        dest.writeDouble(StoneAmount);
-        dest.writeDouble(Mrp);
-        dest.writeDouble(HallmarkCharges);
-        dest.writeDouble(AvlQty);
-        dest.writeDouble(MatchQty);
-        dest.writeDouble(TotalGwt);
-        dest.writeDouble(MatchGwt);
-        dest.writeDouble(TotalStonewt);
-        dest.writeDouble(MatchStonewt);
-        dest.writeDouble(TotalNwt);
-        dest.writeDouble(MatchNwt);
-        dest.writeDouble(GoldRate);
-        dest.writeDouble(TotalMaking);
-        dest.writeDouble(ItemPrice);
-        dest.writeDouble(AppliedDiscount);
-        dest.writeDouble(ItempriceAfterdiscount);
-        dest.writeDouble(GstRate);
-        dest.writeDouble(PayableAmount);
-        dest.writeDouble(PayableAmountincgst);
-        dest.writeDouble(ItemGst);
-        dest.writeDouble(TotalBilleditems);
-        dest.writeDouble(TotalBilledgwt);
-        dest.writeDouble(TotalBilledamount);
-        dest.writeDouble(TotalBillAmountExcGst);
-        dest.writeDouble(TotalBillAmountincgst);
-        dest.writeDouble(TotalGst);
-        dest.writeDouble(TotalDiscount);
-        dest.writeDouble(PaidAmount);
-        dest.writeDouble(Balance);
-        dest.writeString(GunUpdate);
-        dest.writeString(WebUpdate);
-        dest.writeString(ImageUrl);
-        dest.writeString(VideoUrl);
-        dest.writeString(Pcs);
-        dest.writeLong(id1);
-        dest.writeString(BilladdCount);
-        dest.writeInt(SKUId);
-        dest.writeString(StockKeepingUnit);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        SKUId = in.readInt();
     }
 
     public static final Creator<Itemmodel> CREATOR = new Creator<Itemmodel>() {
@@ -1140,6 +1065,99 @@ public class Itemmodel implements Parcelable {
                 ", WebUpdate='" + WebUpdate + '\'' +
                 ", ImageUrl='" + ImageUrl + '\'' +
                 ", VideoUrl='" + VideoUrl + '\'' +
+                ", ProductCode='" + ProductCode + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeLong(OperationTime);
+        parcel.writeLong(EntryDate);
+        parcel.writeLong(TransactionDate);
+        parcel.writeLong(RepaymentDate);
+        parcel.writeString(TidValue);
+        parcel.writeString(EpcValue);
+        parcel.writeString(Branch);
+        parcel.writeString(Category);
+        parcel.writeString(Product);
+        parcel.writeString(Purity);
+        parcel.writeString(DiamondMetal);
+        parcel.writeString(DiamondColor);
+        parcel.writeString(DiamondClarity);
+        parcel.writeString(DiamondSetting);
+        parcel.writeString(DiamondShape);
+        parcel.writeString(DiamondSize);
+        parcel.writeString(DiamondCertificate);
+        parcel.writeString(BarCode);
+        parcel.writeString(ItemCode);
+        parcel.writeString(Box);
+        parcel.writeString(HuidCode);
+        parcel.writeString(PartyCode);
+        parcel.writeString(Description);
+        parcel.writeString(Status);
+        parcel.writeString(TagTransaction);
+        parcel.writeString(Operation);
+        parcel.writeString(TransactionType);
+        parcel.writeString(InvoiceNumber);
+        parcel.writeString(CustomerName);
+        parcel.writeString(ItemAddmode);
+        parcel.writeString(PaymentMode);
+        parcel.writeString(PaymentDescription);
+        parcel.writeString(GstApplied);
+        parcel.writeDouble(DiamondWt);
+        parcel.writeDouble(DiamondPcs);
+        parcel.writeDouble(DiamondRate);
+        parcel.writeDouble(DiamondAmount);
+        parcel.writeDouble(GrossWt);
+        parcel.writeDouble(StoneWt);
+        parcel.writeDouble(NetWt);
+        parcel.writeDouble(MakingGm);
+        parcel.writeDouble(MakingPer);
+        parcel.writeDouble(FixedAmount);
+        parcel.writeDouble(FixedWastage);
+        parcel.writeDouble(StoneAmount);
+        parcel.writeDouble(Mrp);
+        parcel.writeDouble(HallmarkCharges);
+        parcel.writeDouble(AvlQty);
+        parcel.writeDouble(MatchQty);
+        parcel.writeDouble(TotalGwt);
+        parcel.writeDouble(MatchGwt);
+        parcel.writeDouble(TotalStonewt);
+        parcel.writeDouble(MatchStonewt);
+        parcel.writeDouble(TotalNwt);
+        parcel.writeDouble(MatchNwt);
+        parcel.writeDouble(GoldRate);
+        parcel.writeDouble(TotalMaking);
+        parcel.writeDouble(ItemPrice);
+        parcel.writeDouble(AppliedDiscount);
+        parcel.writeDouble(ItempriceAfterdiscount);
+        parcel.writeDouble(GstRate);
+        parcel.writeDouble(PayableAmount);
+        parcel.writeDouble(PayableAmountincgst);
+        parcel.writeDouble(ItemGst);
+        parcel.writeDouble(TotalBilleditems);
+        parcel.writeDouble(TotalBilledgwt);
+        parcel.writeDouble(TotalBilledamount);
+        parcel.writeDouble(TotalBillAmountExcGst);
+        parcel.writeDouble(TotalBillAmountincgst);
+        parcel.writeDouble(TotalGst);
+        parcel.writeDouble(TotalDiscount);
+        parcel.writeDouble(PaidAmount);
+        parcel.writeDouble(Balance);
+        parcel.writeString(GunUpdate);
+        parcel.writeString(WebUpdate);
+        parcel.writeString(ImageUrl);
+        parcel.writeString(VideoUrl);
+        parcel.writeString(Pcs);
+        parcel.writeString(ProductCode);
+        parcel.writeLong(id1);
+        parcel.writeString(BilladdCount);
+        parcel.writeString(StockKeepingUnit);
+        parcel.writeInt(SKUId);
     }
 }

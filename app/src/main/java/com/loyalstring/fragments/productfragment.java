@@ -1765,7 +1765,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 0, 0,
-                                    0, 0, 0, 0, 0, 0, 0, 0, 0, "", "");
+                                    0, 0, 0, 0, 0, 0, 0, 0, 0, "", "","");
 
                             itemlist.add(nitem);
 
@@ -1823,7 +1823,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                 getdvalue(sstoneamount), getdvalue(smrp), getdvalue(shallmark), 1,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, "", "");
+                0, 0, 0, 0, 0, 0, "", "","");
 
 
         itemlist.clear();

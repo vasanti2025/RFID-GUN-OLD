@@ -98,7 +98,7 @@ public class ReportExcelsgenerator {
                 // Create a worksheet named "Sheet 1" for bottom sheet
                 Worksheet bottomsheet = bottomWorkbook.newWorksheet("Sheet 1");
                 String[] headers;
-                headers = new String[]{"Sku", "Order Number", "G Wt", "S Wt", "N Wt", "Qty",
+                headers = new String[]{"Sku", "Order Number","Product Code", "G Wt", "S Wt", "N Wt", "Qty",
                         "S Amount", "T GWt", "T SWt", "T NWt", "T SAmount"};
                 for (int i = 0; i < headers.length; i++) {
                     bottomsheet.value(0, i, headers[i]);
@@ -125,6 +125,7 @@ public class ReportExcelsgenerator {
 
                     for (Itemmodel m : items) {
                         String[] values = {m.getStockKeepingUnit(), m.getInvoiceNumber(),
+                                m.getProductCode(),
                                 String.valueOf(m.getGrossWt()), String.valueOf(m.getStoneWt()),
                                 String.valueOf(m.getNetWt()), String.valueOf(qty), "",
                                 String.valueOf(gwt),
