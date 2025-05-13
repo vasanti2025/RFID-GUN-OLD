@@ -319,12 +319,12 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 getlist("Product", b.iproducttext, getActivity());
             }
         });
-        /*b.iboxlayout.setOnClickListener(new View.OnClickListener() {
+        b.iboxlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getlist("Box", b.iboxtext, getActivity());
             }
-        });*/
+        });
 
         b.nemail.setOnClickListener(new View.OnClickListener() {
             @Override
