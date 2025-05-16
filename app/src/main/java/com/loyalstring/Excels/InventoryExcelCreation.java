@@ -288,7 +288,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         }else{*/
 
 
-                        headers = new String[]{"Category", "Product","Product Code", "Box", "Pieces","Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
+                        headers = new String[]{"Category", "Product","Product Code", "Box", "T Pieces","T Mpieces","Total Quantity", "Match Quantity", "Total Grosswt", "Match Grosswt",
                                 "Total Stonewt", "Match Stonewt", "Total Netwt", "Match Netwt"};
                         for (int i = 0; i < headers.length; i++) {
                             bottomsheet.value(0, i, headers[i]);
@@ -300,7 +300,7 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         int progressUpdateInterval = 100;
                         for (Itemmodel item : processlist) {
 //                                if(item.getAvlQty() != item.getMatchQty()){
-                            String[] values = {item.getCategory(), item.getProduct(), item.getProductCode(), item.getBox(),item.getPcs(), String.valueOf(item.getAvlQty()),
+                            String[] values = {item.getCategory(), item.getProduct(), item.getProductCode(), item.getBox(), String.valueOf(item.getTotPcs()), String.valueOf(item.getTotMPcs()), String.valueOf(item.getAvlQty()),
                                     String.valueOf(item.getMatchQty()), String.valueOf(item.getTotalGwt()), String.valueOf(item.getMatchGwt()), String.valueOf(item.getTotalStonewt()),
                                     String.valueOf(item.getMatchStonewt()), String.valueOf(item.getTotalNwt()), String.valueOf(item.getMatchNwt())};
 
@@ -327,7 +327,8 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                         double matchStonewt = 0.0;
                         double totalNetwt = 0.0;
                         double matchNetwt = 0.0;
-                       // String totalPieces=0;
+                        int totalPieces=0;
+                        int totalMPices=0;
 
                         for (Itemmodel item : processlist) {
                             totalQuantity += item.getAvlQty();
@@ -338,11 +339,13 @@ public class InventoryExcelCreation extends AsyncTask<Void, Integer, String> {
                             matchStonewt += item.getMatchStonewt();
                             totalNetwt += item.getTotalNwt();
                             matchNetwt += item.getMatchNwt();
-                          //  totalPieces += item.getPcs();
+                             totalMPices +=(item.getTotMPcs());
+
+                           totalPieces += (item.getTotPcs());
                         }
 
 
-                        String[] totalValues = {"Total", "", "","","", String.valueOf(totalQuantity), String.valueOf(matchQuantity),
+                        String[] totalValues = {"Total", "", "","", String.valueOf(totalPieces), String.valueOf(totalMPices), String.valueOf(totalQuantity), String.valueOf(matchQuantity),
                                 String.valueOf(totalGrosswt), String.valueOf(matchGrosswt),
                                 String.valueOf(totalStonewt), String.valueOf(matchStonewt),
                                 String.valueOf(totalNetwt), String.valueOf(matchNetwt)};

@@ -8,18 +8,11 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -31,7 +24,6 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,7 +35,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 import com.loyalstring.Adapters.InventoryBottomAdaptor;
 import com.loyalstring.Adapters.InventoryTopAdaptor;
 import com.loyalstring.Excels.InventoryExcelCreation;
@@ -68,7 +66,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -303,6 +300,12 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 getlist("Category", b.icategorytext, getActivity());
             }
         });
+       /* b.icounterlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getlist("Counter", b.icategorytext, getActivity());
+            }
+        });*/
 
         b.iclearlayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,7 +325,12 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         b.iboxlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getlist("Box", b.iboxtext, getActivity());
+                try {
+                    getlist("Box", b.iboxtext, getActivity());
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -889,6 +897,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
                 topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
                 topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
+                topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
 
                 changedItemKeys.add(tidValue);
                 changedItemKeys1.add(key);
@@ -961,6 +970,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                             topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
                             topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
                             topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
+                            topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
 
                         }
 
@@ -1096,7 +1106,11 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         Log.d("removed", "handle");
         ploopFlag = false;
         stopUpdatingUI();
-        globalcomponents.keepScreenOn(false, getActivity());
+        try {
+            globalcomponents.keepScreenOn(false, getActivity());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (mainActivity.mReader.isInventorying()) {
 
             return mainActivity.mReader.stopInventory();
@@ -1109,6 +1123,12 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
     public void getlist(String title, TextView t, FragmentActivity activity) {
         List<String> bottomlist = new ArrayList<>();
         Valuesdb db = new Valuesdb(activity);
+
+        if (title.equalsIgnoreCase("")) {
+            for (Itemmodel m : topmap.values()) {
+                bottomlist.add(m.getBox());
+            }
+        }
         if (title.equalsIgnoreCase("category")) {
             bottomlist = db.getcatpro();
         }
@@ -1117,10 +1137,15 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 bottomlist.add(m.getProduct());
             }
         }
-        if (title.equalsIgnoreCase("box")) {
-            for (Itemmodel m : topmap.values()) {
-                bottomlist.add(m.getBox());
+        try {
+            if (title.equalsIgnoreCase("box")) {
+                for (Itemmodel m : topmap.values()) {
+                    bottomlist.add(m.getBox());
+                }
             }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
         if (bottomlist.isEmpty()) {
             Toast.makeText(activity, "no data found", Toast.LENGTH_SHORT).show();
@@ -1134,122 +1159,134 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 
 
     public void showbottom(FragmentActivity activity, String title, TextView t, List<String> bottomlist) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
-        bottomSheetDialog.setCancelable(false);
-        View contentView = activity.getLayoutInflater().inflate(R.layout.bottom_sheet_layout1, null);
-        bottomSheetDialog.setContentView(contentView);
+     try {
+         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+         bottomSheetDialog.setCancelable(false);
+         View contentView = activity.getLayoutInflater().inflate(R.layout.bottom_sheet_layout1, null);
+         bottomSheetDialog.setContentView(contentView);
 
-        ImageButton close = contentView.findViewById(R.id.closeButton);
-        TextView ttitle = contentView.findViewById(R.id.maintitle);
-        Button applyButton = contentView.findViewById(R.id.apply_button);
-        ListView spinnerlist = contentView.findViewById(R.id.spinnerlist);
-        EditText searchBar = contentView.findViewById(R.id.search_bar); // Search bar
+         ImageButton close = contentView.findViewById(R.id.closeButton);
+         TextView ttitle = contentView.findViewById(R.id.maintitle);
+         Button applyButton = contentView.findViewById(R.id.apply_button);
+         ListView spinnerlist = contentView.findViewById(R.id.spinnerlist);
+         EditText searchBar = contentView.findViewById(R.id.search_bar); // Search bar
 
-        ttitle.setText(title);
+         ttitle.setText(title);
 
-        // Store the original list
-        final List<String> originalList = new ArrayList<>(bottomlist);
-        Log.d("BottomSheet", "Original List: " + originalList);
+         // Store the original list
+         List<String> originalList = new ArrayList<>();
 
-        final ArrayAdapter<String>[] adapter = new ArrayAdapter[]{new ArrayAdapter<>(activity, android.R.layout.simple_list_item_multiple_choice, originalList)};
-        spinnerlist.setAdapter(adapter[0]);
-        spinnerlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+         for (Object obj : bottomlist) {
+             if (obj != null) {
+                 originalList.add(obj.toString()); // safe to convert now
+             }
+         }
+      //   final List<String> originalList = new ArrayList<>(bottomlist);
+         Log.d("BottomSheet", "Original List: " + originalList);
 
-        SparseBooleanArray checkedItems = new SparseBooleanArray(originalList.size());
+         final ArrayAdapter<String>[] adapter = new ArrayAdapter[]{new ArrayAdapter<>(activity, android.R.layout.simple_list_item_multiple_choice, originalList)};
+         spinnerlist.setAdapter(adapter[0]);
+         spinnerlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+         SparseBooleanArray checkedItems = new SparseBooleanArray(originalList.size());
 
 // Listen for item checks and update checkedItems accordingly
-        spinnerlist.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedItem = adapter[0].getItem(position);
-            int originalPosition = originalList.indexOf(selectedItem);
+         spinnerlist.setOnItemClickListener((parent, view, position, id) -> {
+             String selectedItem = adapter[0].getItem(position);
+             int originalPosition = originalList.indexOf(selectedItem);
 
-            if (originalPosition != -1) {
-                boolean currentState = checkedItems.get(originalPosition, false);
-                checkedItems.put(originalPosition, !currentState);
-                spinnerlist.setItemChecked(position, !currentState);
-                Log.d("BottomSheet", "Checked state updated for " + selectedItem + ": " + !currentState);
-            }
-        });
+             if (originalPosition != -1) {
+                 boolean currentState = checkedItems.get(originalPosition, false);
+                 checkedItems.put(originalPosition, !currentState);
+                 spinnerlist.setItemChecked(position, !currentState);
+                 Log.d("BottomSheet", "Checked state updated for " + selectedItem + ": " + !currentState);
+             }
+         });
 
-        searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+         searchBar.addTextChangedListener(new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d("BottomSheet", "Search input: " + charSequence);
+             @Override
+             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                 Log.d("BottomSheet", "Search input: " + charSequence);
 
-                if (charSequence.length() == 0) {
-                    // Reset adapter with the original list
-                    ArrayAdapter<String> newAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, originalList);
-                    spinnerlist.setAdapter(newAdapter);
-                    adapter[0] = newAdapter;
-                    adapter[0].notifyDataSetChanged();
-                    Log.d("BottomSheet", "Adapter reset to original list. Item count: " + adapter[0].getCount());
+                 if (charSequence.length() == 0) {
+                     // Reset adapter with the original list
+                     ArrayAdapter<String> newAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, originalList);
+                     spinnerlist.setAdapter(newAdapter);
+                     adapter[0] = newAdapter;
+                     adapter[0].notifyDataSetChanged();
+                     Log.d("BottomSheet", "Adapter reset to original list. Item count: " + adapter[0].getCount());
 
-                    // Restore checked states
-                    for (int j = 0; j < originalList.size(); j++) {
-                        spinnerlist.setItemChecked(j, checkedItems.get(j));
-                        Log.d("BottomSheet", "Item " + j + " (" + originalList.get(j) + ") checked state: " + checkedItems.get(j));
-                    }
-                } else {
-                    // Filter adapter and apply checked states for filtered items
-                    adapter[0].getFilter().filter(charSequence);
-                    adapter[0].notifyDataSetChanged();
-                    Log.d("BottomSheet", "Filtered adapter count after search: " + adapter[0].getCount());
+                     // Restore checked states
+                     for (int j = 0; j < originalList.size(); j++) {
+                         spinnerlist.setItemChecked(j, checkedItems.get(j));
+                         Log.d("BottomSheet", "Item " + j + " (" + originalList.get(j) + ") checked state: " + checkedItems.get(j));
+                     }
+                 } else {
+                     // Filter adapter and apply checked states for filtered items
+                     adapter[0].getFilter().filter(charSequence);
+                     adapter[0].notifyDataSetChanged();
+                     Log.d("BottomSheet", "Filtered adapter count after search: " + adapter[0].getCount());
 
-                    // Apply checked states based on visible items in the filtered list
-                    for (int j = 0; j < adapter[0].getCount(); j++) {
-                        String item = adapter[0].getItem(j);
-                        int originalPosition = originalList.indexOf(item);
-                        if (originalPosition != -1) {
-                            spinnerlist.setItemChecked(j, checkedItems.get(originalPosition));
-                        }
-                    }
-                }
-            }
+                     // Apply checked states based on visible items in the filtered list
+                     for (int j = 0; j < adapter[0].getCount(); j++) {
+                         String item = adapter[0].getItem(j);
+                         int originalPosition = originalList.indexOf(item);
+                         if (originalPosition != -1) {
+                             spinnerlist.setItemChecked(j, checkedItems.get(originalPosition));
+                         }
+                     }
+                 }
+             }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
+             @Override
+             public void afterTextChanged(Editable editable) {
+             }
+         });
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetDialog.dismiss();
-            }
-        });
+         close.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 bottomSheetDialog.dismiss();
+             }
+         });
 
-        applyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Collect selected items
-                List<String> selectedItems = new ArrayList<>();
-                for (int i = 0; i < originalList.size(); i++) {
-                    if (checkedItems.get(i)) {
-                        selectedItems.add(originalList.get(i));
-                    }
-                }
+         applyButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 // Collect selected items
+                 List<String> selectedItems = new ArrayList<>();
+                 for (int i = 0; i < originalList.size(); i++) {
+                     if (checkedItems.get(i)) {
+                         selectedItems.add(originalList.get(i));
+                     }
+                 }
 
-                Log.d("BottomSheet", "Selected items: " + selectedItems);
+                 Log.d("BottomSheet", "Selected items: " + selectedItems);
 
-                if (selectedItems.isEmpty()) {
-                    Toast.makeText(activity, "No items selected", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                 if (selectedItems.isEmpty()) {
+                     Toast.makeText(activity, "No items selected", Toast.LENGTH_SHORT).show();
+                     return;
+                 }
 
-                // Update the TextView with selected items
-                t.setText(TextUtils.join(", ", selectedItems));
+                 // Update the TextView with selected items
+                 t.setText(TextUtils.join(", ", selectedItems));
 
-                // Apply filtering based on the selected items
-                applyFilter(activity, title, selectedItems);
+                 // Apply filtering based on the selected items
+                 applyFilter(activity, title, selectedItems);
 
-                bottomSheetDialog.dismiss();
-            }
-        });
+                 bottomSheetDialog.dismiss();
+             }
+         });
 
-        bottomSheetDialog.show();
+         bottomSheetDialog.show();
+     }catch (Exception e)
+     {
+         e.printStackTrace();
+     }
     }
 
 
@@ -1270,6 +1307,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_multiple_choice, bottomlist);
 //        spinnerlist.setAdapter(adapter);
 //        spinnerlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
         final List<String> originalList = Collections.unmodifiableList(new ArrayList<>(bottomlist));
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_multiple_choice, new ArrayList<>(originalList));
         spinnerlist.setAdapter(adapter);
@@ -1554,8 +1592,8 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             b.iclearlayout.setVisibility(View.GONE);
         }
 
-        double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0;
-        double totalmqty = 0, totalmgwt = 0, totalmswt = 0, totalmnwt = 0;
+        double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0, totalPc = 0;
+        double totalmqty = 0, totalmgwt = 0, totalmswt = 0, totalmnwt = 0, totalMapcs = 0;
         boolean isbranch = false;
 
         for (Itemmodel it : pauselist) {
@@ -1580,6 +1618,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
+                totalPc = Double.parseDouble(totalPc + item.getPcs());
 
 
                 for (Itemmodel it : pauselist) {
@@ -1608,11 +1647,31 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 newItem.setTotalGwt(item.getGrossWt());
                 newItem.setTotalStonewt(item.getStoneWt());
                 newItem.setTotalNwt(item.getNetWt());
+
+                String pcsStr = item.getPcs();
+                if (pcsStr != null && !pcsStr.trim().isEmpty()) {
+                    try {
+                        newItem.setTotPcs(Integer.parseInt(pcsStr.trim()));
+                    } catch (NumberFormatException e) {
+                        // handle error, or set default
+                        newItem.setTotPcs(0);  // or log the error
+                    }
+                }
+                Gson gson = new Gson();
+                String json = gson.toJson(item);
+                Log.d("@@", "item.getPcs()" + json);
                 // Add to aggregatedItems map
                 totalqty = totalqty + 1;
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
+                try {
+                    if (item.getPcs() != null) {
+                        totalPc = Double.parseDouble(totalPc + item.getPcs());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 for (Itemmodel it : pauselist) {
                     if (it.getTidValue().equals(item.getTidValue())) {
                         newItem.setMatchQty(it.getMatchQty());
@@ -1623,6 +1682,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                             totalmgwt = totalmgwt + it.getGrossWt();
                             totalmswt = totalmswt + it.getStoneWt();
                             totalmnwt = totalmnwt + it.getNetWt();
+                            totalPc = Double.parseDouble(totalPc + item.getPcs());
                         }
                     }
                 }
@@ -1660,7 +1720,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 
         Map<String, Itemmodel> aggregatedItems = new HashMap<>();
 
-        double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0;
+        double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0, totalPc = 0;
         boolean isbranch = false;
 
 
@@ -1683,6 +1743,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
+                totalPc = Double.parseDouble(totalPc + item.getPcs());
             } else {
                 // If item doesn't exist, add it to the map
                 // Make a copy of the item and set count to 1
@@ -1694,11 +1755,18 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 newItem.setTotalGwt(item.getGrossWt());
                 newItem.setTotalStonewt(item.getStoneWt());
                 newItem.setTotalNwt(item.getNetWt());
+                newItem.setTotPcs(item.getTotPcs());
+
+                Gson gson = new Gson();
+                String json = gson.toJson(item);
+                Log.d("@@", "item.getPcs()" + json);
+
                 // Add to aggregatedItems map
                 totalqty = totalqty + 1;
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
+                totalPc = Double.parseDouble(totalPc + item.getPcs());
                 aggregatedItems.put(key, newItem);
             }
 
@@ -1710,6 +1778,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         b.ttgwt.setText(String.valueOf(totalgwt));
         b.ttswt.setText(String.valueOf(totalswt));
         b.ttnetwt.setText(String.valueOf(totalnwt));
+
         inventoryTopAdaptor.notifyDataSetChanged();
         inventoryBottomAdaptor.notifyDataSetChanged();
 

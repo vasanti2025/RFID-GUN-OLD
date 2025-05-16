@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -727,7 +726,11 @@ public class ApiProcess {
 //                                resetsstate();
                             deleteitems(entryDatabase, activity, dmap, app);
 
-                            Toast.makeText(activity, "failed items " + totalissueitem.get(), Toast.LENGTH_SHORT).show();
+
+                           // if (totalissueitem.get() > 0) {
+                              //  Toast.makeText(activity, "failed items " + totalissueitem.get(), Toast.LENGTH_SHORT).show();
+
+                           // }
                             dialog.dismiss();
 
                         }

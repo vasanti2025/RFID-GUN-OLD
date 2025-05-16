@@ -23,9 +23,9 @@ public class Itemmodel implements Parcelable {
 
     String GunUpdate, WebUpdate, ImageUrl, VideoUrl, Pcs,ProductCode;
     private long id1;
-    private  String BilladdCount, StockKeepingUnit;
+    private  String BilladdCount, StockKeepingUnit,counterId,counterName;
 
-    private int SKUId;
+    private int SKUId,totPcs,totMPcs;
 
 
 
@@ -111,6 +111,22 @@ public class Itemmodel implements Parcelable {
         ProductCode=productCode;
     }
 
+    public int getTotPcs() {
+        return totPcs;
+    }
+
+    public void setTotPcs(int totPcs) {
+        this.totPcs = totPcs;
+    }
+
+    public int getTotMPcs() {
+        return totMPcs;
+    }
+
+    public void setTotMPcs(int totMPcs) {
+        this.totMPcs = totMPcs;
+    }
+
     public Itemmodel(String imageUrl, String videoUrl, String pcs) {
         ImageUrl = imageUrl;
         VideoUrl = videoUrl;
@@ -119,6 +135,23 @@ public class Itemmodel implements Parcelable {
 
     public Itemmodel(long id1) {
         this.id1 = id1;
+    }
+
+
+    public String getCounterId() {
+        return counterId;
+    }
+
+    public void setCounterId(String counterId) {
+        this.counterId = counterId;
+    }
+
+    public String getCounterName() {
+        return counterName;
+    }
+
+    public void setCounterName(String counterName) {
+        this.counterName = counterName;
     }
 
     public Itemmodel(int SKUId, String StockKeepingUnit) {

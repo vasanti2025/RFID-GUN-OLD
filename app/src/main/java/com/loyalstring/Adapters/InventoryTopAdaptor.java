@@ -3,6 +3,7 @@ package com.loyalstring.Adapters;
 import static com.loyalstring.MainActivity.decimalFormat;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +83,13 @@ public class InventoryTopAdaptor extends RecyclerView.Adapter<InventoryTopAdapto
 
             holder.sno.setText(String.valueOf(position + 1));
             holder.product.setText(item.getProduct());
+            holder.mPieces.setText(String.valueOf(item.getTotMPcs()));
+            holder.tPieces.setText(String.valueOf(item.getTotPcs()));
+
             holder.tqty.setText(String.valueOf(item.getAvlQty()));
+
             holder.mqty.setText(String.valueOf(item.getMatchQty()));
+
             holder.tgwt.setText(String.valueOf(decimalFormat.format(item.getTotalGwt())));
             holder.mgwt.setText(String.valueOf(decimalFormat.format(item.getMatchGwt())));
             holder.tswt.setText(String.valueOf(decimalFormat.format(item.getTotalStonewt())));
@@ -103,7 +109,11 @@ public class InventoryTopAdaptor extends RecyclerView.Adapter<InventoryTopAdapto
             if (item.getAvlQty() == item.getMatchQty()) {
                 holder.sno.setText(String.valueOf(++matchedCounter));
                 holder.product.setText(item.getProduct());
+                holder.mPieces.setText(item.getTotMPcs());
+                holder.tPieces.setText(item.getTotPcs());
+
                 holder.tqty.setText(String.valueOf(item.getAvlQty()));
+
                 holder.mqty.setText(String.valueOf(item.getMatchQty()));
                 holder.tgwt.setText(String.valueOf(decimalFormat.format(item.getTotalGwt())));
                 holder.mgwt.setText(String.valueOf(decimalFormat.format(item.getMatchGwt())));
@@ -121,6 +131,10 @@ public class InventoryTopAdaptor extends RecyclerView.Adapter<InventoryTopAdapto
             if (item.getAvlQty() != item.getMatchQty()) {
                 holder.sno.setText(String.valueOf(++unmatchedCounter));
                 holder.product.setText(item.getProduct());
+                holder.mPieces.setText(item.getTotMPcs());
+                holder.tPieces.setText(item.getTotPcs());
+
+
                 holder.tqty.setText(String.valueOf(item.getAvlQty()));
                 holder.mqty.setText(String.valueOf(item.getMatchQty()));
                 holder.tgwt.setText(String.valueOf(decimalFormat.format(item.getTotalGwt())));
@@ -154,7 +168,7 @@ public class InventoryTopAdaptor extends RecyclerView.Adapter<InventoryTopAdapto
 
 
     public class Viewholder extends RecyclerView.ViewHolder {
-        TextView sno, product, box, tqty, mqty, tgwt, mgwt, tswt, mswt, tnwt, mnwt;
+        TextView sno, product, box, tqty, mqty, tgwt, mgwt, tswt, mswt, tnwt, mnwt,tPieces, mPieces;
         ImageView status;
         RelativeLayout itemholder;
 
@@ -166,6 +180,9 @@ public class InventoryTopAdaptor extends RecyclerView.Adapter<InventoryTopAdapto
             sno = itemView.findViewById(R.id.itsno);
             product = itemView.findViewById(R.id.itproduct);
             box = itemView.findViewById(R.id.itbox);
+            mPieces=itemView.findViewById(R.id.itMPieces);
+            tPieces=itemView.findViewById(R.id.itPieces);
+
             tqty = itemView.findViewById(R.id.ittqty);
             mqty = itemView.findViewById(R.id.itmqty);
             tgwt = itemView.findViewById(R.id.ittgwt);

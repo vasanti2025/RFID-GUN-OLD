@@ -675,12 +675,22 @@ public class Excelopener {
                     item.setProduct(value);
                 }
                 break;
-            case "Purity":
+            /*for counter change*/
+            case "CounterId":
                 if (value == null || value.isEmpty()) {
-//                    issue(item, i, "tidvalue");
+                   issue(item, i, "tidvalue");
 
                 } else {
-                    item.setPurity(value);
+                    item.setCounterId(value);
+                }
+                break;
+
+            case "CounterName":
+                if (value == null || value.isEmpty()) {
+                   issue(item, i, "tidvalue");
+
+                } else {
+                    item.setCounterName(value);
                 }
                 break;
             case "Barcode Number":
