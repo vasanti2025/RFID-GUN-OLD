@@ -42,6 +42,12 @@ public final class InventorycategorytopLayoutBinding implements ViewBinding {
   public final RelativeLayout imgholder;
 
   @NonNull
+  public final TextView itMPieces;
+
+  @NonNull
+  public final TextView itPieces;
+
+  @NonNull
   public final TextView itage;
 
   @NonNull
@@ -92,12 +98,12 @@ public final class InventorycategorytopLayoutBinding implements ViewBinding {
   private InventorycategorytopLayoutBinding(@NonNull FrameLayout rootView,
       @NonNull LinearLayout catlay, @NonNull TextView ccagetext, @NonNull TextView ccbarcodetext,
       @NonNull TextView ccitemcodetext, @NonNull TextView ccpuritytext,
-      @NonNull RelativeLayout imgholder, @NonNull TextView itage, @NonNull TextView itbox,
-      @NonNull HorizontalScrollView itemscroll, @NonNull TextView itmatchnwt,
-      @NonNull TextView itmatchstone, @NonNull TextView itmgwt, @NonNull TextView itmqty,
-      @NonNull TextView itproduct, @NonNull TextView itsno, @NonNull ImageView itstatus,
-      @NonNull TextView ittgwt, @NonNull TextView ittnwt, @NonNull TextView ittqty,
-      @NonNull TextView ittstonewt, @NonNull View scrollIndicator,
+      @NonNull RelativeLayout imgholder, @NonNull TextView itMPieces, @NonNull TextView itPieces,
+      @NonNull TextView itage, @NonNull TextView itbox, @NonNull HorizontalScrollView itemscroll,
+      @NonNull TextView itmatchnwt, @NonNull TextView itmatchstone, @NonNull TextView itmgwt,
+      @NonNull TextView itmqty, @NonNull TextView itproduct, @NonNull TextView itsno,
+      @NonNull ImageView itstatus, @NonNull TextView ittgwt, @NonNull TextView ittnwt,
+      @NonNull TextView ittqty, @NonNull TextView ittstonewt, @NonNull View scrollIndicator,
       @NonNull RelativeLayout topitemlay) {
     this.rootView = rootView;
     this.catlay = catlay;
@@ -106,6 +112,8 @@ public final class InventorycategorytopLayoutBinding implements ViewBinding {
     this.ccitemcodetext = ccitemcodetext;
     this.ccpuritytext = ccpuritytext;
     this.imgholder = imgholder;
+    this.itMPieces = itMPieces;
+    this.itPieces = itPieces;
     this.itage = itage;
     this.itbox = itbox;
     this.itemscroll = itemscroll;
@@ -184,6 +192,18 @@ public final class InventorycategorytopLayoutBinding implements ViewBinding {
       id = R.id.imgholder;
       RelativeLayout imgholder = ViewBindings.findChildViewById(rootView, id);
       if (imgholder == null) {
+        break missingId;
+      }
+
+      id = R.id.itMPieces;
+      TextView itMPieces = ViewBindings.findChildViewById(rootView, id);
+      if (itMPieces == null) {
+        break missingId;
+      }
+
+      id = R.id.itPieces;
+      TextView itPieces = ViewBindings.findChildViewById(rootView, id);
+      if (itPieces == null) {
         break missingId;
       }
 
@@ -284,9 +304,9 @@ public final class InventorycategorytopLayoutBinding implements ViewBinding {
       }
 
       return new InventorycategorytopLayoutBinding((FrameLayout) rootView, catlay, ccagetext,
-          ccbarcodetext, ccitemcodetext, ccpuritytext, imgholder, itage, itbox, itemscroll,
-          itmatchnwt, itmatchstone, itmgwt, itmqty, itproduct, itsno, itstatus, ittgwt, ittnwt,
-          ittqty, ittstonewt, scrollIndicator, topitemlay);
+          ccbarcodetext, ccitemcodetext, ccpuritytext, imgholder, itMPieces, itPieces, itage, itbox,
+          itemscroll, itmatchnwt, itmatchstone, itmgwt, itmqty, itproduct, itsno, itstatus, ittgwt,
+          ittnwt, ittqty, ittstonewt, scrollIndicator, topitemlay);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

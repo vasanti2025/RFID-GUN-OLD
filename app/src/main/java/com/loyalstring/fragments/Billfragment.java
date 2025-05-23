@@ -1455,6 +1455,7 @@ public class Billfragment extends KeyDwonFragment implements BillAdapter.Removei
                             newItem.setFixedWastage(item.getFixedWastage());
                             newItem.setMakingPer(item.getMakingPer());
                             newItem.setAvlQty(1);
+                            newItem.setPcs(item.getPcs());
                             tempMap.put(key, newItem);
                         } else {
                             // Update the existing item in tempMap

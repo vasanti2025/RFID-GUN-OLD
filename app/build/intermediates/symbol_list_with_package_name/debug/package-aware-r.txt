@@ -3546,6 +3546,8 @@ id icleartext
 id icon
 id icon_group
 id icon_only
+id icounterlayout
+id icountyertext
 id ifRoom
 id ignore
 id ignoreRequest
@@ -3579,6 +3581,8 @@ id issueid
 id issuerecycler
 id istatus
 id istoneweight
+id itMPieces
+id itPieces
 id itage
 id italic
 id itbox
@@ -4012,7 +4016,9 @@ id totalexistitemstxt
 id totalg
 id totalitemstxt
 id totallay
+id totalmpcs
 id totaln
+id totalpcs
 id totals
 id totalsa
 id totalstatus

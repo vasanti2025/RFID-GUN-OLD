@@ -38,6 +38,15 @@ public class AlllabelResponse {
         private String CreatedOn;
         private String LastUpdated;
         private String StoneLessPercent;
+        private  String counterName;
+
+        public String getCounterName() {
+            return counterName;
+        }
+
+        public void setCounterName(String counterName) {
+            this.counterName = counterName;
+        }
 
         public int getId() {
             return Id;
@@ -387,6 +396,20 @@ public class AlllabelResponse {
         //        RecordsCount
         @SerializedName("RecordsCount")
         public int recordsCount;
+
+        public String getCounterName() {
+            return counterName;
+        }
+
+        public void setCounterName(String counterName) {
+            this.counterName = counterName;
+        }
+
+        @SerializedName("CounterName")
+        public String counterName;
+
+
+
 
         public int getRecordsCount() {
             return recordsCount;

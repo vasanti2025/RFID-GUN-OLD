@@ -186,6 +186,12 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
   public final TextView icleartext;
 
   @NonNull
+  public final LinearLayout icounterlayout;
+
+  @NonNull
+  public final TextView icountyertext;
+
+  @NonNull
   public final RelativeLayout imgholder;
 
   @NonNull
@@ -261,6 +267,12 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
   public final LinearLayout totallay;
 
   @NonNull
+  public final TextView totalmpcs;
+
+  @NonNull
+  public final TextView totalpcs;
+
+  @NonNull
   public final ImageView totalstatus;
 
   @NonNull
@@ -307,7 +319,8 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
       @NonNull TextView gwttotal, @NonNull HorizontalScrollView headingscroll,
       @NonNull LinearLayout iboxlayout, @NonNull TextView iboxtext, @NonNull TextView icategorytext,
       @NonNull LinearLayout icatgorylayout, @NonNull LinearLayout iclearlayout,
-      @NonNull TextView icleartext, @NonNull RelativeLayout imgholder,
+      @NonNull TextView icleartext, @NonNull LinearLayout icounterlayout,
+      @NonNull TextView icountyertext, @NonNull RelativeLayout imgholder,
       @NonNull LinearLayout iproductlayout, @NonNull TextView iproducttext,
       @NonNull RecyclerView irecycler, @NonNull HorizontalScrollView itemscroll,
       @NonNull ImageView itstatus, @NonNull TextView layliststate,
@@ -318,10 +331,10 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
       @NonNull View scrollIndicator, @NonNull AppCompatButton searchbtn,
       @NonNull LinearLayout singlescan, @NonNull TextView tmgwt, @NonNull TextView tmnetwt,
       @NonNull TextView tmqty, @NonNull TextView tmswt, @NonNull LinearLayout totallay,
-      @NonNull ImageView totalstatus, @NonNull AppCompatButton transferbtn, @NonNull TextView ttgwt,
-      @NonNull TextView ttnetwt, @NonNull TextView ttqty, @NonNull TextView ttswt,
-      @NonNull AppCompatButton unlabelled, @NonNull AppCompatButton unmatchedbtn,
-      @NonNull View vname) {
+      @NonNull TextView totalmpcs, @NonNull TextView totalpcs, @NonNull ImageView totalstatus,
+      @NonNull AppCompatButton transferbtn, @NonNull TextView ttgwt, @NonNull TextView ttnetwt,
+      @NonNull TextView ttqty, @NonNull TextView ttswt, @NonNull AppCompatButton unlabelled,
+      @NonNull AppCompatButton unmatchedbtn, @NonNull View vname) {
     this.rootView = rootView;
     this.avlqtytotal = avlqtytotal;
     this.cancellay = cancellay;
@@ -376,6 +389,8 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
     this.icatgorylayout = icatgorylayout;
     this.iclearlayout = iclearlayout;
     this.icleartext = icleartext;
+    this.icounterlayout = icounterlayout;
+    this.icountyertext = icountyertext;
     this.imgholder = imgholder;
     this.iproductlayout = iproductlayout;
     this.iproducttext = iproducttext;
@@ -401,6 +416,8 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
     this.tmqty = tmqty;
     this.tmswt = tmswt;
     this.totallay = totallay;
+    this.totalmpcs = totalmpcs;
+    this.totalpcs = totalpcs;
     this.totalstatus = totalstatus;
     this.transferbtn = transferbtn;
     this.ttgwt = ttgwt;
@@ -757,6 +774,18 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.icounterlayout;
+      LinearLayout icounterlayout = ViewBindings.findChildViewById(rootView, id);
+      if (icounterlayout == null) {
+        break missingId;
+      }
+
+      id = R.id.icountyertext;
+      TextView icountyertext = ViewBindings.findChildViewById(rootView, id);
+      if (icountyertext == null) {
+        break missingId;
+      }
+
       id = R.id.imgholder;
       RelativeLayout imgholder = ViewBindings.findChildViewById(rootView, id);
       if (imgholder == null) {
@@ -907,6 +936,18 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.totalmpcs;
+      TextView totalmpcs = ViewBindings.findChildViewById(rootView, id);
+      if (totalmpcs == null) {
+        break missingId;
+      }
+
+      id = R.id.totalpcs;
+      TextView totalpcs = ViewBindings.findChildViewById(rootView, id);
+      if (totalpcs == null) {
+        break missingId;
+      }
+
       id = R.id.totalstatus;
       ImageView totalstatus = ViewBindings.findChildViewById(rootView, id);
       if (totalstatus == null) {
@@ -968,11 +1009,12 @@ public final class FragmentInventoryfragmentBinding implements ViewBinding {
           cfpurity, checkb1text, checkb2text, checkb3text, checkb4text, checkb5text, checkb6text,
           checkb7text, emaillay, fage, fbarcode, fbox, fbtns, fgross, filterlayout, fitemcode,
           fnetwt, fourbtns, fpurity, gimage, gtext, gwttotal, headingscroll, iboxlayout, iboxtext,
-          icategorytext, icatgorylayout, iclearlayout, icleartext, imgholder, iproductlayout,
-          iproducttext, irecycler, itemscroll, itstatus, layliststate, listbuttons, listlay,
-          matchedbtn, matchgwttotal, matchqtytotal, nemail, nlist, nreset, savelay, savelay1,
-          scrollIndicator, searchbtn, singlescan, tmgwt, tmnetwt, tmqty, tmswt, totallay,
-          totalstatus, transferbtn, ttgwt, ttnetwt, ttqty, ttswt, unlabelled, unmatchedbtn, vname);
+          icategorytext, icatgorylayout, iclearlayout, icleartext, icounterlayout, icountyertext,
+          imgholder, iproductlayout, iproducttext, irecycler, itemscroll, itstatus, layliststate,
+          listbuttons, listlay, matchedbtn, matchgwttotal, matchqtytotal, nemail, nlist, nreset,
+          savelay, savelay1, scrollIndicator, searchbtn, singlescan, tmgwt, tmnetwt, tmqty, tmswt,
+          totallay, totalmpcs, totalpcs, totalstatus, transferbtn, ttgwt, ttnetwt, ttqty, ttswt,
+          unlabelled, unmatchedbtn, vname);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

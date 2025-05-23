@@ -178,6 +178,7 @@ public class Globalcomponents {
         List<String> bottomlist = new ArrayList<>();
         Valuesdb db = new Valuesdb(activity);
         if (title.equalsIgnoreCase("category")) {
+            Log.d("@@ title2"," @@ title2"+title);
             bottomlist = db.getcatpro();
         }
         if (bottomlist.isEmpty()) {
@@ -186,6 +187,7 @@ public class Globalcomponents {
         }
 
         showbottom(activity, title, t, bottomlist);
+        Log.d("@@ tit","@@ titale"+title);
     }
 
     public void showbottom(Context activity, String title, TextView t, List<String> bottomlist) {
@@ -227,6 +229,7 @@ public class Globalcomponents {
 
                 Valuesdb db = new Valuesdb(activity);
                 if (title.equalsIgnoreCase("box")) {
+                    Log.d("@@ tit","@@ titale"+title);
                     long ad = db.addbox(itemname.getText().toString().trim(), activity);
                     if (ad != -1) {
                         // Insertion successful
@@ -243,7 +246,27 @@ public class Globalcomponents {
                         itemname.setText("");
                     }
 
-                } else {
+                } if (title.equalsIgnoreCase("counter")) {
+                    Log.d("@@ tit","@@ titale"+title);
+                    long ad = db.addCounter(itemname.getText().toString().trim(), activity);
+                    if (ad != -1) {
+                        // Insertion successful
+//                        globaltoast(activity, "box added succesfully", "", "");
+                        List<String> updatedList = new ArrayList<>(bottomlist);
+                        updatedList.clear();
+                        updatedList.addAll(db.getCounters());
+                        bottomlist.clear();
+                        bottomlist.addAll(updatedList);
+                        itemname.setText("");
+                    } else {
+                        // Category already exists
+//                        globaltoast(activity, "box already exist to failed to add category", "", "");
+                        itemname.setText("");
+                    }
+
+                }
+
+                else {
                     for (String m : bottomlist) {
                         if (m.equalsIgnoreCase(itemname.getText().toString())) {
 //                            globaltoast(activity, "category already exist", "", "");
@@ -258,6 +281,7 @@ public class Globalcomponents {
 //                        globaltoast(activity, "category added succesfully", "", "");
                         List<String> updatedList = new ArrayList<>(bottomlist);
                         updatedList.clear();
+                        Log.d("@@ title1"," @@ title1"+title);
                         updatedList.addAll(db.getcatpro());
                         bottomlist.clear();
                         bottomlist.addAll(updatedList);
@@ -493,6 +517,7 @@ public class Globalcomponents {
         }
 
         showbottom(activity, "Box", boxtext, bottomlist);
+        Log.d("@@ tit","@@ titale"+boxtext);
     }
 
     public void changepowerg(Activity context, String tit, StorageClass storageClass, TextView toolbartext2, RFIDWithUHFUART mReader) {

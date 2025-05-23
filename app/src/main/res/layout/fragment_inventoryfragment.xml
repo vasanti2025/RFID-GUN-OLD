@@ -22,7 +22,7 @@
                 android:orientation="horizontal"
                 android:weightSum="4">
 
-             <!--   <LinearLayout
+                <LinearLayout
                     android:id="@+id/icounterlayout"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
@@ -44,7 +44,7 @@
 
 
                 </LinearLayout>
--->
+
 
                 <LinearLayout
                     android:id="@+id/icatgorylayout"
@@ -259,7 +259,7 @@
                             <TextView
                                 android:id="@+id/totalpcs"
                                 android:layout_width="50dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="19dp"
                                 android:layout_weight="1"
                                 android:gravity="center_horizontal"
                                 android:text="T Pcs"

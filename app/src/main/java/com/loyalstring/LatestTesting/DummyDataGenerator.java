@@ -42,6 +42,8 @@ public class DummyDataGenerator {
             item.setCategory(category);
             item.setProduct(product);
             item.setBox(box);
+            item.setCounterId("1");
+            item.setCounterName("name");
             item.setEpcValue(epcValue);
             item.setTidValue(tidValue);
             item.setBarCode("123");

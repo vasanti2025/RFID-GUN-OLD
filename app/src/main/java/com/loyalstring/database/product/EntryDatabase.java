@@ -2,6 +2,8 @@ package com.loyalstring.database.product;
 
 import static com.loyalstring.database.support.Valuesdb.BOXTABLE;
 import static com.loyalstring.database.support.Valuesdb.CATTABLE;
+import static com.loyalstring.database.support.Valuesdb.COUNTER_NAME;
+import static com.loyalstring.database.support.Valuesdb.COUNTER_TABLE;
 import static com.loyalstring.database.support.Valuesdb.C_BOX;
 import static com.loyalstring.database.support.Valuesdb.C_CATEGORY;
 import static com.loyalstring.database.support.Valuesdb.C_PRODUCT;
@@ -76,6 +78,8 @@ public class EntryDatabase extends SQLiteOpenHelper {
     String logintable = "LoginTable";
     String clienttable = "ClientTable";
 
+    String countertable = "CounterTable";
+
 
     public EntryDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -131,8 +135,16 @@ public class EntryDatabase extends SQLiteOpenHelper {
         String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + BOXTABLE + " (" +
                 C_BOX + " TEXT" +
                 ")";
-
         db.execSQL(CREATE_TABLE);
+
+        String CREATE_COUNTER_TABLE = "CREATE TABLE IF NOT EXISTS " + COUNTER_TABLE + " (" +
+                COUNTER_NAME + " TEXT," +
+                C_CATEGORY + " TEXT, " +
+                C_PRODUCT + " TEXT," +
+                C_BOX + " TEXT" +
+                ")";
+
+        db.execSQL(CREATE_COUNTER_TABLE);
     }
 
     public void checkdatabaset(Context mContext) {
@@ -243,9 +255,21 @@ public class EntryDatabase extends SQLiteOpenHelper {
         int processedItems = 0; // To track processed items
 
         try {
+            Set<String> uniqueCounter = new HashSet<>();
             Set<String> uniqueCategories = new HashSet<>();
             Set<String> uniqueProducts = new HashSet<>();
             Set<String> uniqueBoxes = new HashSet<>();
+
+
+            /*for counter*/
+            for (Itemmodel item : items) {
+                uniqueCounter.add(item.getCounterName());
+                //  uniqueCounter.add(item.getCounterName() + "|" + item.getProduct());
+                if (item.getCounterName() != null && !item.getCounterName().isEmpty()) {
+                    uniqueCounter.add(item.getCounterName() + "|" + item.getCategory() + "|" + item.getProduct()+ "|" + item.getBox());
+
+                }
+            }
 
             // Populate unique lists
             for (Itemmodel item : items) {
@@ -280,6 +304,29 @@ public class EntryDatabase extends SQLiteOpenHelper {
                 }
             }
 
+
+            // Insert counter
+            for (String counter : uniqueCounter) {
+                String[] parts = counter.split("\\|");
+                String counter1 = parts[0];
+                String category = parts[1];
+                String product = parts[2];
+                String box = parts[3];
+                if (!counterExist(db, counter)) {
+                    ContentValues counterValue = new ContentValues();
+                    counterValue.put(COUNTER_NAME, counter1);
+                    counterValue.put(C_CATEGORY, category);
+                    counterValue.put(C_PRODUCT, product);
+                    counterValue.put(C_BOX, box);
+
+
+                    db.insert(COUNTER_TABLE, null, counterValue);
+                    Log.d("check counter", "Inserted counter: " + counter);
+                }
+            }
+
+
+
             // Insert boxes
             for (String box : uniqueBoxes) {
                 if (!boxExists(db, box)) {
@@ -306,6 +353,8 @@ public class EntryDatabase extends SQLiteOpenHelper {
                             values.put(columnName, (Long) value);
                         } else if (value instanceof String) {
                             values.put(columnName, (String) value);
+                        } else if (value instanceof Double) {
+                            values.put(columnName, (Double) value);
                         } else if (value instanceof Double) {
                             values.put(columnName, (Double) value);
                         }
@@ -760,6 +809,14 @@ public class EntryDatabase extends SQLiteOpenHelper {
                             + ")";
                     db.execSQL(CREATE_TABLE);
 
+                    String CREATE_COUNTER_TABLE = "CREATE TABLE IF NOT EXISTS " + COUNTER_TABLE + "("
+                            + COUNTER_NAME + " TEXT,"
+                            + C_CATEGORY + " TEXT,"
+                            + C_PRODUCT + " TEXT,"
+                            + COUNTER_NAME + " TEXT"
+                            + ")";
+                    db.execSQL(CREATE_COUNTER_TABLE);
+
 //                    for(Itemmodel item : mItemList){
                     for (Itemmodel item : new ArrayList<>(mItemList)) {
                         Cursor cursor = null;
@@ -780,6 +837,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
                         }
                         if (!exists1) {
 
+                            Log.e("countername", "count  " + mItemList.size() + "  " + item.getCategory());
 
                             Log.d("check catcat", "" + item.getCategory());
                             ContentValues values = new ContentValues();
@@ -819,6 +877,22 @@ public class EntryDatabase extends SQLiteOpenHelper {
                                 values1.put(C_BOX, item.getBox());
 
                                 db.insert(BOXTABLE, null, values1);
+                            }
+                        }
+
+                        //adding counter
+                        if (item.getCounterName() != null && !item.getCounterName().isEmpty()) {
+                            Log.e("countername", "count  " + mItemList.size() + "  " + item.getCounterName());
+
+                            if (!counterExist(db, item.getCounterName())) {
+                                ContentValues values1 = new ContentValues();
+                                values1.put(COUNTER_NAME, item.getCounterName());
+                                values1.put(C_CATEGORY, item.getCategory());
+                                values1.put(C_PRODUCT, item.getProduct());
+                                values1.put(C_BOX, item.getBox());
+
+                                db.insert(COUNTER_TABLE, null, values1);
+                                Log.d("check catcat", "Inserted Counter: " + "COUNTER");
                             }
                         }
                     }
@@ -1737,6 +1811,20 @@ public class EntryDatabase extends SQLiteOpenHelper {
         try {
             cursor = db.query(BOXTABLE, null, C_BOX + " COLLATE NOCASE = ?",
                     new String[]{box.toLowerCase(Locale.ROOT)},
+                    null, null, null);
+            return cursor != null && cursor.getCount() > 0;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    private boolean counterExist(SQLiteDatabase db, String counter) {
+        Cursor cursor = null;
+        try {
+            cursor = db.query(COUNTER_TABLE, null, COUNTER_NAME + " COLLATE NOCASE = ?",
+                    new String[]{counter.toLowerCase(Locale.ROOT)},
                     null, null, null);
             return cursor != null && cursor.getCount() > 0;
         } finally {

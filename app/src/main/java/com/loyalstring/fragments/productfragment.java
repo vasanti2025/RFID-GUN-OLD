@@ -959,6 +959,9 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                 if (app.getInventoryMap().size() > 0) {
                     for (Map.Entry<String, Itemmodel> entry : app.getInventoryMap().entrySet()) {
                         Itemmodel m = new Itemmodel(entry.getValue());
+                        m.setCounterId("1");
+                        m.setCounterName("name");
+
                         ml.add(m);
                     }
                 }
@@ -1765,7 +1768,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 0, 0,
-                                    0, 0, 0, 0, 0, 0, 0, 0, 0, "", "","");
+                                    0, 0, 0, 0, 0, 0, 0, 0, 0, "", "","","","",0,0);
 
                             itemlist.add(nitem);
 
@@ -1823,7 +1826,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
                 getdvalue(sstoneamount), getdvalue(smrp), getdvalue(shallmark), 1,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, "", "","");
+                0, 0, 0, 0, 0, 0, "", "","","","",0,0);
 
 
         itemlist.clear();

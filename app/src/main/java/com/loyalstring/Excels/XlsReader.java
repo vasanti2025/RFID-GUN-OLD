@@ -481,7 +481,7 @@ public class XlsReader {
                                 0, 0, it.getGoldRate(), it.getTotalMaking(), it.getItemPrice(), it.getAppliedDiscount(),
                                 it.getItempriceAfterdiscount(), it.getGstRate(), it.getPayableAmount(), it.getPayableAmountincgst(), it.getItemGst(), it.getTotalBilleditems(),
                                 it.getTotalBilledgwt(), it.getTotalBilledamount(), it.getTotalBillAmountExcGst(), it.getTotalBillAmountincgst(), it.getTotalGst(),
-                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), it.getGunUpdate(), it.getWebUpdate(),it.getProductCode());
+                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), it.getGunUpdate(), it.getWebUpdate(),it.getProductCode(),it.getCounterId(),it.getCounterName(),it.getTotPcs(),it.getTotMPcs());
 
                         item.setImageUrl(it.getHuidCode());
 //                        if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
@@ -508,7 +508,7 @@ public class XlsReader {
                                 it.getTotalNwt(), 0, it.getGoldRate(), it.getTotalMaking(), it.getItemPrice(), it.getAppliedDiscount(),
                                 it.getItempriceAfterdiscount(), it.getGstRate(), it.getPayableAmount(), it.getPayableAmountincgst(), it.getItemGst(), it.getTotalBilleditems(),
                                 it.getTotalBilledgwt(), it.getTotalBilledamount(), it.getTotalBillAmountExcGst(), it.getTotalBillAmountincgst(), it.getTotalGst(),
-                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), "updateitem", "",it.getProductCode());
+                                it.getTotalDiscount(), it.getPaidAmount(), it.getBalance(), "updateitem", "",it.getProductCode(),it.getCounterId(),it.getCounterName(),it.getTotPcs(),it.getTotMPcs());
                         item.setImageUrl(it.getHuidCode());
 //                        if (item.getTidValue().length() == 24 && item.getCategory() != null && !item.getCategory().isEmpty() && item.getProduct() != null && !item.getProduct().isEmpty()) {
 //
@@ -761,6 +761,24 @@ public class XlsReader {
                     item.setBox("");
                 } else {
                     item.setBox(value);
+                }
+
+                break;
+                /*counter changes*/
+
+            case "CounterId":
+                if (value == null || value.isEmpty()) {
+                    item.setCounterId("");
+                } else {
+                    item.setCounterId(value);
+                }
+
+                break;
+            case "CounterName":
+                if (value == null || value.isEmpty()) {
+                    item.setCounterName("");
+                } else {
+                    item.setCounterName(value);
                 }
 
                 break;

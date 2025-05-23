@@ -32,7 +32,7 @@ public class Itemmodel implements Parcelable {
     public Itemmodel() {
     }
 
-    public Itemmodel(long operationTime, long entryDate, long transactionDate, long repaymentDate, String tidValue, String epcValue, String branch, String category, String product, String purity, String diamondMetal, String diamondColor, String diamondClarity, String diamondSetting, String diamondShape, String diamondSize, String diamondCertificate, String barCode, String itemCode, String box, String huidCode, String partyCode, String description, String status, String tagTransaction, String operation, String transactionType, String invoiceNumber, String customerName, String itemAddmode, String paymentMode, String paymentDescription, String gstApplied, double diamondWt, double diamondPcs, double diamondRate, double diamondAmount, double grossWt, double stoneWt, double netWt, double makingGm, double makingPer, double fixedAmount, double fixedWastage, double stoneAmount, double mrp, double hallmarkCharges, double avlQty, double matchQty, double totalGwt, double matchGwt, double totalStonewt, double matchStonewt, double totalNwt, double matchNwt, double goldRate, double totalMaking, double itemPrice, double appliedDiscount, double itempriceAfterdiscount, double gstRate, double payableAmount, double payableAmountincgst, double itemGst, double totalBilleditems, double totalBilledgwt, double totalBilledamount, double totalBillAmountExcGst, double totalBillAmountincgst, double totalGst, double totalDiscount, double paidAmount, double balance, String gunUpdate, String webUpdate,String productCode) {
+    public Itemmodel(long operationTime, long entryDate, long transactionDate, long repaymentDate, String tidValue, String epcValue, String branch, String category, String product, String purity, String diamondMetal, String diamondColor, String diamondClarity, String diamondSetting, String diamondShape, String diamondSize, String diamondCertificate, String barCode, String itemCode, String box, String huidCode, String partyCode, String description, String status, String tagTransaction, String operation, String transactionType, String invoiceNumber, String customerName, String itemAddmode, String paymentMode, String paymentDescription, String gstApplied, double diamondWt, double diamondPcs, double diamondRate, double diamondAmount, double grossWt, double stoneWt, double netWt, double makingGm, double makingPer, double fixedAmount, double fixedWastage, double stoneAmount, double mrp, double hallmarkCharges, double avlQty, double matchQty, double totalGwt, double matchGwt, double totalStonewt, double matchStonewt, double totalNwt, double matchNwt, double goldRate, double totalMaking, double itemPrice, double appliedDiscount, double itempriceAfterdiscount, double gstRate, double payableAmount, double payableAmountincgst, double itemGst, double totalBilleditems, double totalBilledgwt, double totalBilledamount, double totalBillAmountExcGst, double totalBillAmountincgst, double totalGst, double totalDiscount, double paidAmount, double balance, String gunUpdate, String webUpdate, String productCode, String CounterId, String CounterName, int totaPcs, int MatchPcs) {
         OperationTime = operationTime;
         EntryDate = entryDate;
         TransactionDate = transactionDate;
@@ -109,6 +109,10 @@ public class Itemmodel implements Parcelable {
         GunUpdate = gunUpdate;
         WebUpdate = webUpdate;
         ProductCode=productCode;
+        counterId = CounterId;
+        counterName = CounterName;
+        totPcs = totaPcs;
+        totMPcs = MatchPcs;
     }
 
     public int getTotPcs() {
@@ -247,6 +251,10 @@ public class Itemmodel implements Parcelable {
         this.SKUId = oitem.getSKUId();
         this.StockKeepingUnit = oitem.getStockKeepingUnit();
         this.ProductCode=oitem.getProductCode();
+        this.counterId = oitem.getCounterId();
+        this.counterName = oitem.getCounterName();
+        this.totPcs= oitem.getTotPcs();
+        this.totMPcs=oitem.getTotMPcs();
 
 
     }
@@ -347,6 +355,10 @@ public class Itemmodel implements Parcelable {
         BilladdCount = in.readString();
         StockKeepingUnit = in.readString();
         SKUId = in.readInt();
+        counterId = in.readString();
+        counterName = in.readString();
+        totPcs=in.readInt();
+        totMPcs=in.readInt();
     }
 
     public static final Creator<Itemmodel> CREATOR = new Creator<Itemmodel>() {
@@ -1192,5 +1204,8 @@ public class Itemmodel implements Parcelable {
         parcel.writeString(BilladdCount);
         parcel.writeString(StockKeepingUnit);
         parcel.writeInt(SKUId);
-    }
+        parcel.writeString(counterId);
+        parcel.writeString(counterName);
+        parcel.writeInt(totPcs);
+        parcel.writeInt(totMPcs);    }
 }

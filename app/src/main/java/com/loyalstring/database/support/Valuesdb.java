@@ -29,6 +29,9 @@ public class Valuesdb extends SQLiteOpenHelper {
     public static String G_RATE = "rate";
     public static String EMAIL_TABLE = "emailstable";
     private static final String C_EMAILID = "emailid";
+    public static String COUNTER_TABLE = "counter";
+
+    public static  String COUNTER_NAME="counter_name";
 
 
     public Valuesdb(Context context) {
@@ -105,6 +108,46 @@ public class Valuesdb extends SQLiteOpenHelper {
     }
 
 
+
+    /*Counter*/
+    public long addCounter(String name, Context activity) {
+        SQLiteDatabase db = getWritableDatabase();
+        String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + COUNTER_TABLE + "("
+                + COUNTER_NAME + " TEXT"
+                + ")";
+        db.execSQL(CREATE_TABLE);
+        if(!counterExists(db, name)){
+            ContentValues values = new ContentValues();
+            values.put(COUNTER_NAME, name);
+
+            return db.insert(COUNTER_TABLE, null, values);
+        }else{
+//            globaltoast(activity, "box already exist", "", "");
+            return  -1;
+        }
+    }
+
+    private boolean counterExists(SQLiteDatabase db, String bname) {
+        Cursor cursor = db.query(
+                COUNTER_TABLE,             // Table name
+                new String[]{COUNTER_NAME},   // Columns to retrieve
+                COUNTER_NAME + "=?",    // Selection
+                new String[]{bname},    // SelectionArgs
+                null,                 // GroupBy
+                null,                 // Having
+                null                  // OrderBy
+        );
+
+        boolean exists = cursor != null && cursor.getCount() > 0;
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return exists;
+    }
+
+
     private boolean boxExists(SQLiteDatabase db, String bname) {
         Cursor cursor = db.query(
                 BOXTABLE,             // Table name
@@ -125,6 +168,7 @@ public class Valuesdb extends SQLiteOpenHelper {
         return exists;
     }
 
+
     public List<String> getboxes() {
         List<String> itemNames = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -137,6 +181,27 @@ public class Valuesdb extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 String itemName = cursor.getString(cursor.getColumnIndex(C_BOX));
+                itemNames.add(itemName);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+//        }
+        db.close();
+        return itemNames;
+    }
+
+    public List<String> getCounters() {
+        List<String> itemNames = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + COUNTER_TABLE + "("
+                + COUNTER_NAME+ " TEXT"
+                + ")";
+        db.execSQL(CREATE_TABLE);
+        Cursor cursor = db.query(COUNTER_TABLE, new String[]{COUNTER_NAME}, null, null, null, null, null);
+//        if (isTableExists(db, tablename)) {
+        if (cursor.moveToFirst()) {
+            do {
+                String itemName = cursor.getString(cursor.getColumnIndex(COUNTER_NAME));
                 itemNames.add(itemName);
             } while (cursor.moveToNext());
         }

@@ -68,7 +68,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -97,6 +96,9 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
     InventoryBottomAdaptor inventoryBottomAdaptor;
     Globalcomponents globalcomponents;
     boolean ploopFlag = false;
+    boolean isCounterSelected = false;
+    boolean isCategorySelecetd = false;
+    boolean isProductSelecetd = false;
     StorageClass storageClass;
 //    Handler handler = new Handler() {
 //        @Override
@@ -300,12 +302,12 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 getlist("Category", b.icategorytext, getActivity());
             }
         });
-       /* b.icounterlayout.setOnClickListener(new View.OnClickListener() {
+        b.icounterlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getlist("Counter", b.icategorytext, getActivity());
+                getlist("Counter", b.icountyertext, getActivity());
             }
-        });*/
+        });
 
         b.iclearlayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -689,6 +691,10 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 //    }
 
     private void resetstate() {
+        isCategorySelecetd = false;
+        isProductSelecetd = false;
+        isCounterSelected = false;
+        b.icountyertext.setText("Counter");
         b.icategorytext.setText("Category");
         b.iproducttext.setText("Product");
         b.iboxtext.setText("Box");
@@ -885,8 +891,140 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         }
         return trimmedTidValue;
     }
-
     private void updateMaps(String tidValue) {
+        if (bottommap.containsKey(tidValue)) {
+            Itemmodel bottomItem = bottommap.get(tidValue);
+
+            // ONLY update if not matched yet
+            if (bottomItem.getMatchQty() == 0) {
+                bottomItem.setMatchQty(1); // mark matched
+
+                changedItemKeys.add(tidValue);  // Notify bottom adapter changed
+
+                // Update totals
+                tmqty += 1;
+                tmgwt += bottomItem.getGrossWt();
+                tmswt += bottomItem.getStoneWt();
+                tmnwt += bottomItem.getNetWt();
+
+                // Recalculate top match from bottom
+                recomputeTopMatchQtyFromBottom();
+            }
+        }
+    }
+
+    private void recomputeTopMatchQtyFromBottom() {
+        // Reset top match values
+        for (Map.Entry<String, Itemmodel> entry : topmap.entrySet()) {
+            Itemmodel top = entry.getValue();
+            top.setMatchQty(0);
+            top.setMatchGwt(0.0);
+            top.setMatchNwt(0.0);
+            top.setMatchStonewt(0.0);
+            top.setTotMPcs(0);
+        }
+
+        // Recalculate from bottom matched items
+        for (Map.Entry<String, Itemmodel> entry : bottommap.entrySet()) {
+            Itemmodel bottom = entry.getValue();
+            if (bottom.getMatchQty() > 0) {
+                String key = bottom.getCategory() + "|" + bottom.getProduct();
+                if (topmap.containsKey(key)) {
+                    Itemmodel top = topmap.get(key);
+                    top.setMatchQty(top.getMatchQty() + 1);
+                    top.setMatchGwt(top.getMatchGwt() + bottom.getGrossWt());
+                    top.setMatchNwt(top.getMatchNwt() + bottom.getNetWt());
+                    top.setMatchStonewt(top.getMatchStonewt() + bottom.getStoneWt());
+
+                    int topPcs = top.getTotMPcs();
+                    int bottomPcs = 0;
+                    try {
+                        bottomPcs = Integer.parseInt(bottom.getPcs());
+                    } catch (Exception ignored) {}
+                    top.setTotMPcs(topPcs + bottomPcs);
+
+                    changedItemKeys1.add(key); // Notify top adapter changed
+                }
+            }
+        }
+
+        inventoryTopAdaptor.notifyDataSetChanged(); // Refresh top list
+    }
+
+
+
+  /*  private void updateMaps(String tidValue) {
+        if (bottommap.containsKey(tidValue)) {
+            Itemmodel bottomItem = bottommap.get(tidValue);
+
+            // ONLY update if not matched yet
+            if (bottomItem.getMatchQty() == 0) {
+                bottomItem.setMatchQty(1); // mark matched
+
+                String key = bottomItem.getCategory() + "|" + bottomItem.getProduct();
+
+                if (topmap.containsKey(key)) {
+                    Itemmodel topItem = topmap.get(key);
+
+                    topItem.setMatchQty(topItem.getMatchQty() + 1);
+                    topItem.setMatchGwt(topItem.getMatchGwt() + bottomItem.getGrossWt());
+                    topItem.setMatchNwt(topItem.getMatchNwt() + bottomItem.getNetWt());
+                    topItem.setMatchStonewt(topItem.getMatchStonewt() + bottomItem.getStoneWt());
+
+                    // Safely add pcs
+                    int topPcs = 0;
+                    int bottomPcs = 0;
+                    try {
+                        topPcs = Integer.parseInt(String.valueOf(topItem.getTotMPcs()));
+                    } catch (Exception e) {
+                        topPcs = 0;
+                    }
+                    try {
+                        bottomPcs = Integer.parseInt(String.valueOf(bottomItem.getPcs()));
+                    } catch (Exception e) {
+                        bottomPcs = 0;
+                    }
+                    topItem.setTotMPcs(topPcs + bottomPcs);
+
+                    changedItemKeys1.add(key);  // Notify top adapter changed
+                }
+
+                changedItemKeys.add(tidValue);  // Notify bottom adapter changed
+
+                // Update totals
+                tmqty += 1;
+                tmgwt += bottomItem.getGrossWt();
+                tmswt += bottomItem.getStoneWt();
+                tmnwt += bottomItem.getNetWt();
+            }
+        }
+    }*/
+
+    // Replace the old updateMaps(String) with the above version
+
+    // Your addDataToList method can call updateMaps as is
+
+  /*  private void addDataToList(String fepc, String tidv, String rssi) {
+        Log.d("check fastid ", "  " + fepc + " " + tidv);
+
+        if (StringUtils.isNotEmpty(fepc)) {
+            String trimmedTidValue = fepc;
+            if (fepc.startsWith("00")) {
+                trimmedTidValue = fepc.substring(2); // Remove "00"
+            }
+            if (trimmedTidValue.endsWith("00")) {
+                trimmedTidValue = trimmedTidValue.substring(0, trimmedTidValue.length() - 2);
+            }
+
+            if (StringUtils.isNotEmpty(trimmedTidValue) && checkIsExist1(trimmedTidValue) == -1 && bottommap.containsKey(trimmedTidValue)) {
+                updateMaps(trimmedTidValue);
+                tempDataSet.add(trimmedTidValue);
+                tempDatas.add(trimmedTidValue);
+            }
+        }
+    }*/
+
+   /* private void updateMaps(String tidValue) {
         // Logic to update your topMap and bottomMap
         if (bottommap.containsKey(tidValue)) {
             bottommap.get(tidValue).setMatchQty(1);
@@ -897,8 +1035,10 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
                 topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
                 topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
-                topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
-
+                //  topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
+                int topPcs = Integer.parseInt(String.valueOf(topmap.get(key).getTotMPcs()));
+                int bottomPcs = Integer.parseInt(String.valueOf(bottommap.get(tidValue).getPcs()));
+                topmap.get(key).setTotMPcs(topPcs + bottomPcs);
                 changedItemKeys.add(tidValue);
                 changedItemKeys1.add(key);
                 tmqty = tmqty + 1;
@@ -907,7 +1047,9 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 tmnwt = tmnwt + bottommap.get(tidValue).getNetWt();
             }
         }
-    }
+    }*/
+
+
 
 
     private void addDataToList(String fepc, String tidv, String rssi) {
@@ -970,8 +1112,10 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                             topmap.get(key).setMatchGwt(topmap.get(key).getMatchGwt() + bottommap.get(tidValue).getGrossWt());
                             topmap.get(key).setMatchNwt(topmap.get(key).getMatchNwt() + bottommap.get(tidValue).getNetWt());
                             topmap.get(key).setMatchStonewt(topmap.get(key).getMatchStonewt() + bottommap.get(tidValue).getStoneWt());
-                            topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
-
+                            // topmap.get(key).setTotMPcs(Integer.parseInt(topmap.get(key).getTotMPcs() + bottommap.get(tidValue).getPcs()));
+                            int topPcs = Integer.parseInt(String.valueOf(topmap.get(key).getTotMPcs()));
+                            int bottomPcs = Integer.parseInt(String.valueOf(bottommap.get(tidValue).getPcs()));
+                            topmap.get(key).setTotMPcs(topPcs + bottomPcs);
                         }
 
                         changedItemKeys.add(tidValue);
@@ -1124,24 +1268,69 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         List<String> bottomlist = new ArrayList<>();
         Valuesdb db = new Valuesdb(activity);
 
-        if (title.equalsIgnoreCase("")) {
-            for (Itemmodel m : topmap.values()) {
-                bottomlist.add(m.getBox());
+
+        if (title.equalsIgnoreCase("counter")) {
+            filtereditems.clear();
+            bottomlist.clear();
+            bottomlist = db.getCounters();
+            if (!bottomlist.isEmpty()) {
+                isCounterSelected = true;
             }
         }
         if (title.equalsIgnoreCase("category")) {
-            bottomlist = db.getcatpro();
+            Log.d("@@ title", " @@ title" + title);
+          /*  bottomlist = db.getcatpro();
+            if (!bottomlist.isEmpty()) {
+                isCategorySelecetd = true;
+            }*/
+
+            for (Itemmodel m : topmap.values()) {
+              /*  bottomlist.add(m.getCategory());
+                if (!bottomlist.isEmpty()) {
+                    isCategorySelecetd = true;
+                }*/
+
+                if (isCounterSelected) {
+                    bottomlist.add(m.getCategory());
+                } else {
+                    bottomlist = db.getcatpro();
+                }
+            }
+            if (bottomlist.isEmpty()) {
+                bottomlist = db.getcatpro();
+
+            }
+
         }
         if (title.equalsIgnoreCase("product")) {
+            //  if (isCategorySelecetd) {
             for (Itemmodel m : topmap.values()) {
                 bottomlist.add(m.getProduct());
+                if (!bottomlist.isEmpty()) {
+                    isProductSelecetd = true;
+                }
             }
+          /*  }else {
+                Toast.makeText(activity, "Please select the category", Toast.LENGTH_SHORT).show();
+            }*/
         }
         try {
             if (title.equalsIgnoreCase("box")) {
+                //if (isProductSelecetd) {
+
                 for (Itemmodel m : topmap.values()) {
-                    bottomlist.add(m.getBox());
+                    if (isProductSelecetd) {
+                        bottomlist.add(m.getBox());
+                    } else {
+                        bottomlist = db.getboxes();
+                    }
                 }
+                if (bottomlist.isEmpty()) {
+                    bottomlist = db.getboxes();
+                }
+              /*  }else {
+                    Toast.makeText(activity, "Please select the product", Toast.LENGTH_SHORT).show();
+                }*/
             }
         }catch (Exception e)
         {
@@ -1250,9 +1439,26 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
          close.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 // Check if any item is selected
+                 List<String> selectedItems = new ArrayList<>();
+                 for (int i = 0; i < originalList.size(); i++) {
+                     if (checkedItems.get(i)) {
+                         selectedItems.add(originalList.get(i));
+                     }
+                 }
+
+                 if (!selectedItems.isEmpty()) {
+                     // Show selected items in Toast or log
+                     String selectedText = TextUtils.join(", ", selectedItems);
+                     // Toast.makeText(activity, "Selected items: " + selectedText, Toast.LENGTH_LONG).show();
+                 } else {
+                     //Toast.makeText(activity, "No items selected", Toast.LENGTH_SHORT).show();
+                 }
+
                  bottomSheetDialog.dismiss();
              }
          });
+
 
          applyButton.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -1288,6 +1494,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
          e.printStackTrace();
      }
     }
+
 
 
     public void showbottom2(FragmentActivity activity, String title, TextView t, List<String> bottomlist) {
@@ -1391,9 +1598,238 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 
         bottomSheetDialog.show();
     }
-
-
     public void applyFilter(FragmentActivity activity, String title, List<String> selectedItems) {
+        boolean isCounterSelectedNew = false;
+        boolean isCategorySelectedNew = false;
+
+        if(isCounterSelected || isCategorySelecetd ||isProductSelecetd) {
+
+            // Case 1: Counter is selected
+            if (title.equalsIgnoreCase("Counter")) {
+                filtereditems.clear();
+                tempDatas.clear();
+                tempDataSet.clear();
+
+                b.icategorytext.setText("Category");
+                b.iproducttext.setText("Product");
+                b.iboxtext.setText("Box");
+
+
+                for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getCounterName()))) {
+                        filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                        isCounterSelectedNew = true;
+                    }
+                }
+
+                readitems(activity, "counter", "all");
+                maindialog.dismiss();
+                return;
+            }
+
+            // Case 2: Category filtering (only if counter was already selected)
+            if (title.equalsIgnoreCase("Category")) {
+                if (filtereditems.isEmpty()) {
+                    Toast.makeText(activity, "Please select a Category first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, Itemmodel> entry = iterator.next();
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getCategory()))) {
+                        iterator.remove();
+                        isCategorySelectedNew = true;
+                    }
+                }
+                readitems(activity, "category", "all");
+                maindialog.dismiss();
+                return;
+         /*   if (isCounterSelected) {
+                if (filtereditems.isEmpty()) {
+                    filtereditems.clear();
+                }
+
+            } else {
+
+                filtereditems.clear();
+            }
+            for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                //filtereditems.clear();
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getCategory()))) {
+                    filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                    isCategorySelectedNew = true;
+                }
+            }
+            readitems(activity, "category", "all");
+            maindialog.dismiss();
+            return;*/
+            }
+
+            // Case 3: Product filtering (only if counter was already selected)
+            if (title.equalsIgnoreCase("Product")) {
+                Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, Itemmodel> entry = iterator.next();
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getProduct()))) {
+                        iterator.remove();
+                        isCategorySelectedNew = true;
+                        ;
+                    }
+                }
+                readitems(activity, "product", "all");
+                maindialog.dismiss();
+                return;
+            }
+       /* if (title.equalsIgnoreCase("Product")) {
+            if (filtereditems.isEmpty()) {
+                Toast.makeText(activity, "Please select a Product first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Itemmodel> entry = iterator.next();
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getProduct()))) {
+                    iterator.remove();
+                }
+            }
+            readitems1(activity, "product", "all");
+            maindialog.dismiss();
+            return;*/
+
+
+            // Case 4: Box filtering (can be applied even if counter is NOT selected)
+            if (title.equalsIgnoreCase("Box")) {
+                // If no counter was selected before, filter from totalitems
+
+           /* if (!isCategorySelectedNew) {
+                filtereditems.clear();
+                topmap.clear();
+                for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getBox()))) {
+                        filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                    }
+                }
+            } else {*/
+                // Counter was already selected → filter from filtereditems
+                Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<String, Itemmodel> entry = iterator.next();
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getBox()))) {
+                        iterator.remove();
+                    }
+                }
+                //  }
+
+                readitems(activity, "box", "all");
+                maindialog.dismiss();
+            }
+        }else {
+            if (title.equalsIgnoreCase("Box")) {
+
+                filtereditems.clear();
+                topmap.clear();
+                for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getBox()))) {
+                        filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                    }
+                }
+
+
+                readitems(activity, "box", "all");
+                maindialog.dismiss();
+            }
+
+            if (title.equalsIgnoreCase("Category")) {
+
+                filtereditems.clear();
+                topmap.clear();
+                for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                    Itemmodel item = entry.getValue();
+                    if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getCategory()))) {
+                        filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                    }
+                }
+
+
+                readitems(activity, "category", "all");
+                maindialog.dismiss();
+            }
+        }
+
+
+    }
+
+   /* public void applyFilter(FragmentActivity activity, String title, List<String> selectedItems) {
+        if (title.equalsIgnoreCase("Counter")) {
+            filtereditems.clear();
+            tempDatas.clear();
+            tempDataSet.clear();
+            b.icategorytext.setText("Category");
+            b.iproducttext.setText("Product");
+
+            for (Map.Entry<String, Itemmodel> entry : totalitems.entrySet()) {
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().anyMatch(selected -> selected.equalsIgnoreCase(item.getCounterName()))) {
+                    filtereditems.put(item.getTidValue(), new Itemmodel(item));
+                }
+            }
+
+            readitems(activity, "counter", "all");
+            maindialog.dismiss();
+        }
+
+        if (title.equalsIgnoreCase("Category")) {
+            Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Itemmodel> entry = iterator.next();
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getCategory()))) {
+                    iterator.remove();
+                }
+            }
+            readitems(activity, "category", "all");
+            maindialog.dismiss();
+        }
+
+        if (title.equalsIgnoreCase("Product")) {
+            Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Itemmodel> entry = iterator.next();
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getProduct()))) {
+                    iterator.remove();
+                }
+            }
+            readitems1(activity, "product", "all");
+            maindialog.dismiss();
+        }
+
+        if (title.equalsIgnoreCase("Box")) {
+            Iterator<Map.Entry<String, Itemmodel>> iterator = filtereditems.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Itemmodel> entry = iterator.next();
+                Itemmodel item = entry.getValue();
+                if (selectedItems.stream().noneMatch(selected -> selected.equalsIgnoreCase(item.getBox()))) {
+                    iterator.remove();
+                }
+            }
+            readitems1(activity, "box", "all");
+            maindialog.dismiss();
+        }
+    }
+*/
+
+   /* public void applyFilter(FragmentActivity activity, String title, List<String> selectedItems) {
         // Clear the filtered items before applying a new filter
 
 
@@ -1464,7 +1900,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             maindialog.dismiss();
         }
     }
-
+*/
 
     public void showbottomold(FragmentActivity activity, String title, TextView t, List<String> bottomlist) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
@@ -1595,6 +2031,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
         double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0, totalPc = 0;
         double totalmqty = 0, totalmgwt = 0, totalmswt = 0, totalmnwt = 0, totalMapcs = 0;
         boolean isbranch = false;
+        int pcs = 0;
 
         for (Itemmodel it : pauselist) {
             Log.e("checking items", "check1  " + it.toString());
@@ -1610,19 +2047,31 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             if (aggregatedItems.containsKey(key)) {
                 // If item already exists, update its values
                 Itemmodel aggregatedItem = aggregatedItems.get(key);
+
+                try {
+                    pcs = Integer.parseInt(item.getPcs());
+                } catch (NumberFormatException e) {
+                    pcs = 0; // or log the error
+                }
+
+                Log.d("@@","@@"+pcs);
+
+                aggregatedItem.setTotPcs(aggregatedItem.getTotPcs() + pcs);
                 // Update count
-                aggregatedItem.setAvlQty(aggregatedItem.getAvlQty() + 1);
+                aggregatedItem.setAvlQty(aggregatedItem.getAvlQty() + item.getAvlQty());
+
+
                 // Update weights
                 aggregatedItem.setTotalGwt(aggregatedItem.getTotalGwt() + item.getGrossWt());
+                aggregatedItem.setTotalNwt(aggregatedItem.getTotalNwt() + item.getNetWt());
                 totalqty = totalqty + 1;
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
-                totalPc = Double.parseDouble(totalPc + item.getPcs());
-
 
                 for (Itemmodel it : pauselist) {
                     if (it.getTidValue().equals(item.getTidValue())) {
+                        aggregatedItem.setCategory(it.getCategory());
 
                         aggregatedItem.setMatchQty(aggregatedItem.getMatchQty() + it.getMatchQty());
 
@@ -1641,14 +2090,34 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 // If item doesn't exist, add it to the map
                 // Make a copy of the item and set count to 1
                 Itemmodel newItem = new Itemmodel();
+                newItem.setCategory(item.getCategory());
                 newItem.setProduct(item.getProduct());
                 newItem.setBox(item.getBox());
+                newItem.setCounterId(item.getCounterId());
+                newItem.setCounterName(item.getCounterName());
                 newItem.setAvlQty(1);
                 newItem.setTotalGwt(item.getGrossWt());
                 newItem.setTotalStonewt(item.getStoneWt());
                 newItem.setTotalNwt(item.getNetWt());
-
+               // int pcs = 0;
                 String pcsStr = item.getPcs();
+
+                if (pcsStr != null) {
+                    pcsStr = pcsStr.trim();  // Remove leading/trailing spaces
+                    if (!pcsStr.isEmpty()) {
+                        try {
+                            pcs = Integer.parseInt(pcsStr);
+                        } catch (NumberFormatException e) {
+                            // Log error or handle invalid number format
+                            System.err.println("Invalid pcs value: " + pcsStr);
+                            pcs = 0;  // or choose a default/fallback value
+                        }
+                    }
+                }
+
+                newItem.setTotPcs(pcs);
+
+               /* String pcsStr = item.getPcs();
                 if (pcsStr != null && !pcsStr.trim().isEmpty()) {
                     try {
                         newItem.setTotPcs(Integer.parseInt(pcsStr.trim()));
@@ -1656,7 +2125,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                         // handle error, or set default
                         newItem.setTotPcs(0);  // or log the error
                     }
-                }
+                }*/
                 Gson gson = new Gson();
                 String json = gson.toJson(item);
                 Log.d("@@", "item.getPcs()" + json);
@@ -1665,13 +2134,14 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
+               /* double pcsValue = 0.0;
                 try {
-                    if (item.getPcs() != null) {
-                        totalPc = Double.parseDouble(totalPc + item.getPcs());
-                    }
+                    pcsValue = Double.parseDouble(item.getPcs());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    pcsValue = 0.0; // or handle/log
                 }
+                totalPc = totalPc + pcsValue;
+                newItem.setTotPcs((int) totalPc);*/
                 for (Itemmodel it : pauselist) {
                     if (it.getTidValue().equals(item.getTidValue())) {
                         newItem.setMatchQty(it.getMatchQty());
@@ -1682,7 +2152,14 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                             totalmgwt = totalmgwt + it.getGrossWt();
                             totalmswt = totalmswt + it.getStoneWt();
                             totalmnwt = totalmnwt + it.getNetWt();
-                            totalPc = Double.parseDouble(totalPc + item.getPcs());
+                            /*double pcsValue1 = 0.0;
+                            try {
+                                pcsValue1 = Double.parseDouble(item.getPcs());
+                            } catch (Exception e) {
+                                pcsValue1 = 0.0; // or handle/log
+                            }
+                            totalPc = totalPc + pcsValue1;
+                            newItem.setTotPcs((int) totalPc);*/
                         }
                     }
                 }
@@ -1722,6 +2199,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
 
         double totalqty = 0, totalgwt = 0, totalswt = 0, totalnwt = 0, totalPc = 0;
         boolean isbranch = false;
+        int pcs=0;
 
 
         for (Map.Entry<String, Itemmodel> entry : filtereditems.entrySet()) {
@@ -1734,22 +2212,37 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             if (aggregatedItems.containsKey(key)) {
                 // If item already exists, update its values
                 Itemmodel aggregatedItem = aggregatedItems.get(key);
+                try {
+                    pcs = Integer.parseInt(item.getPcs());
+                } catch (NumberFormatException e) {
+                    pcs = 0; // or log the error
+                }
+
+                Log.d("@@","@@"+pcs);
+
+                aggregatedItem.setTotPcs(aggregatedItem.getTotPcs() + pcs);
+                aggregatedItem.setCategory(aggregatedItem.getCategory());
                 // Update count
                 aggregatedItem.setAvlQty(aggregatedItem.getAvlQty() + 1);
                 aggregatedItem.setMatchQty(aggregatedItem.getMatchQty() + item.getMatchQty());
                 // Update weights
                 aggregatedItem.setTotalGwt(aggregatedItem.getTotalGwt() + item.getGrossWt());
+                aggregatedItem.setTotalNwt(aggregatedItem.getTotalNwt() + item.getNetWt());
                 totalqty = totalqty + 1;
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
-                totalPc = Double.parseDouble(totalPc + item.getPcs());
+
+                aggregatedItems.put(key, aggregatedItem);
             } else {
                 // If item doesn't exist, add it to the map
                 // Make a copy of the item and set count to 1
                 Itemmodel newItem = new Itemmodel();
+                newItem.setCategory(item.getCategory());
                 newItem.setProduct(item.getProduct());
                 newItem.setBox(item.getBox());
+                newItem.setCounterId(item.getCounterId());
+                newItem.setCounterName(item.getCounterName());
                 newItem.setAvlQty(1);
                 newItem.setMatchQty(item.getMatchQty());
                 newItem.setTotalGwt(item.getGrossWt());
@@ -1766,7 +2259,8 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 totalgwt = totalgwt + item.getGrossWt();
                 totalswt = totalswt + item.getStoneWt();
                 totalnwt = totalnwt + item.getNetWt();
-                totalPc = Double.parseDouble(totalPc + item.getPcs());
+
+                //   newItem.setTotPcs((int) totalPc);
                 aggregatedItems.put(key, newItem);
             }
 
@@ -1811,9 +2305,11 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
             if (aggregatedItems.containsKey(key)) {
                 // If item already exists, update its values
                 Itemmodel aggregatedItem = aggregatedItems.get(key);
+
                 // Update count
                 aggregatedItem.setAvlQty(aggregatedItem.getAvlQty() + 1);
                 // Update weights
+                aggregatedItem.setTotalGwt(aggregatedItem.getTotalGwt() + item.getGrossWt());
                 aggregatedItem.setTotalGwt(aggregatedItem.getTotalGwt() + item.getGrossWt());
             } else {
                 // If item doesn't exist, add it to the map
@@ -1821,6 +2317,7 @@ public class Inventoryfragment extends KeyDwonFragment implements InventoryTopAd
                 Itemmodel newItem = new Itemmodel();
                 newItem.setAvlQty(1);
                 newItem.setTotalGwt(item.getGrossWt());
+                newItem.setTotPcs(Integer.parseInt(item.getPcs()));
                 // Add to aggregatedItems map
                 aggregatedItems.put(key, newItem);
             }
