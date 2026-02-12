@@ -190,6 +190,7 @@ public class InventoryBottomAdaptor extends RecyclerView.Adapter<InventoryBottom
                         "Itemcode: " + checknull(item.getItemCode()) + "\n" +
                         "Box: " + checknull(item.getBox()) + "\n" +
                         "Pieces: " + checknull(item.getPcs()) + "\n" +
+                        "MRP: " + checknull(String.valueOf(item.getMrp())) + "\n" +
                         "Gross weight: " + item.getGrossWt() + "\n" +
                         "Stone weight: " + item.getStoneWt() + "\n" +
                         "Net weight: " + item.getNetWt());

@@ -77,6 +77,7 @@ public class Itemdialog {
                         "Box: " + checknull(item.getBox()) + "\n" +
                         "Pieces: " + checknull(item.getPcs()) + "\n" +
                         "Product Code: " + checknull(item.getProductCode()) + "\n" +
+                        "MRP: " + checknull(String.valueOf(item.getMrp())) + "\n" +
                         "Gross weight: " + item.getGrossWt() + "\n" +
                         "Stone weight: " + item.getStoneWt() + "\n" +
                         "Net weight: " + item.getNetWt());
@@ -307,6 +308,7 @@ public class Itemdialog {
                         "Box: " + checknull(item.getBox()) + "\n" +
                         "Pieces: " + checknull(item.getPcs()) + "\n" +
                         "Product Code: " + checknull(item.getProductCode()) + "\n" +
+                        "MRP: " + checknull(String.valueOf(item.getMrp())) + "\n" +
                         "Gross weight: " + item.getGrossWt() + "\n" +
                         "Stone weight: " + item.getStoneWt() + "\n" +
                         "Net weight: " + item.getNetWt()+"\n" +
