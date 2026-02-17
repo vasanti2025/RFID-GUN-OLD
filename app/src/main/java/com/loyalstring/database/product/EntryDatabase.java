@@ -47,6 +47,7 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -117,6 +118,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     public void checkdatabase(Context mContext) {
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+       // entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = entryDatabase.getWritableDatabase();
         createalltable(db, Itemmodel.class, ALL_TABLE);
         createalltable(db, Itemmodel.class, D_TABLE);
@@ -979,6 +981,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
         protected List<Itemmodel> doInBackground(Void... voids) {
             List<Itemmodel> failedItems = new ArrayList<>();
             EntryDatabase entryDatabase = new EntryDatabase(mContext);
+            entryDatabase.clearStockReportByDate(mContext, new Date());
             SQLiteDatabase db = entryDatabase.getWritableDatabase();
 //            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
 
@@ -2468,6 +2471,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public int gettotalcount(Context mContext) {
         int totalCount = 0;
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = entryDatabase.getReadableDatabase();
 
         try {
@@ -2496,6 +2500,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public Itemmodel getitembytid(String tidValue, Context mContext) {
         Itemmodel item = null;
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = entryDatabase.getReadableDatabase();
 
         try {
@@ -2546,6 +2551,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public Map<String, Itemmodel> getBilledItems(Context mContext) {
         HashMap<String, Itemmodel> billList = new HashMap<>();
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = null;
         Cursor cursor = null;
 
@@ -2586,6 +2592,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public Map<String, Itemmodel> getBilledItems1(Context mContext) {
         HashMap<String, Itemmodel> billList = new HashMap<>();
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = null;
         Cursor cursor = null;
 
@@ -2782,6 +2789,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public int gettotalcount1(Context mContext) {
         int totalCount = 0;
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = entryDatabase.getReadableDatabase();
 
         try {
@@ -2855,6 +2863,7 @@ public void saveAllItem(List<Itemmodel> itemList) {
     public int getinvoicenumber(Context mContext) {
         int nextInvoiceNumber = 1;
         EntryDatabase entryDatabase = new EntryDatabase(mContext);
+        entryDatabase.clearStockReportByDate(mContext, new Date());
         SQLiteDatabase db = entryDatabase.getReadableDatabase();
 
         // SQL query to get all invoice numbers
@@ -3256,8 +3265,45 @@ public void saveAllItem(List<Itemmodel> itemList) {
 
             return count;
         }
+    }
 
+    public void clearStockReportByDate(Context context, Date targetDate) {
 
+        SQLiteDatabase db = new EntryDatabase(context).getWritableDatabase();
+
+        long startOfDay = getStartOfDay(targetDate);
+        long endOfDay = getEndOfDay(targetDate);
+
+        db.delete(
+                "detailstable",
+                "OperationTime >= ? AND OperationTime <= ?",
+                new String[]{
+                        String.valueOf(startOfDay),
+                        String.valueOf(endOfDay)
+                }
+        );
+
+        db.close();
+    }
+
+    private long getStartOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
+    private long getEndOfDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTimeInMillis();
     }
 
 

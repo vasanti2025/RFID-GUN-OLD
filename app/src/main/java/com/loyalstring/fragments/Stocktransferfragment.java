@@ -2,6 +2,7 @@
 package com.loyalstring.fragments;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -73,6 +74,7 @@ public class Stocktransferfragment extends KeyDwonFragment {
     private ImageView singleimage;
     private Button btnScanBox;
     private ScannedDataAdapter adapter;
+    private MediaPlayer scanSound;
 
     StorageClass storageClass;
     MyApplication myApplication;
@@ -93,6 +95,14 @@ public class Stocktransferfragment extends KeyDwonFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stocktransferfragment, container, false);
 
+        barcodeDecoder.open(getContext());
+      /*  barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.CODE128, true);
+        barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.CODE39, true);
+        barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.EAN13, true);
+        barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.EAN8, true);
+        barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.UPCA, true);
+        barcodeDecoder.enableSymbology(BarcodeDecoder.Symbology.UPCE, true);*/
+        scanSound = MediaPlayer.create(getContext(), R.raw.barcodebeep);
         mainActivity = (MainActivity) getActivity();
         sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         apiService = RetrofitClient.getClient().create(ApiService.class);
@@ -197,12 +207,13 @@ public class Stocktransferfragment extends KeyDwonFragment {
                     item.setStatusType(true);
                     item.setId(0);
                     item.setClientCode(clientCode);
-
-                    requireActivity().runOnUiThread(() -> {
-                        scannedList.add(item);
-                        adapter.notifyDataSetChanged();
-                        tvTotalItems.setText("Total items: " + scannedList.size());
-                    });
+                    if (isAdded() && getActivity() != null) {
+                        requireActivity().runOnUiThread(() -> {
+                            scannedList.add(item);
+                            adapter.notifyDataSetChanged();
+                            tvTotalItems.setText("Total items: " + scannedList.size());
+                        });
+                    }
                 }
             }
             return true;
@@ -211,30 +222,33 @@ public class Stocktransferfragment extends KeyDwonFragment {
 
         layoutScan.setOnClickListener(v -> startOrStopScan());
         layoutSync.setOnClickListener(view1 -> syncToServer(scannedList, success -> {
+            if (isAdded() && getActivity() != null) {
+                requireActivity().runOnUiThread(() -> {
+                    if (success) {
+                        startOrStopScan();
+                        Toast.makeText(getContext(), "Stock transfer successful", Toast.LENGTH_SHORT).show();
+                        editBoxName.setText("");
+                        scannedList.clear();
+                        scannedEpcList.clear();
+                        labelledStockList.clear();
+                        adapter.notifyDataSetChanged();
+                        tvTotalItems.setText("Total items: 0");
+                        // fetchLabelledStockListFromApi();
+                    } else {
+                        Toast.makeText(getContext(), "Stock transfer failed", Toast.LENGTH_SHORT).show();
+                    }
 
-            requireActivity().runOnUiThread(() -> {
-                if (success) {
-                    startOrStopScan();
-                    Toast.makeText(getContext(), "Stock transfer successful", Toast.LENGTH_SHORT).show();
-                    editBoxName.setText("");
-                    scannedList.clear();
-                    scannedEpcList.clear();
-                    labelledStockList.clear();
-                    adapter.notifyDataSetChanged();
-                    tvTotalItems.setText("Total items: 0");
-                   // fetchLabelledStockListFromApi();
-                } else {
-                    Toast.makeText(getContext(), "Stock transfer failed", Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+            }
         }));
+
         btnScanBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                mainActivity.barcodeDecoder.startScan();
+                barcodeDecoder.startScan();
 
-                mainActivity.barcodeDecoder.setDecodeCallback(new BarcodeDecoder.DecodeCallback() {
+                barcodeDecoder.setDecodeCallback(new BarcodeDecoder.DecodeCallback() {
                     @Override
                     public void onDecodeComplete(BarcodeEntity barcodeEntity) {
                         if (barcodeEntity != null && barcodeEntity.getBarcodeData() != null){
@@ -242,6 +256,9 @@ public class Stocktransferfragment extends KeyDwonFragment {
                             if(!mainActivity.mReader.isInventorying()){
                                 editBoxName.setText(barcodeEntity.getBarcodeData());
 
+                            }
+                            if (scanSound != null) {
+                                scanSound.start();
                             }
 
                         }
@@ -313,10 +330,12 @@ public class Stocktransferfragment extends KeyDwonFragment {
             apiManager.fetchAllLabeledStock(clientCode, new com.loyalstring.interfaces.interfaces.ApiCallback<List<AlllabelResponse.LabelItem>>() {
                 @Override
                 public void onSuccess(List<AlllabelResponse.LabelItem> result) {
-                    requireActivity().runOnUiThread(() -> {
-                        labelledStockList.clear();
-                        labelledStockList.addAll(result);
-                    });
+                    if (isAdded() && getActivity() != null) {
+                        requireActivity().runOnUiThread(() -> {
+                            labelledStockList.clear();
+                            labelledStockList.addAll(result);
+                        });
+                    }
                 }
 
                 @Override
@@ -370,11 +389,12 @@ public class Stocktransferfragment extends KeyDwonFragment {
                     e.printStackTrace();
                 }
             }
-
-            requireActivity().runOnUiThread(() -> {
-                singletext.setText("Scan");
-                singleimage.setImageResource(R.drawable.ic_scanblack);
-            });
+            if (isAdded() && getActivity() != null) {
+                requireActivity().runOnUiThread(() -> {
+                    singletext.setText("Scan");
+                    singleimage.setImageResource(R.drawable.ic_scanblack);
+                });
+            }
         }
     }
 
@@ -509,6 +529,27 @@ public class Stocktransferfragment extends KeyDwonFragment {
     public void onPause() {
         super.onPause();
         stopScanner();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (scanSound != null) {
+            scanSound.release();
+            scanSound = null;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        stopScanner();
+
+        if (barcodeDecoder != null) {
+            barcodeDecoder.stopScan();
+            barcodeDecoder.setDecodeCallback(null);
+        }
     }
 
 
