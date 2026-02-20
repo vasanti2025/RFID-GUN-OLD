@@ -1,14 +1,20 @@
 package com.loyalstring.fragments;
 
 import static com.loyalstring.MainActivity.invf;
+import static com.loyalstring.fsupporters.Pemissionscheck.STORAGE_PERMISSION_READWRITE_CODE;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,13 +25,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.loyalstring.Apis.ApiProcess;
 import com.loyalstring.MainActivity;
 import com.loyalstring.R;
 import com.loyalstring.database.StorageClass;
+import com.loyalstring.fsupporters.MyApplication;
 import com.loyalstring.fsupporters.Pemissionscheck;
 import com.loyalstring.interfaces.interfaces;
+import com.loyalstring.modelclasses.Itemmodel;
 import com.loyalstring.readersupport.KeyDwonFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Homefragment extends KeyDwonFragment implements interfaces.PermissionCallback {
@@ -34,12 +46,18 @@ public class Homefragment extends KeyDwonFragment implements interfaces.Permissi
     CardView cproduct, cinventory, cbill, csearch, cstocktransfer
             , cstockhistory, cstockreport, csalereport, csettings, remap,stockTransfer, issue;
 
+    private android.os.Handler handler;
+    private Runnable runnable;
+
     MainActivity mainActivity;
     StorageClass storageClass;
 
     Pemissionscheck pcheck;
     Button testbtn;
     Button powercheck;
+    private Fragment pendingFragment;
+    MyApplication app;
+    ApiProcess apiprocess;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +65,8 @@ public class Homefragment extends KeyDwonFragment implements interfaces.Permissi
         view = inflater.inflate(R.layout.fragment_homefragment, container, false);
 
         mainActivity = (MainActivity) getActivity();
-
+        apiprocess=new ApiProcess();
+        ensurePermissions(getActivity());
         storageClass = new StorageClass(getActivity());
         ActionBar actionBar = mainActivity.getSupportActionBar();
         if (actionBar != null) {
@@ -212,6 +231,60 @@ public class Homefragment extends KeyDwonFragment implements interfaces.Permissi
         return view;
     }
 
+
+    /*@Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }*/
+    private void startAutoUpdate() {
+        handler = new android.os.Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                ArrayList<Itemmodel> ml = new ArrayList<>();
+
+                if (app.getInventoryMap().size() > 0) {
+                    for (Map.Entry<String, Itemmodel> entry : app.getInventoryMap().entrySet()) {
+                        Itemmodel m = new Itemmodel(entry.getValue());
+                        m.setCounterId("1");
+                        m.setCounterName("name");
+                        ml.add(m);
+                    }
+                }
+
+                if (!ml.isEmpty() && storageClass.getBaseUrl() != null && !storageClass.getBaseUrl().isEmpty()) {
+                    apiprocess.updateproduct(ml, getActivity(), storageClass.getBaseUrl());
+                }
+
+                handler.postDelayed(this, 120000); // <-- calls again after 15 sec
+            }
+        };
+
+        handler.postDelayed(runnable, 120000); // first call
+    }
+
+
+    private void ensurePermissions(Activity activity) {
+        String[] permissions = {
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+        List<String> req = new ArrayList<>();
+        for (String p : permissions) {
+            if (ContextCompat.checkSelfPermission(activity, p) != PackageManager.PERMISSION_GRANTED) {
+                req.add(p);
+            }
+        }
+        if (!req.isEmpty()) {
+            ActivityCompat.requestPermissions(activity, req.toArray(new String[0]), 1001);
+        }
+    }
+
     private int getvalue(String power) {
         if(power == null || power.isEmpty() || power.equalsIgnoreCase("0")){
             return 5;
@@ -242,15 +315,27 @@ public class Homefragment extends KeyDwonFragment implements interfaces.Permissi
     }
 
     private void displayfragemnt(Fragment h) {
-        if(pcheck.checkreadandwrite(mainActivity)){
-
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.mainfragment, h);
-            transaction.addToBackStack(null); // Add the transaction to the back stack
-            transaction.commit();
+        if (pcheck.checkreadandwrite(requireContext())) {
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainfragment, h).addToBackStack(null).commit();
             mListener.onFragmentChanged(h.getId());
-        }else{
-            pcheck.requestreadwrite(getActivity());
+        } else {
+            // ask the Activity to remember and request
+            ((MainActivity) requireActivity()).requestPermissionAndNavigate(h);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_READWRITE_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (pendingFragment != null) {
+                    displayfragemnt(pendingFragment);
+                    pendingFragment = null;
+                }
+            } else {
+                Toast.makeText(getActivity(), "Storage permission is required!", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }

@@ -169,6 +169,7 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
         mainActivity.currentFragment = productfragment.this;
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         ActionBar actionBar = mainActivity.getSupportActionBar();
+        ensurePermissions(getActivity());
         if (actionBar != null) {
             // Update ActionBar properties
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -1110,6 +1111,31 @@ public class productfragment extends KeyDwonFragment implements interfaces.Permi
 
 
         return b.getRoot();
+    }
+    private void ensurePermissions(Activity activity) {
+        String[] permissions = {
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        };
+        List<String> req = new ArrayList<>();
+        for (String p : permissions) {
+            if (ContextCompat.checkSelfPermission(activity, p) != PackageManager.PERMISSION_GRANTED) {
+                req.add(p);
+            }
+        }
+        if (!req.isEmpty()) {
+            ActivityCompat.requestPermissions(activity, req.toArray(new String[0]), 1001);
+        }
+    }
+
+
+    public String shortSerial(String serial) {
+        if (serial == null || serial.length() < 2) {
+            return "A" + (serial != null ? serial : "");
+        }
+        String lastTwo  = serial.substring(serial.length() - 2); // get last 2 chars
+        return "A" + lastTwo ;
     }
 
     private void fetchbills(com.loyalstring.interfaces.interfaces.Fetchbills fetchbills) {

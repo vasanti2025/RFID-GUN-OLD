@@ -55,7 +55,9 @@ import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.net.ssl.*;
 
@@ -88,7 +90,7 @@ public class Stocktransferfragment extends KeyDwonFragment {
     public KeyDwonFragment currentFragment=null;
 
     private final List<ScannedDataToService> scannedList = new ArrayList<>();
-    private final List<String> scannedEpcList = new ArrayList<>();
+    private final Set<String> scannedEpcList = new HashSet<>();
     private final List<AlllabelResponse.LabelItem> labelledStockList = new ArrayList<>();
 
     @Override
@@ -218,6 +220,19 @@ public class Stocktransferfragment extends KeyDwonFragment {
             }
             return true;
         });
+
+        Handler uiHandler = new Handler();
+
+        Runnable uiUpdater = new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                tvTotalItems.setText("Total items: " + scannedList.size());
+                uiHandler.postDelayed(this, 300);
+            }
+        };
+
+        uiHandler.post(uiUpdater);
 
 
         layoutScan.setOnClickListener(v -> startOrStopScan());
@@ -373,7 +388,7 @@ public class Stocktransferfragment extends KeyDwonFragment {
         }
     }
 
-    private class TagThread extends Thread {
+   /* private class TagThread extends Thread {
         @Override
         public void run() {
             while (mainActivity != null && mainActivity.mReader != null && mainActivity.mReader.isInventorying()) {
@@ -384,7 +399,7 @@ public class Stocktransferfragment extends KeyDwonFragment {
                     handler.sendMessage(msg);
                 }
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -396,7 +411,31 @@ public class Stocktransferfragment extends KeyDwonFragment {
                 });
             }
         }
-    }
+    }*/
+   private class TagThread extends Thread {
+       @Override
+       public void run() {
+
+           while (mainActivity != null &&
+                   mainActivity.mReader != null &&
+                   mainActivity.mReader.isInventorying()) {
+
+               UHFTAGInfo tagInfo = mainActivity.mReader.readTagFromBuffer();
+
+               if (tagInfo != null) {
+                   handler.obtainMessage(1, tagInfo).sendToTarget();
+               }
+           }
+
+           if (isAdded() && getActivity() != null) {
+               requireActivity().runOnUiThread(() -> {
+                   singletext.setText("Scan");
+                   singleimage.setImageResource(R.drawable.ic_scanblack);
+               });
+           }
+       }
+   }
+
 
     @SuppressLint("HardwareIds")
     private ScannedDataToService findProductByEPC(String epc) {

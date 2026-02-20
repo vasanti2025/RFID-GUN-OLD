@@ -1,7 +1,12 @@
 package com.loyalstring;
 
+import static com.loyalstring.fsupporters.Pemissionscheck.STORAGE_PERMISSION_READWRITE_CODE;
+
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -15,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -49,6 +56,7 @@ import com.loyalstring.modelclasses.Itemmodel;
 import com.loyalstring.readersupport.BaseTabFragmentActivity;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,6 +72,7 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
     public TextView toolpower;
     StorageClass storageClass;
     Pemissionscheck pemissionscheck;
+    private Fragment pendingFragment;
 //    BarcodeDecoder barcodeDecoder= BarcodeFactory.getInstance().getBarcodeDecoder();
 
     public static Fragment invf;
@@ -75,8 +84,6 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
     HashMap<String, Itemmodel> totalitems = new HashMap<>();
 
     SharedPreferencesManager sharedPreferencesManager;
-
-
 
 
     @Override
@@ -167,8 +174,8 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
 
 
         client = sharedPreferencesManager.readLoginData().getEmployee().getClients();
-        Log.e("check type ", "cc"+client.toString());
-        if(client.getRfidType().contains("Web") && client.getClientCode()!= null && !client.getClientCode().isEmpty()){
+        Log.e("check type ", "cc" + client.toString());
+        if (client.getRfidType().contains("Web") && client.getClientCode() != null && !client.getClientCode().isEmpty()) {
             if (!myapp.isCountMatch()) {
                 Clients finalClient = client;
                 Runnable onCountMatched = new Runnable() {
@@ -178,10 +185,10 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
                         //if(finalClient.getRfidType().contains("websingle")) {
                         try {
                             totalitems = myapp.getInventoryMap();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                       // }
+                        // }
                         // OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorker.class).build();
                         //WorkManager.getInstance(MainActivity.this).enqueue(syncWorkRequest);
 
@@ -203,15 +210,14 @@ public class MainActivity extends BaseTabFragmentActivity implements NavigationV
                 }).start();
             } else {
                 Clients finalClient = client;
-               // if(finalClient.getRfidType().contains("websingle")) {
+                // if(finalClient.getRfidType().contains("websingle")) {
 
 
-try {
-    totalitems = myapp.getInventoryMap();
-}catch ( Exception e)
-{
+                try {
+                    totalitems = myapp.getInventoryMap();
+                } catch (Exception e) {
 
-}
+                }
                 //}
                 // OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorker.class).build();
                 // WorkManager.getInstance(MainActivity.this).enqueue(syncWorkRequest);
@@ -242,27 +248,10 @@ try {
         new InitTask1().execute();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //        fetchapis();
 
 
     }
-
 
 
     private String getsvalue(String serial) {
@@ -324,21 +313,23 @@ try {
                         .replace(R.id.mainfragment, fragment, fragment.getClass().getSimpleName())
                         .addToBackStack(null)
                         .commit();
-                drawerLayout.closeDrawers(); // Close the navigation drawer
+                drawerLayout.closeDrawer(GravityCompat.START);   // <-- ensure close
                 return true;
             } else {
+                pendingFragment = fragment;
                 pemissionscheck.requestreadwrite(MainActivity.this);
+                drawerLayout.closeDrawer(GravityCompat.START);   // <-- close even when requesting
+                return true;                                     // mark handled so drawer doesn’t linger
             }
         }
         return false;
-    }
+        }
 
     private void displayfragemnt(Fragment h) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainfragment, h)
                 .commit();
     }
-
 
 
     @Override
@@ -500,8 +491,6 @@ try {
     }
 
 
-
-
     @Override
     public void onPermissionGranted(String excelopen, Intent data) {
 
@@ -544,14 +533,34 @@ try {
         });
 
         // Fetch Labeled Stock data
-
-
-
-
-
     }
 
+    public void requestPermissionAndNavigate(Fragment target) {
+        if (pemissionscheck.checkreadandwrite(this)) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainfragment, target).addToBackStack(null).commit();
+        } else {
+            pendingFragment = target; // keep it here (Activity)
+            pemissionscheck.requestreadwrite(this); // request FROM Activity
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-
+        if (requestCode == STORAGE_PERMISSION_READWRITE_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted → re-call displayfragemnt() with saved fragment
+                if (pendingFragment != null) {
+                    displayfragemnt(pendingFragment);
+                    pendingFragment = null; // reset
+                }
+            } else {
+                Toast.makeText(this, "Storage permission is required!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
